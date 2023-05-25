@@ -7,21 +7,34 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.*
 import kotlinx.coroutines.delay
+
 class TenSecond {
 }
+
 /*
 @Composable
 fun ShapeTransformationApp() {
@@ -88,26 +101,70 @@ enum class Shape1 {
     Circle,
     Triangle
 }*/
-
+@Preview
 @Composable
 fun ColorChangeApp() {
-    var color by remember { mutableStateOf(Color.Red) }
 
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(10000) // Wait for 10 seconds
-            color = if (color == Color.Red) Color.Blue else Color.Red
+
+    var pointerOffset by remember {
+        mutableStateOf(Offset(0f, 0f))
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+          /*  .pointerInput("dragging") {
+                detectDragGestures { change, dragAmount ->
+                    pointerOffset += dragAmount
+                }
+            }
+            .onSizeChanged {
+                pointerOffset = Offset(it.width / 2f, it.height / 2f)
+            }
+            .drawWithContent {
+                drawContent()
+                // draws a fully black area with a small keyhole at pointerOffset that’ll show part of the UI.
+                drawRect(
+                    Brush.radialGradient(
+                        listOf(Color.Transparent, Color.Black),
+                        center = pointerOffset,
+                        radius = 100.dp.toPx(),
+                    )
+                )
+            }*/
+    ) {
+        // Your composables here
+        var color by remember { mutableStateOf(Color.Red) }
+
+        LaunchedEffect(Unit) {
+            while (true) {
+                delay(100) // Wait for 10 seconds
+                color = if (color == Color.Red) Color.Blue else Color.Red
+            }
+        }
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+
+            ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .alpha(0.3f)
+
+                    .background(brush)
+                    .clip(RoundedCornerShape(12))
+            )
         }
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        Box(
-            modifier = Modifier
-                .size(150.dp)
-                .background(color)
-        )
-    }
 }
+
+/*@Stable
+fun horizontalGradient(
+    colors: List<Color>,
+    startX: Float = 0.0f,
+    endX: Float = Float.POSITIVE_INFINITY,
+    tileMode: TileMode = TileMode.Clamp
+): Brush */
+val brush = Brush.verticalGradient(listOf(Color.Red, Color.Blue, Color.White))

@@ -56,8 +56,10 @@ class MainActivity : ComponentActivity() {
 //                    HighOrLowGameScreen()
 //                    ImplicityGameScreen()
 //                    ResultScreenToolbar()
+
+
                     ColorSwitchGameScreen()
-//                    ColorChangeApp()
+                    ColorChangeApp()
                 }
             }
         }

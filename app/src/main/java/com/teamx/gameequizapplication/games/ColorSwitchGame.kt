@@ -3,6 +3,10 @@ package com.teamx.gameequizapplication.games
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -11,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 
-class ColorSwitchGame {
-}
+class ColorSwitchGame {}
 
 //color switch
 
@@ -74,15 +78,14 @@ fun PreviewColorSwitchGameScreen() {
 
 
 enum class GameColor(val color: Color) {
-    RED(Color.Red),
-    BLUE(Color.Blue),
-    GREEN(Color.Green),
-    YELLOW(Color.Yellow)
+    RED(Color.Red), BLUE(Color.Blue), GREEN(Color.Green), YELLOW(Color.Yellow)
 }
 
 @Composable
 fun ColorSwitchGameScreen() {
     var score by remember { mutableStateOf(0) }
+    var total by remember { mutableStateOf(0) }
+    var boo by remember { mutableStateOf(false) }
     var targetColor by remember { mutableStateOf(generateRandomColor()) }
     var isColorMatched by remember { mutableStateOf(false) }
 
@@ -91,55 +94,82 @@ fun ColorSwitchGameScreen() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Color Switch",
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
+        if (!boo) {
+            TimerComposable({ score, wrong -> boo = true }, score, total - score)
+            Text(
+                text = "Color Switch",
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
 
-        Box(
-            modifier = Modifier
+            Box(modifier = Modifier
                 .size(200.dp)
                 .background(targetColor.color)
                 .clickable {
+                    total++
                     if (isColorMatched) {
                         score++
                         targetColor = generateRandomColor()
                         isColorMatched = false
                     }
-                }
-        )
+                })
 
-        Row(
-            modifier = Modifier.padding(top = 16.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            GameColor.values().forEach { gameColor ->
-                ColorButton(
-                    color = gameColor.color,
-                    onColorSelected = { selectedColor ->
+            Row(
+                modifier = Modifier.padding(top = 16.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                GameColor.values().forEach { gameColor ->
+                    ColorButton(color = gameColor.color, onColorSelected = { selectedColor ->
                         isColorMatched = (selectedColor == targetColor)
-                    }
+                    })
+                }
+            }
+
+            Text(
+                text = "Score: $score",
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(top = 16.dp)
+            )
+        } else {
+
+            Text(
+                text = "Your Final Score is : $score",
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(top = 16.dp)
+            )
+            Text(
+                text = "Wrong Score is : ${total - score}",
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(top = 16.dp)
+            )
+            IconButton(
+                onClick = {
+                    boo = false
+                    score = 0
+                    total = 0
+                },
+            ) {
+
+                Icon(
+                    imageVector = Icons.Default.Refresh,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(96.dp)
+                        .padding(top = 13.dp)
                 )
             }
+
         }
 
-        Text(
-            text = "Score: $score",
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(top = 16.dp)
-        )
     }
 }
 
 @Composable
 fun ColorButton(color: Color, onColorSelected: (GameColor) -> Unit) {
-    Box(
-        modifier = Modifier
-            .size(60.dp)
-            .background(color)
-            .clickable { onColorSelected(getGameColorByColor(color)) }
-    )
+    Box(modifier = Modifier
+        .size(60.dp)
+        .background(color)
+        .clickable { onColorSelected(getGameColorByColor(color)) })
 }
 
 private fun generateRandomColor(): GameColor {
@@ -158,3 +188,16 @@ fun PreviewColorSwitchGameScreen() {
 }
 
 //color switch
+
+@Composable
+fun TimerComposable(onTimerExpired: (score: Int, wrong: Int) -> Unit, score: Int, wrong: Int) {
+    val timerExpired = remember { mutableStateOf(false) }
+
+    LaunchedEffect(true) {
+        delay(5000) // Wait for 10 seconds
+        timerExpired.value = true
+        onTimerExpired(score, wrong)
+    }
+
+    // Render your UI here based on the timerExpired state
+}
