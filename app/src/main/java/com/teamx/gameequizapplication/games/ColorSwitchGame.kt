@@ -1,5 +1,8 @@
 package com.teamx.gameequizapplication.games
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
@@ -95,7 +99,7 @@ fun ColorSwitchGameScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (!boo) {
-            TimerComposable({ score, wrong -> boo = true }, score, total - score)
+            TimerComposable({ _, _ -> boo = true }, score, total - score)
             Text(
                 text = "Color Switch",
                 style = MaterialTheme.typography.headlineSmall,
@@ -161,6 +165,8 @@ fun ColorSwitchGameScreen() {
 
         }
 
+
+        AnimatedObject()
     }
 }
 
@@ -192,7 +198,6 @@ fun PreviewColorSwitchGameScreen() {
 @Composable
 fun TimerComposable(onTimerExpired: (score: Int, wrong: Int) -> Unit, score: Int, wrong: Int) {
     val timerExpired = remember { mutableStateOf(false) }
-
     LaunchedEffect(true) {
         delay(5000) // Wait for 10 seconds
         timerExpired.value = true
@@ -200,4 +205,45 @@ fun TimerComposable(onTimerExpired: (score: Int, wrong: Int) -> Unit, score: Int
     }
 
     // Render your UI here based on the timerExpired state
+}
+
+
+@Composable
+fun AnimatedObject() {
+    var position by remember { mutableStateOf(IntOffset.Zero) }
+
+    LaunchedEffect(Unit) {
+        val animSpec = tween<Float>(
+            durationMillis = 1000,
+            easing = FastOutSlowInEasing
+        )
+        animate(
+            initialValue = 0f,
+            targetValue = 1f,
+            animationSpec = animSpec
+        ) { value, _ ->
+            position = IntOffset(0/*(value * 200).toInt()*/, (value * 200).toInt())
+        }
+    }
+    Row {
+
+        Box(
+            modifier = Modifier
+                .size(50.dp)
+                .offset(-position.x.dp, -position.y.dp)
+                .background(Color.Red)
+        )
+        Box(
+            modifier = Modifier
+                .size(50.dp)
+                .offset(position.x.dp, position.y.dp)
+                .background(Color.Blue)
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewAnimatedObject() {
+    AnimatedObject()
 }
