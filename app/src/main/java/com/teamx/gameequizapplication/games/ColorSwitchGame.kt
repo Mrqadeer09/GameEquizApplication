@@ -1,8 +1,6 @@
 package com.teamx.gameequizapplication.games
 
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -166,7 +164,9 @@ fun ColorSwitchGameScreen() {
         }
 
 
-        AnimatedObject()
+//        AnimatedObject()
+//        ClickableColorObject()
+        MovingObject()
     }
 }
 
@@ -246,4 +246,69 @@ fun AnimatedObject() {
 @Composable
 fun PreviewAnimatedObject() {
     AnimatedObject()
+}
+
+@Composable
+fun ClickableColorObject() {
+    var color by remember { mutableStateOf(Color.Blue) }
+    val updatedColor = rememberUpdatedState(color)
+
+    Box(
+        modifier = Modifier
+            .size(100.dp)
+            .background(updatedColor.value)
+            .clickable {
+                color = if (color == Color.Blue) {
+                    Color.Red
+                } else {
+                    Color.Blue
+                }
+            }
+    )
+}
+
+@Preview
+@Composable
+fun PreviewClickableColorObject() {
+    MaterialTheme {
+        ClickableColorObject()
+    }
+}
+
+
+@Composable
+fun MovingObject() {
+    val screenWidth = 300f // Set your screen width here
+    val objectSize = 50.dp
+
+    val animatedOffsetX = animateFloatAsState(
+        targetValue = screenWidth as Float,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 2000,
+                easing = LinearEasing
+            ),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+    Column(
+        Modifier
+            .background(Color.Red)
+            .fillMaxSize()) {
+
+    Box(
+        modifier = Modifier
+            .size(objectSize)
+            .offset(x = animatedOffsetX.value.dp)
+            .background(Color.Blue)
+    )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewMovingObject() {
+    MaterialTheme {
+        MovingObject()
+    }
 }

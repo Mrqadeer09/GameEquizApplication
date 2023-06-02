@@ -13,20 +13,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlin.random.Random
 
 class FlickGame {
 }
+
 //flick
-enum class ArrowDirection { LEFT, RIGHT }
+enum class ArrowDirection { LEFT, RIGHT, TOP, BOTTOM }
 
 @Composable
 fun FlickGameScreen() {
     var correctAnswers by remember { mutableStateOf(0) }
     var incorrectAnswers by remember { mutableStateOf(0) }
     var arrowDirection by remember { mutableStateOf(ArrowDirection.LEFT) }
+    var isShuffle by remember { mutableStateOf(ArrowDirection.TOP) }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -37,30 +40,52 @@ fun FlickGameScreen() {
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            /*when (isShuffle) {
+                ArrowDirection.LEFT -> {
+
+                }
+                ArrowDirection.RIGHT -> {
+
+                }
+                ArrowDirection.TOP -> {
+
+                }
+                ArrowDirection.BOTTOM -> {
+
+                }
+                else -> {
+
+                    Log.d("TAG", "FlickGameScreen: ")
+                }
+            }*/
+
             ArrowIndicator(
-                direction = ArrowDirection.LEFT,
+                direction = isShuffle/*ArrowDirection.LEFT*/,
                 selectedDirection = arrowDirection,
                 onClick = {
-                    if (arrowDirection == ArrowDirection.LEFT) {
+                    if (arrowDirection == isShuffle /*ArrowDirection.LEFT*/) {
                         correctAnswers++
+
+                        isShuffle = updateArrowDirection()
                     } else {
                         incorrectAnswers++
                     }
-                    updateArrowDirection()
+
                 }
             )
-            ArrowIndicator(
-                direction = ArrowDirection.RIGHT,
-                selectedDirection = arrowDirection,
-                onClick = {
-                    if (arrowDirection == ArrowDirection.RIGHT) {
-                        correctAnswers++
-                    } else {
-                        incorrectAnswers++
-                    }
-                    updateArrowDirection()
-                }
-            )
+
+//            ArrowIndicator(
+//                direction = ArrowDirection.RIGHT,
+//                selectedDirection = arrowDirection,
+//                onClick = {
+//                    if (arrowDirection == ArrowDirection.RIGHT) {
+//                        correctAnswers++
+//                    } else {
+//                        incorrectAnswers++
+//                    }
+//                    updateArrowDirection()
+//                }
+//            )
         }
 
         Text(
@@ -121,15 +146,16 @@ private fun DrawScope.drawArrow(
     val arrowWidth = size * 0.3f
     val arrowHeight = size * 0.1f
 
-    drawLine(
-        color = color,
-        start = Offset(x - arrowOffset, y),
-        end = Offset(x + arrowOffset, y),
-        strokeWidth = thickness
-    )
+
 
     when (direction) {
         ArrowDirection.LEFT -> {
+            drawLine(
+                color = color,
+                start = Offset(x - arrowOffset, y),
+                end = Offset(x + arrowOffset, y),
+                strokeWidth = thickness
+            )
             drawLine(
                 color = color,
                 start = Offset(x + arrowOffset, y),
@@ -147,6 +173,12 @@ private fun DrawScope.drawArrow(
             drawLine(
                 color = color,
                 start = Offset(x - arrowOffset, y),
+                end = Offset(x + arrowOffset, y),
+                strokeWidth = thickness
+            )
+            drawLine(
+                color = color,
+                start = Offset(x - arrowOffset, y),
                 end = Offset(x - arrowOffset + arrowHeight, y - arrowWidth),
                 strokeWidth = thickness
             )
@@ -157,17 +189,96 @@ private fun DrawScope.drawArrow(
                 strokeWidth = thickness
             )
         }
+        ArrowDirection.BOTTOM -> {
+            drawLine(
+                color = color,
+                start = Offset(y = x - arrowOffset, x = y),
+                end = Offset(y = x + arrowOffset, x = y),
+                strokeWidth = thickness
+            )
+
+            drawLine(
+                color = color,
+                start = Offset(y = y + arrowOffset, x = x),
+                end = Offset(y = y + arrowOffset - arrowHeight, x = x - arrowWidth),
+                strokeWidth = thickness
+            )
+            drawLine(
+                color = color,
+                start = Offset(y = y + arrowOffset, x = y),
+                end = Offset(y = y + arrowOffset - arrowHeight, x = x + arrowWidth),
+                strokeWidth = thickness
+            )
+        }
+        ArrowDirection.TOP -> {
+            drawLine(
+                color = color,
+                start = Offset(y = x - arrowOffset, x = y),
+                end = Offset(y = x + arrowOffset, x = y),
+                strokeWidth = thickness
+            )
+
+            drawLine(
+                color = color,
+                start = Offset(y = y - arrowOffset, x = x),
+                end = Offset(y = y - arrowOffset + arrowHeight, x = x - arrowWidth),
+                strokeWidth = thickness
+            )
+            drawLine(
+                color = color,
+                start = Offset(y = y - arrowOffset, x = x),
+                end = Offset(y = y - arrowOffset + arrowHeight, x = x + arrowWidth),
+                strokeWidth = thickness
+            )
+        }
     }
 }
 
 private fun updateArrowDirection(): ArrowDirection {
-    return if (Random.nextBoolean()) ArrowDirection.LEFT else ArrowDirection.RIGHT
+    return when (Random.nextInt(0, 4)) {
+        1 -> ArrowDirection.LEFT
+        2 -> ArrowDirection.RIGHT
+        3 -> ArrowDirection.TOP
+        4 -> ArrowDirection.BOTTOM
+        else -> ArrowDirection.RIGHT
+    }
 }
 
 @Preview
 @Composable
 fun PreviewFlickGameScreen() {
-    FlickGameScreen()
+    SwipeableComponent()
 }
 
 //flick
+@Composable
+fun SwipeableComponent() {
+    var offsetX by remember { mutableStateOf(0f) }
+    var offsetY by remember { mutableStateOf(0f) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectDragGestures { change, dragAmount ->
+                    change.consume()
+                    offsetX += dragAmount.x
+                    offsetY += dragAmount.y
+                }
+            }
+    ) {
+        val swipeableModifier = Modifier.offset { IntOffset(offsetX.toInt(), offsetY.toInt()    ) }
+
+        Text(
+            text = "Swipe Me",
+            modifier = swipeableModifier.align(Alignment.Center),
+            color = Color.White,
+            fontSize = 24.sp
+        )
+    }
+}
+
+
+
+
+

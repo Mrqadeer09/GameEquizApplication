@@ -1,6 +1,7 @@
 package com.teamx.gameequizapplication.games
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -83,23 +84,31 @@ private fun generateSymbol(): Symbol {
 fun PreviewReverseRockPaperScissorsGameScreen() {
     ReverseRockPaperScissorsGameScreen()
 }*/
+enum class Symbols {
+
+
+    ROCK,
+    PAPER,
+    SCISSORS, ;
+}
 
 enum class Symbol(
     val text: String,
-    val dominantSymbols: List<Symbol>,
-    val deficientSymbols: List<Symbol>
+    val dominantSymbols: List<Symbols>,
+    val deficientSymbols: List<Symbols>
 ) {
-    ROCK("Rock", emptyList(), emptyList()),
-    PAPER("Paper", listOf(Symbol.ROCK), emptyList()),
-    SCISSORS("Scissors", listOf(Symbol.PAPER), listOf(Symbol.ROCK));
+    ROCK("Rock", listOf(Symbols.PAPER), listOf(Symbols.SCISSORS)),
+    PAPER("Paper", listOf(Symbols.SCISSORS), listOf(Symbols.ROCK)),
+    SCISSORS("Scissors", listOf(Symbols.ROCK), listOf(Symbols.PAPER));
 
     val color: Color
         get() = if (dominantSymbols.isNotEmpty()) Color.Green else Color.Red
 }
 
+
 @Composable
 fun ReverseRockPaperScissorsGameScreen() {
-    var score by remember { mutableStateOf(0) }
+    var score2 by remember { mutableStateOf(0) }
     var currentSymbol by remember { mutableStateOf(generateSymbol()) }
 
     Column(
@@ -119,38 +128,56 @@ fun ReverseRockPaperScissorsGameScreen() {
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        Column(
+        Row(
             modifier = Modifier.padding(horizontal = 16.dp)
         ) {
             currentSymbol.dominantSymbols.forEach { symbol ->
                 Button(
                     onClick = {
-                        checkAnswer(symbol)
+                        checkAnswer(symbol, { score2++ }, { score2-- }, { symbol ->
+                            currentSymbol = symbol
+                        })
                     },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
+                        .padding(horizontal = 8.dp)
+                        .size(125.dp), shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text(text = symbol.text)
+                    Text(text = symbol.name)
                 }
             }
+
+            Button(
+                onClick = {
+                    checkAnswer(currentSymbol.text, { score2++ }, { score2-- }, { symbol ->
+                        currentSymbol = symbol
+                    })
+                },
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .size(125.dp), shape = RoundedCornerShape(8.dp)
+            ) {
+                Text(text = currentSymbol.name)
+            }
+
 
             currentSymbol.deficientSymbols.forEach { symbol ->
                 Button(
                     onClick = {
-                        checkAnswer(symbol)
+                        checkAnswer(symbol, { score2++ }, { score2-- }, { symbol ->
+                            currentSymbol = symbol
+                        })
                     },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
+                        .padding(horizontal = 8.dp)
+                        .size(125.dp), shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text(text = symbol.text)
+                    Text(text = symbol.name)
                 }
             }
         }
 
         Text(
-            text = "Score: $score",
+            text = "Score: $score2",
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(top = 16.dp)
         )
@@ -162,7 +189,12 @@ private fun generateSymbol(): Symbol {
     return symbols.random()
 }
 
-private fun checkAnswer(chosenSymbol: Symbol) {
+private fun checkAnswer(
+    chosenSymbol: Symbols,
+    correctAction: () -> Unit,
+    wrongAction: () -> Unit,
+    changeAction: (symbol: Symbol) -> Unit
+) {
     val nextSymbol = generateSymbol()
     val isCorrect = if (nextSymbol.color == Color.Green) {
         chosenSymbol in nextSymbol.dominantSymbols
@@ -172,12 +204,41 @@ private fun checkAnswer(chosenSymbol: Symbol) {
 
     // Update score based on correctness
     if (isCorrect) {
-        score++
+//        score3++
+        correctAction()
     } else {
-        score = 0
+        wrongAction()
+//        score3--
+//        score3 = 0
     }
+    changeAction(nextSymbol)
 
-    currentSymbol = nextSymbol
+//    currentSymbol = nextSymbol
+
+}
+
+private fun checkAnswer(
+    chosenSymbol: String,
+    correctAction: () -> Unit,
+    wrongAction: () -> Unit,
+    changeAction: (symbol: Symbol) -> Unit
+) {
+    val nextSymbol = generateSymbol()
+    val isCorrect = nextSymbol.text == chosenSymbol
+
+    // Update score based on correctness
+    if (isCorrect) {
+//        score3++
+        correctAction()
+    } else {
+        wrongAction()
+//        score3--
+//        score3 = 0
+    }
+    changeAction(nextSymbol)
+
+//    currentSymbol = nextSymbol
+
 }
 
 var currentSymbol: Any? = null
