@@ -2,18 +2,30 @@ package com.teamx.gameequizapplication
 
 import android.os.Build
 import android.os.Bundle
+import android.view.animation.OvershootInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Spa
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -21,8 +33,14 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.teamx.gameequizapplication.games.TouchTheNumbersGameScreen
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.teamx.gameequizapplication.games.*
 import com.teamx.gameequizapplication.ui.theme.GameEquizApplicationTheme
+import com.teamx.gameequizapplication.utils.grids
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -35,25 +53,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-//                    GameScreen()
-//                    FlickGameScreen()
-//                    TouchTheNumbersGameScreen()
-//                    ReverseRockPaperScissorsGameScreen()
-//                    MissingPieceGameScreen()
-//                    ColorSwitchGameScreen()
-//                    HexaChainGameScreen()
-//                    CardCalculationGameScreen()
-//                    Make10GameScreen()
-//                    HighOrLowGameScreen()
-//                    ImplicityGameScreen()
-//                    ResultScreenToolbar()
-//                    FieldClassification.Match /ingStepGame(Modifier)
-                    TouchTheNumbersGameScreen()
-//                    SwipeableComponent()
 
-//                    ColorSwitchGameScreen()
-//                    GameScreen2()
-//                    ColorChangeApp()
+                    Navigation()
+
                 }
             }
         }
@@ -61,11 +63,34 @@ class MainActivity : ComponentActivity() {
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun startUp(modifier: Modifier) {
+
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Column(
+
+        ) {
+            Navigation()
+            /* Text(text = "Loading...", modifier = Modifier.padding(vertical = 48.dp))
+             LoadingAnimation()
+             grids()*/
+        }
+    }
+
+}
+
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     GameEquizApplicationTheme {
-//        GameScreen2()
+        startUp(Modifier)
 
     }
 }
@@ -75,12 +100,7 @@ class Hexagon(private val size: Size) {
     private val radius: Float = size.width / 2f
 
     private val angles = listOf(
-        0f,
-        60f,
-        120f,
-        180f,
-        240f,
-        300f
+        0f, 60f, 120f, 180f, 240f, 300f
     )
 
     fun toPath(): Path {
@@ -128,12 +148,9 @@ fun ListItem(item: String) {
         modifier = androidx.compose.ui.Modifier.padding(8.dp)
     ) {
         Text(
-            text = item,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
-            ),
-            modifier = androidx.compose.ui.Modifier.padding(16.dp)
+            text = item, style = MaterialTheme.typography.bodyLarge.copy(
+                fontWeight = FontWeight.Bold, color = Color.Black
+            ), modifier = androidx.compose.ui.Modifier.padding(16.dp)
         )
     }
 }
@@ -189,3 +206,191 @@ fun PreviewLazyGridExample() {
     LazyGridExample()
 }*/
 //
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun Navigation() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = "splashScreen") {
+
+        composable("splashScreen") {
+            SplashScreen(navController = navController)
+        }
+
+        composable("mainScreen") {
+            MainScreen(navController = navController)
+        }
+        composable(GamesUID.DashboardScreen.name) {
+//            MainScreen()
+        }
+
+        composable(GamesUID.AdditionScreen.name) {
+            AdditionAddictionGame() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.BirdWatchingScreen.name) {
+            BirdWatchingGame() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.BreakTheBlockScreen.name) {
+            BreakTheBlockGame() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.ColorDeceptionScreen.name) {
+            TouchTheColorsGameScreen() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.ColorSwitchScreen.name) {
+            ColorSwitchGameScreen() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.ConcentrationScreen.name) {
+            ConcentrationGame() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.FlickScreen.name) {
+            SwipeableComponent() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.FollowTheLeaderScreen.name) {
+            FollowTheLeaderGame() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.HexaChainScreen.name) {
+            HexaChainGameScreen() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.HighLowScreen.name) {
+            HighOrLowGameScreen(content = { ToolbarPreview(navController = navController) }) {}
+        }
+        composable(GamesUID.LearningThingScreen.name) {
+            Main() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.MakeTenScreen.name) {
+            Make10GameScreen() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.MatchingScreen.name) {
+            MatchingStepGame(Modifier.padding(2.dp)) { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.MissingPieceScreen.name) {
+            MissingPieceGameScreen() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.OperationsScreen.name) {
+            GameScreen() { ToolbarPreview(navController = navController) }
+        }
+
+        composable(GamesUID.QuickEyeScreen.name) {
+            QuickEyeGame() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.RainFallScreen.name) {
+            RainFallGame() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.ResultScreen.name) {
+//            MainScreen()
+        }
+        composable(GamesUID.ReverseRpsScreen.name) {
+            ReverseRockPaperScissorsGameScreen() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.SimplicityScreen.name) {
+            ImplicityGameScreen() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.SpinningBlockScreen.name) {
+            SpinningBlockGame() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.TapTheColorScreen.name) {
+            TapTheColorGame() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.TenSecondScreen.name) {
+//            MainScreen()
+        }
+        composable(GamesUID.TouchTheNumScreen.name) {
+            TouchTheNumbersGameScreen() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.TouchTheNumPlusScreen.name) {
+            TouchTheNumPlusGame() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.UnfollowTheLeaderScreen.name) {
+            UnfollowTheLeaderGame() { ToolbarPreview(navController = navController) }
+        }
+        composable(GamesUID.WeatherTheLeaderScreen.name) {
+            WeatherCastGame() { ToolbarPreview(navController = navController) }
+        }
+
+    }
+
+
+}
+
+@Composable
+fun SplashScreen(navController: NavController) {
+    val scale = remember {
+        Animatable(0f)
+    }
+    LaunchedEffect(key1 = true) {
+        scale.animateTo(
+            targetValue = 0.9f,
+            animationSpec = tween(durationMillis = 500, /*delayMillis = 50, */easing = {
+                OvershootInterpolator(2f).getInterpolation(it)
+            })
+        )
+
+        delay(3000L)
+        navController.navigate("mainScreen")
+    }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Red)
+            .clip(RoundedCornerShape(13.dp)),
+        contentAlignment = Alignment.Center
+    ) {
+
+
+        Icon(
+            modifier = Modifier
+                .size(145.dp)
+                .scale(scale.value),
+            imageVector = Icons.Default.Spa,
+            contentDescription = "SplashScreen"
+        )
+
+    }
+
+
+}
+
+@Composable
+fun MainScreen(navController: NavController) {
+
+    Box(
+        modifier = Modifier
+            .background(Color.White)
+            .clip(RoundedCornerShape(13.dp)),
+        contentAlignment = Alignment.Center,
+
+        ) {
+
+        Text(
+            style = MaterialTheme.typography.bodySmall, text = "MainScreen"
+        )
+        grids(navController)
+    }
+
+}
+
+@Composable
+fun GeneralScreen(text: String) {
+
+    Box(
+        modifier = Modifier
+            .background(Color.LightGray)
+            .clip(RoundedCornerShape(13.dp)),
+        contentAlignment = Alignment.Center,
+
+        ) {
+
+        Text(
+            style = MaterialTheme.typography.bodySmall, text = text
+        )
+
+    }
+
+}
+
+
+enum class GamesUID {
+    SplashScreen, MainScreen, DashboardScreen, AdditionScreen, BirdWatchingScreen, BreakTheBlockScreen, ColorDeceptionScreen, ColorSwitchScreen, ConcentrationScreen, FlickScreen, FollowTheLeaderScreen, HexaChainScreen, HighLowScreen, LearningThingScreen, MakeTenScreen, MatchingScreen, MissingPieceScreen, OperationsScreen, QuickEyeScreen, RainFallScreen, ResultScreen, ReverseRpsScreen, SimplicityScreen, SpinningBlockScreen, TapTheColorScreen, TenSecondScreen, TouchTheNumScreen, TouchTheNumPlusScreen, UnfollowTheLeaderScreen, WeatherTheLeaderScreen
+}
+

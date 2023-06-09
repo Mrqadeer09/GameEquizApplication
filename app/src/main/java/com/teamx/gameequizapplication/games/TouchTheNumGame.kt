@@ -11,7 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlin.random.Random
 
@@ -22,7 +21,7 @@ class TouchTheNumGame {}
 data class NumberBox(val number: Int, val color: Color)
 
 @Composable
-fun TouchTheNumbersGameScreen() {
+fun TouchTheNumbersGameScreen(content: @Composable () -> Unit) {
     var score by remember { mutableStateOf(0) }
     var boxes by remember { mutableStateOf(generateBoxes()) }
     var restart by remember { mutableStateOf(true) }
@@ -141,10 +140,12 @@ private fun updateScore(
 }
 
 
+/*
 @Preview
 @Composable
 fun PreviewTouchTheNumbersGameScreen() {
     TouchTheNumbersGameScreen()
 }
+*/
 
 //Touch The Number

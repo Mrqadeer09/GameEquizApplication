@@ -9,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 class ReverseRPS {
@@ -107,7 +106,7 @@ enum class Symbol(
 
 
 @Composable
-fun ReverseRockPaperScissorsGameScreen() {
+fun ReverseRockPaperScissorsGameScreen(content: @Composable () -> Unit) {
     var score2 by remember { mutableStateOf(0) }
     var currentSymbol by remember { mutableStateOf(generateSymbol()) }
 
@@ -243,10 +242,12 @@ private fun checkAnswer(
 
 var currentSymbol: Any? = null
 
+/*
 @Preview
 @Composable
 fun PreviewReverseRockPaperScissorsGameScreen() {
     ReverseRockPaperScissorsGameScreen()
 }
+*/
 
 //Rock paper scissor

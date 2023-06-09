@@ -12,7 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 class MissingPieceGame {
@@ -26,7 +25,7 @@ enum class Shape {
 }
 
 @Composable
-fun MissingPieceGameScreen() {
+fun MissingPieceGameScreen(content: @Composable () -> Unit) {
     var score by remember { mutableStateOf(0) }
     var currentShapes by remember { mutableStateOf(generateShapes()) }
     var missingShapeIndex by remember { mutableStateOf(generateMissingShapeIndex()) }
@@ -112,11 +111,13 @@ private fun colorForShape(shape: Shape): Color {
     }
 }
 
+/*
 @Preview
 @Composable
 fun PreviewMissingPieceGameScreen() {
     MissingPieceGameScreen()
 }
+*/
 
 
 //Missing Piece

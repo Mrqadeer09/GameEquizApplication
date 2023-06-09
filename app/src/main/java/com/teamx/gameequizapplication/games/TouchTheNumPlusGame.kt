@@ -1,4 +1,7 @@
 package com.teamx.gameequizapplication.games
 
-class TouchTheNumPlusGame {
-}
+import androidx.compose.runtime.Composable
+
+@Composable
+fun TouchTheNumPlusGame(content: @Composable () -> Unit) {
+content()}

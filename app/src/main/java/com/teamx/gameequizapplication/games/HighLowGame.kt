@@ -9,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlin.random.Random
 
@@ -86,7 +85,7 @@ fun PreviewHighOrLowGameScreen() {
 
 
 @Composable
-fun HighOrLowGameScreen( onContinueClicked: () -> Unit) {
+fun HighOrLowGameScreen(content: @Composable () -> Unit, onContinueClicked: () -> Unit) {
     var score by remember { mutableStateOf(0) }
     var currentNumber by remember { mutableStateOf(generateNumber()) }
 
@@ -146,9 +145,9 @@ private fun generateNumber(): Int {
     return Random.nextInt(100)
 }
 
-@Preview
+/*@Preview
 @Composable
 fun PreviewHighOrLowGameScreen() {
     HighOrLowGameScreen(){}
-}
+}*/
 //High low

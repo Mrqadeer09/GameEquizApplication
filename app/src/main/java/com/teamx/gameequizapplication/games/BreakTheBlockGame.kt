@@ -1,4 +1,7 @@
 package com.teamx.gameequizapplication.games
 
-class BreakTheBlockGame {
-}
+import androidx.compose.runtime.Composable
+
+@Composable
+fun BreakTheBlockGame(content: @Composable () -> Unit) {
+content()}

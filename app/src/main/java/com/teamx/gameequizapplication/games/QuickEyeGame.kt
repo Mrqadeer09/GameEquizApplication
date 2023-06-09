@@ -1,4 +1,7 @@
 package com.teamx.gameequizapplication.games
 
-class QuickEyeGame {
-}
+import androidx.compose.runtime.Composable
+
+@Composable
+fun QuickEyeGame(content: @Composable () -> Unit) {
+content()}

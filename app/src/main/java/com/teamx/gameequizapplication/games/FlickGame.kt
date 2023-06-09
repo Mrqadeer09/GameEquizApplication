@@ -12,7 +12,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -244,15 +243,15 @@ private fun updateArrowDirection(): ArrowDirection {
     }
 }
 
-@Preview
+/*@Preview
 @Composable
 fun PreviewFlickGameScreen() {
     SwipeableComponent()
-}
+}*/
 
 //flick
 @Composable
-fun SwipeableComponent() {
+fun SwipeableComponent(content: @Composable () -> Unit) {
     var offsetX by remember { mutableStateOf(0f) }
     var offsetY by remember { mutableStateOf(0f) }
 

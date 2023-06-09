@@ -10,7 +10,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlin.random.Random
 
@@ -20,7 +19,7 @@ class SimplicityGame {}
 data class Question(val equation: String, val choices: List<Int>, val correctAnswer: Int)
 
 @Composable
-fun ImplicityGameScreen() {
+fun ImplicityGameScreen(content: @Composable () -> Unit) {
     var score by remember { mutableStateOf(0) }
     var questionIndex by remember { mutableStateOf(0) }
     var gameState by remember { mutableStateOf(true) }
@@ -153,11 +152,11 @@ private fun generateQuestions(): ArrayList<Question> {
     )*/
 }
 
-@Preview
-@Composable
+//@Preview
+/*@Composable
 fun PreviewImplicityGameScreen() {
     ImplicityGameScreen()
-}
+}*/
 
 
 //Simplicity

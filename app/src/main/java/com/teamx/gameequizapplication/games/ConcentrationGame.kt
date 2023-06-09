@@ -1,4 +1,7 @@
 package com.teamx.gameequizapplication.games
 
-class ConcentrationGame {
-}
+import androidx.compose.runtime.Composable
+
+@Composable
+fun ConcentrationGame(content: @Composable () -> Unit) {
+content()}

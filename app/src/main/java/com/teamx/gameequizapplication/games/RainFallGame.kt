@@ -1,4 +1,7 @@
 package com.teamx.gameequizapplication.games
 
-class RainFallGame {
-}
+import androidx.compose.runtime.Composable
+
+@Composable
+fun RainFallGame(content: @Composable () -> Unit) {
+content()}

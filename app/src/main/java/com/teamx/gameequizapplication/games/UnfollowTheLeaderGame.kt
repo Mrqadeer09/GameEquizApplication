@@ -1,4 +1,6 @@
 package com.teamx.gameequizapplication.games
 
-class UnfollowTheLeaderGame {
-}
+import androidx.compose.runtime.Composable
+
+@Composable fun UnfollowTheLeaderGame(content: @Composable () -> Unit) {
+content()}

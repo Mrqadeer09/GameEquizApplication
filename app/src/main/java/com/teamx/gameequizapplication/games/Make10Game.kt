@@ -12,7 +12,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 class Make10Game {
@@ -87,7 +86,7 @@ fun PreviewMake10GameScreen() {
 
 
 @Composable
-fun Make10GameScreen() {
+fun Make10GameScreen(content: @Composable () -> Unit) {
     val availableCards = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
     val selectedCards = remember { mutableStateListOf<Int>() }
 
@@ -143,9 +142,9 @@ fun Make10GameScreen() {
     }
 }
 
-@Preview
+/*@Preview
 @Composable
 fun PreviewMake10GameScreen() {
     Make10GameScreen()
-}
+}*/
 //make 10

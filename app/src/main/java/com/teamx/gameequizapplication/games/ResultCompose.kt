@@ -1,15 +1,20 @@
 package com.teamx.gameequizapplication.games
 
 import androidx.annotation.StringRes
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.AvTimer
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -22,7 +27,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.input.pointer.*
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -37,7 +42,6 @@ import com.teamx.gameequizapplication.ui.theme.CyanGreen
 import com.teamx.gameequizapplication.ui.theme.GameEquizApplicationTheme
 import com.teamx.gameequizapplication.ui.theme.Pinky
 import com.teamx.gameequizapplication.ui.theme.Purple80
-
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -242,7 +246,7 @@ fun ResultScreenToolbar(onContinueClicked: () -> Unit) {
             bottomButtons({ shouldShowOnboarding2 = false })
         }
     } else {
-        HighOrLowGameScreen({ shouldShowOnboarding2 = true })
+//        HighOrLowGameScreen({ shouldShowOnboarding2 = true })
     }
 }
 

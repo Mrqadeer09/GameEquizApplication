@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
@@ -202,7 +201,7 @@ enum class HexaColor(val color: Color) {
 }
 
 @Composable
-fun HexaChainGameScreen() {
+fun HexaChainGameScreen(content: @Composable () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -274,9 +273,9 @@ private fun DrawScope.drawHexagon(hexagon: Hexagon, color: Color) {
     )
 }
 
-@Preview
+/*@Preview
 @Composable
 fun PreviewHexaChainGameScreen() {
     HexaChainGameScreen()
-}
+}*/
 //hexa chain

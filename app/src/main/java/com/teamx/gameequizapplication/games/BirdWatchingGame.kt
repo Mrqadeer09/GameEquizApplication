@@ -1,4 +1,7 @@
 package com.teamx.gameequizapplication.games
 
-class BirdWatchingGame {
-}
+import androidx.compose.runtime.Composable
+
+@Composable
+fun BirdWatchingGame(content: @Composable () -> Unit) {
+content()}

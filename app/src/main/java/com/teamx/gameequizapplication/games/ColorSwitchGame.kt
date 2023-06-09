@@ -84,7 +84,7 @@ enum class GameColor(val color: Color) {
 }
 
 @Composable
-fun ColorSwitchGameScreen() {
+fun ColorSwitchGameScreen(content: @Composable () -> Unit) {
     var score by remember { mutableStateOf(0) }
     var total by remember { mutableStateOf(0) }
     var boo by remember { mutableStateOf(false) }
@@ -187,11 +187,11 @@ private fun getGameColorByColor(color: Color): GameColor {
     return GameColor.values().firstOrNull { it.color == color } ?: GameColor.RED
 }
 
-@Preview
+/*@Preview
 @Composable
 fun PreviewColorSwitchGameScreen() {
     ColorSwitchGameScreen()
-}
+}*/
 
 //color switch
 

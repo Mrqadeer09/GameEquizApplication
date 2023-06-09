@@ -27,7 +27,7 @@ var arr = arrayListOf<MemoryItem>()
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MatchingStepGame(modifier: Modifier) {
+fun MatchingStepGame(modifier: Modifier,content: @Composable () -> Unit) {
     var gameStarted by remember { mutableStateOf(false) }
     var r by remember { mutableStateOf(0) }
     var r1 by remember { mutableStateOf(0) }
@@ -222,14 +222,14 @@ fun CardShape(
 }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+/*@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun previewMatching() {
     MaterialTheme {
         MatchingStepGame(Modifier.padding(2.dp))
     }
-}
+}*/
 
 @Preview
 @Composable

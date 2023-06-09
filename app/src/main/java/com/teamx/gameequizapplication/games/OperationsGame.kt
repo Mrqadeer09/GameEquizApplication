@@ -15,7 +15,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import kotlin.random.Random
@@ -27,7 +26,7 @@ val operators = listOf("+", "-", "*", "/")
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun GameScreen() {
+fun GameScreen(content: @Composable () -> Unit) {
     var equation by remember { mutableStateOf(generateEquation()) }
     var selectedOperator by remember { mutableStateOf("") }
     var allCounter by remember { mutableStateOf(0) }
@@ -137,12 +136,12 @@ fun evaluateEquation(equation: String): Int {
 }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+/*@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun PreviewGameScreen() {
     GameScreen()
-}
+}*/
 
 
 @RequiresApi(Build.VERSION_CODES.O)

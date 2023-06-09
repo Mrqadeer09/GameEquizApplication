@@ -1,4 +1,7 @@
 package com.teamx.gameequizapplication.games
 
-class SpinningBlockGame {
-}
+import androidx.compose.runtime.Composable
+
+@Composable
+fun SpinningBlockGame(content: @Composable () -> Unit) {
+content()}
