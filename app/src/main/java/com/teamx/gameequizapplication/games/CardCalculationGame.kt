@@ -2,6 +2,7 @@ package com.teamx.gameequizapplication.games
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -14,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.teamx.gameequizapplication.ui.theme.neoGreen
+import com.teamx.gameequizapplication.ui.theme.neoRed
+import kotlin.random.Random
 
-class CardCalculationGame {
-}
+class CardCalculationGame {}
 
 //calculations
 
@@ -28,7 +31,7 @@ class CardCalculationGame {
 fun CardCalculationGameScreen() {
     val cards = listOf(
         Card(7, CardColor.GREEN),
-        Card(2, CardColor.RED)
+        Card(2, CardneoRed)
     )
     val selectedCards = remember { mutableStateListOf<Int>() }
 
@@ -53,13 +56,13 @@ fun CardCalculationGameScreen() {
                     onClick = {
                         if (card.color == CardColor.GREEN) {
                             selectedCards.add(card.value)
-                        } else if (card.color == CardColor.RED) {
+                        } else if (card.color == CardneoRed) {
                             selectedCards.add(-card.value)
                         }
                     },
-                    modifier = Modifier.padding(8.dp),
+                    modifier = Modifier.padding(8.dp).width(50.dp).height(70.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (card.color == CardColor.GREEN) Color.Green else Color.Red
+                        containerColor = if (card.color == CardColor.GREEN) Color.Green else neoRed
                     ),
                     border = BorderStroke(1.dp, Color.Black)
                 ) {
@@ -79,7 +82,7 @@ fun CardCalculationGameScreen() {
 
         Button(
             onClick = { selectedCards.clear() },
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(8.dp).width(50.dp).height(70.dp)
         ) {
             Text(text = "Clear")
         }
@@ -98,12 +101,41 @@ enum class CardColor {
     GREEN, RED
 }
 
+private fun generateCards(): List<Card> {
+    val numbers = mutableListOf<Card>()
+    for (i in 1..Random.nextInt(2, 4)) {
+
+
+        numbers.add(Card(Random.nextInt(1, 9), CardColor.values()[Random.nextInt(0, 2)]))
+
+    }
+    numbers.shuffle()
+
+    return numbers
+}
+
+private fun generateCardsOption(answer: Int): List<OptionCards> {
+    val numbers = mutableListOf<OptionCards>()
+    val totalOptions = Random.nextInt(2, 4)
+    numbers.add(OptionCards(answer, answer))
+    val ranNum = (0..99).shuffled().take(totalOptions)
+    for (i in 1..(totalOptions-1)) {
+//        val ranNum = Random.nextInt(1, 9);
+        numbers.add(OptionCards(ranNum[i], answer))
+
+    }
+    numbers.shuffle()
+
+    return numbers
+}
+
 @Composable
-fun CardCalculationGameScreen() {
-    val cards = listOf(
-        Card(7, CardColor.GREEN),
-        Card(2, CardColor.RED)
-    )
+fun CardCalculationGameScreen(content: @Composable () -> Unit) {
+    val cards = generateCards()/*listOf(
+        Card(7, CardColor.GREEN), Card(2, CardneoRed)
+    )*/
+
+
     val selectedCards = remember { mutableStateListOf<Int>() }
 
     Column(
@@ -123,19 +155,28 @@ fun CardCalculationGameScreen() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             cards.forEach { card ->
+                if (card.color == CardColor.GREEN) {
+                    selectedCards.add(card.value)
+                } else if (card.color == CardColor.RED) {
+                    selectedCards.add(-card.value)
+                }
                 Button(
                     onClick = {
-                        if (card.color == CardColor.GREEN) {
+                        /*if (card.color == CardColor.GREEN) {
                             selectedCards.add(card.value)
                         } else if (card.color == CardColor.RED) {
                             selectedCards.add(-card.value)
-                        }
+                        }*/
                     },
-                    modifier = Modifier.padding(8.dp),
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .width(50.dp)
+                        .height(70.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (card.color == CardColor.GREEN) Color.Green else Color.Red
+                        containerColor = if (card.color == CardColor.GREEN) neoGreen else neoRed
                     ),
-                    border = BorderStroke(1.dp, Color.Black)
+                    shape = RoundedCornerShape(8.dp),
+                    border = BorderStroke(1.dp, Color.Black),
                 ) {
                     Text(text = card.value.toString())
                 }
@@ -152,49 +193,70 @@ fun CardCalculationGameScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         val answer = selectedCards.sum()
+        println("$answer")
         Text(
-            text = "Choose the correct answer:",
-            style = MaterialTheme.typography.bodyLarge
+            text = "Choose the correct answer:", style = MaterialTheme.typography.bodyLarge
         )
+        val optionCards = generateCardsOption(answer)
 
         Row(
             modifier = Modifier.padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(
-                onClick = { checkAnswer(answer, true) },
-                modifier = Modifier.padding(8.dp),
+            optionCards.forEach {
+
+                Button(
+                    onClick = { checkAnswer(answer,  it.value) },
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .width(70.dp)
+                        .height(70.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                    shape = RoundedCornerShape(8.dp),
+                    border = BorderStroke(1.dp, Color.Black)
+                ) {
+                    Text(text = it.value.toString(), color = Color.Gray)
+                }
+            }
+
+            /*Button(
+                onClick = { checkAnswer(answer, answer) },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .width(70.dp)
+                    .height(70.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                shape = RoundedCornerShape(8.dp),
                 border = BorderStroke(1.dp, Color.Black)
             ) {
-                Text(text = (answer + 1).toString())
+//                Text(text = answer.toString())
+                Text(text = (answer).toString(), color = Color.Gray)
             }
 
             Button(
-                onClick = { checkAnswer(answer, false) },
-                modifier = Modifier.padding(8.dp),
+                onClick = { checkAnswer(answer, answer - 1) },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .width(70.dp)
+                    .height(70.dp)
+                    .width(50.dp)
+                    .height(70.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                shape = RoundedCornerShape(8.dp),
                 border = BorderStroke(1.dp, Color.Black)
             ) {
-                Text(text = answer.toString())
-            }
 
-            Button(
-                onClick = { checkAnswer(answer, true) },
-                modifier = Modifier.padding(8.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                border = BorderStroke(1.dp, Color.Black)
-            ) {
-                Text(text = (answer - 1).toString())
-            }
+                Text(text = (answer - 1).toString(), color = Color.Gray)
+            }*/
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { resetGame() },
-            modifier = Modifier.padding(8.dp)
+            onClick = { resetGame() }, modifier = Modifier
+                .padding(8.dp)
+                .height(70.dp)
         ) {
             Text(text = "Reset")
         }
@@ -202,13 +264,15 @@ fun CardCalculationGameScreen() {
 }
 
 data class Card(val value: Int, val color: CardColor)
+data class OptionCards(val value: Int, val rightAnswer: Int)
 
 //@Composable
-fun checkAnswer(actualAnswer: Int, isHigher: Boolean) {
-    val selectedAnswer = if (isHigher) actualAnswer + 1 else actualAnswer - 1
-    val isCorrect = selectedAnswer == actualAnswer
+fun checkAnswer(actualAnswer: Int, comparedAnswer: Int) {
+
+    val isCorrect = comparedAnswer == actualAnswer
     val resultMessage = if (isCorrect) "Correct!" else "Wrong!"
 
+    println(resultMessage)
     // Display the result message or perform other actions based on the answer check
     // For example, you can show a toast message, update the score, or navigate to the next level.
 }
@@ -219,9 +283,9 @@ fun resetGame() {
     // For example, clear the selected cards and generate new cards
 }
 
-@Preview
+ @Preview
 @Composable
 fun PreviewCardCalculationGameScreen() {
-    CardCalculationGameScreen()
+    CardCalculationGameScreen(){}
 }
 //calculations

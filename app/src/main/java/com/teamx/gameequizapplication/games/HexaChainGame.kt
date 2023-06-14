@@ -9,11 +9,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import com.teamx.gameequizapplication.Hexagon
+import kotlin.math.sqrt
 
 class HexaChainGame {
 }
@@ -214,6 +217,7 @@ fun HexaChainGameScreen(content: @Composable () -> Unit) {
         )
 
         HexaChainGrid()
+
     }
 }
 
@@ -244,10 +248,11 @@ fun HexaChainGrid() {
                 for (column in 0 until gridSize) {
                     val color = hexaColors.random()
 
-                    HexaChainCell(
+                    /*HexaChainCell(
                         color = color.color,
                         size = cellSize
-                    )
+                    )*/
+                    HexagonShape(size = cellSize, color = color.color)
                 }
             }
         }
@@ -273,9 +278,37 @@ private fun DrawScope.drawHexagon(hexagon: Hexagon, color: Color) {
     )
 }
 
-/*@Preview
+@Preview
 @Composable
 fun PreviewHexaChainGameScreen() {
-    HexaChainGameScreen()
-}*/
+    HexaChainGameScreen() {}
+}
 //hexa chain
+
+
+@Composable
+fun HexagonShape(
+    size: Dp,
+    color: Color
+) {
+    Box(
+        modifier = Modifier.size(size)
+    ) {
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val path = Path()
+            val radius = size.toPx() / 2
+            val halfRadius = radius / 2
+            val height = (sqrt(3.0) * radius).toFloat()
+
+            path.moveTo(radius, 0f)
+            path.lineTo(radius + halfRadius, height / 2)
+            path.lineTo(radius + halfRadius, height + height / 2)
+            path.lineTo(radius, height * 2)
+            path.lineTo(radius - halfRadius, height + height / 2)
+            path.lineTo(radius - halfRadius, height / 2)
+            path.close()
+
+            drawPath(path, color)
+        }
+    }
+}

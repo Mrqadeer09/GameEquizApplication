@@ -243,6 +243,9 @@ fun Navigation() {
         composable(GamesUID.ConcentrationScreen.name) {
             ConcentrationGame() { ToolbarPreview(navController = navController) }
         }
+        composable(GamesUID.CardCalculationGameScreen.name) {
+            CardCalculationGameScreen() { ToolbarPreview(navController = navController) }
+        }
         composable(GamesUID.FlickScreen.name) {
             SwipeableComponent() { ToolbarPreview(navController = navController) }
         }
@@ -391,6 +394,6 @@ fun GeneralScreen(text: String) {
 
 
 enum class GamesUID {
-    SplashScreen, MainScreen, DashboardScreen, AdditionScreen, BirdWatchingScreen, BreakTheBlockScreen, ColorDeceptionScreen, ColorSwitchScreen, ConcentrationScreen, FlickScreen, FollowTheLeaderScreen, HexaChainScreen, HighLowScreen, LearningThingScreen, MakeTenScreen, MatchingScreen, MissingPieceScreen, OperationsScreen, QuickEyeScreen, RainFallScreen, ResultScreen, ReverseRpsScreen, SimplicityScreen, SpinningBlockScreen, TapTheColorScreen, TenSecondScreen, TouchTheNumScreen, TouchTheNumPlusScreen, UnfollowTheLeaderScreen, WeatherTheLeaderScreen
+       DashboardScreen, AdditionScreen, BirdWatchingScreen, BreakTheBlockScreen, ColorDeceptionScreen, ColorSwitchScreen, ConcentrationScreen,CardCalculationGameScreen, FlickScreen, FollowTheLeaderScreen, HexaChainScreen, HighLowScreen, LearningThingScreen, MakeTenScreen, MatchingScreen, MissingPieceScreen, OperationsScreen, QuickEyeScreen, RainFallScreen, ResultScreen, ReverseRpsScreen, SimplicityScreen, SpinningBlockScreen, TapTheColorScreen, TenSecondScreen, TouchTheNumScreen, TouchTheNumPlusScreen, UnfollowTheLeaderScreen, WeatherTheLeaderScreen
 }
 
