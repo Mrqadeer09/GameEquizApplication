@@ -1,16 +1,22 @@
 package com.teamx.gameequizapplication.games
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -207,7 +213,6 @@ enum class HexaColor(val color: Color) {
 fun HexaChainGameScreen(content: @Composable () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -230,29 +235,36 @@ fun HexaChainGrid() {
         HexaColor.YELLOW
     )
 
-    val gridSize = 4
-    val cellSize = 60.dp
-    val cellSpacing = 8.dp
-    val gridPadding = 16.dp
-
+    val gridSize = 8
+    val cellSize = 50.dp
+    val cellSpacing = 0.dp
+    val gridPadding = 0.dp
     Box(
         modifier = Modifier.padding(gridPadding)
     ) {
         for (row in 0 until gridSize) {
+
+
             Row(
                 modifier = Modifier
-                    .wrapContentWidth()
-                    .align(Alignment.TopStart)
-                    .offset(y = row * (cellSize + cellSpacing) + (row * cellSize / 2))
+//                    .align(Alignment.TopStart)
+
+                    .offset(y = row * (cellSize / 2 + cellSpacing) + (row * cellSize / 2))
             ) {
+
                 for (column in 0 until gridSize) {
+                    val assa = if (column % 2 == 0) {
+                        25.dp
+                    } else {
+                        0.dp
+                    }
                     val color = hexaColors.random()
 
                     /*HexaChainCell(
                         color = color.color,
                         size = cellSize
                     )*/
-                    HexagonShape(size = cellSize, color = color.color)
+                    HexagonShape(assa, size = cellSize, color = color.color)
                 }
             }
         }
@@ -288,17 +300,41 @@ fun PreviewHexaChainGameScreen() {
 
 @Composable
 fun HexagonShape(
+    padding: Dp,
     size: Dp,
     color: Color
 ) {
+    var isPressed by remember { mutableStateOf(false) }
+    var backgroundColor by remember { mutableStateOf(Color.Gray) }
     Box(
-        modifier = Modifier.size(size)
+        modifier = Modifier
+            .padding(top = padding)
+            .size(size)
+            .background(
+//                if (isPressed) Color.LightGray else Color.Gray
+                backgroundColor
+            )
+            .pointerInput(Unit) {
+              /*  detectTapGestures(
+                    onLongPress = {
+                        isPressed = true
+                    },
+                    onPress = {
+                        isPressed = false
+                    }
+                )*/
+                detectDragGestures { change, dragAmount ->
+
+                    val color = if (dragAmount.x >= 0) Color.Green else Color.Gray
+                    backgroundColor = color
+                }
+            }
     ) {
-        Canvas(modifier = Modifier.fillMaxSize()) {
+        Canvas(modifier = Modifier.fillMaxSize().border(1.dp,color=Color.Gray,shape= RectangleShape)) {
             val path = Path()
             val radius = size.toPx() / 2
             val halfRadius = radius / 2
-            val height = (sqrt(3.0) * radius).toFloat()
+            val height = (sqrt(0.39) * radius).toFloat()
 
             path.moveTo(radius, 0f)
             path.lineTo(radius + halfRadius, height / 2)
