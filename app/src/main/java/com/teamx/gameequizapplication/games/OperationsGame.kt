@@ -73,11 +73,10 @@ fun GameScreen(content: @Composable () -> Unit) {
 
 
         operators.shuffled().forEachIndexed { index, operator ->
-            Button(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .offset { IntOffset(offset.value.dp.roundToPx(), 0) }
-                    .size(83.dp),
+            Button(modifier = Modifier
+                .padding(4.dp)
+                .offset { IntOffset(offset.value.dp.roundToPx(), 0) }
+                .size(83.dp),
                 onClick = {
                     selectedButtonIndex = index
                     allCounter++

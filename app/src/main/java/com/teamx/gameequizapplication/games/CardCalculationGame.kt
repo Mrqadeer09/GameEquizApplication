@@ -119,7 +119,7 @@ private fun generateCardsOption(answer: Int): List<OptionCards> {
     val totalOptions = Random.nextInt(2, 4)
     numbers.add(OptionCards(answer, answer))
     val ranNum = (0..99).shuffled().take(totalOptions)
-    for (i in 1..(totalOptions-1)) {
+    for (i in 1..(totalOptions - 1)) {
 //        val ranNum = Random.nextInt(1, 9);
         numbers.add(OptionCards(ranNum[i], answer))
 
@@ -207,7 +207,7 @@ fun CardCalculationGameScreen(content: @Composable () -> Unit) {
             optionCards.forEach {
 
                 Button(
-                    onClick = { checkAnswer(answer,  it.value) },
+                    onClick = { checkAnswer(answer, it.value) },
                     modifier = Modifier
                         .padding(8.dp)
                         .width(70.dp)
@@ -283,9 +283,9 @@ fun resetGame() {
     // For example, clear the selected cards and generate new cards
 }
 
- @Preview
+@Preview
 @Composable
 fun PreviewCardCalculationGameScreen() {
-    CardCalculationGameScreen(){}
+    CardCalculationGameScreen() {}
 }
 //calculations

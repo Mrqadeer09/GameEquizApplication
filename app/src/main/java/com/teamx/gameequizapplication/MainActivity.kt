@@ -54,9 +54,9 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background,
                 ) {
 
-                    HexaChainGameScreen() {}
+//                    HexaChainGameScreen() {}
 //                    Navigation()
-
+                    startUp(Modifier)
 
                 }
             }
@@ -77,8 +77,7 @@ fun startUp(modifier: Modifier) {
         Column(
 
         ) {
-            Navigation()
-            /* Text(text = "Loading...", modifier = Modifier.padding(vertical = 48.dp))
+            Navigation()/* Text(text = "Loading...", modifier = Modifier.padding(vertical = 48.dp))
              LoadingAnimation()
              grids()*/
         }
@@ -209,7 +208,6 @@ fun PreviewLazyGridExample() {
 }*/
 //
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
@@ -396,6 +394,6 @@ fun GeneralScreen(text: String) {
 
 
 enum class GamesUID {
-       DashboardScreen, AdditionScreen, BirdWatchingScreen, BreakTheBlockScreen, ColorDeceptionScreen, ColorSwitchScreen, ConcentrationScreen,CardCalculationGameScreen, FlickScreen, FollowTheLeaderScreen, HexaChainScreen, HighLowScreen, LearningThingScreen, MakeTenScreen, MatchingScreen, MissingPieceScreen, OperationsScreen, QuickEyeScreen, RainFallScreen, ResultScreen, ReverseRpsScreen, SimplicityScreen, SpinningBlockScreen, TapTheColorScreen, TenSecondScreen, TouchTheNumScreen, TouchTheNumPlusScreen, UnfollowTheLeaderScreen, WeatherTheLeaderScreen
+    DashboardScreen, AdditionScreen, BirdWatchingScreen, BreakTheBlockScreen, ColorDeceptionScreen, ColorSwitchScreen, ConcentrationScreen, CardCalculationGameScreen, FlickScreen, FollowTheLeaderScreen, HexaChainScreen, HighLowScreen, LearningThingScreen, MakeTenScreen, MatchingScreen, MissingPieceScreen, OperationsScreen, QuickEyeScreen, RainFallScreen, ResultScreen, ReverseRpsScreen, SimplicityScreen, SpinningBlockScreen, TapTheColorScreen, TenSecondScreen, TouchTheNumScreen, TouchTheNumPlusScreen, UnfollowTheLeaderScreen, WeatherTheLeaderScreen
 }
 

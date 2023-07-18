@@ -1,7 +1,13 @@
 package com.teamx.gameequizapplication.games
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -120,7 +126,7 @@ fun Make10GameScreen(content: @Composable () -> Unit) {
                     ),
                     border = BorderStroke(1.dp, Color.Black)
                 ) {
-                    Text(text = card.toString(),color=Color.Gray)
+                    Text(text = card.toString(), color = Color.Gray)
                 }
             }
         }
@@ -146,6 +152,6 @@ fun Make10GameScreen(content: @Composable () -> Unit) {
 @Preview
 @Composable
 fun PreviewMake10GameScreen() {
-    Make10GameScreen(){}
+    Make10GameScreen() {}
 }
 //make 10
