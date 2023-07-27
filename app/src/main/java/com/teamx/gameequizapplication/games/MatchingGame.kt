@@ -29,8 +29,8 @@ var arr = arrayListOf<MemoryItem>()
 @Composable
 fun MatchingStepGame(modifier: Modifier,content: @Composable () -> Unit) {
     var gameStarted by remember { mutableStateOf(false) }
-    var r by remember { mutableStateOf(0) }
-    var r1 by remember { mutableStateOf(0) }
+    var r by remember { mutableIntStateOf(0) }
+    var r1 by remember { mutableIntStateOf(0) }
     val myRandomValues = mutableListOf(1, 2, 3, 1, 2, 3)
     myRandomValues.shuffle()
     val coroutineScope = rememberCoroutineScope()

@@ -10,7 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -45,7 +45,7 @@ fun Toolbar(
         },
         navigationIcon = {
             IconButton(onClick = onMenuClicked) {
-                Icon(Icons.Filled.ArrowBackIos, contentDescription = "Menu")
+                Icon(Icons.Filled.ArrowBackIosNew, contentDescription = "Menu")
             }
         },
         actions = {
@@ -62,9 +62,9 @@ private fun ProfileButton(onClick: () -> Unit) {
 
 
 @Composable
-fun ToolbarPreview(navController: NavController) {
-    Toolbar(title = "ToolbarName",
-        onMenuClicked = { navController.navigate("MenuScreen") },
+fun ToolbarPreview(navController: NavController, title: String = "ToolbarName") {
+    Toolbar(title = title,
+        onMenuClicked = { navController.navigate("mainScreen") },
         onProfileClicked = { "ProfileScreen" })
 }
 

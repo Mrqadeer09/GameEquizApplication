@@ -43,7 +43,7 @@ import com.teamx.gameequizapplication.utils.grids
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -65,7 +65,6 @@ class MainActivity : ComponentActivity() {
 }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun startUp(modifier: Modifier) {
 
@@ -226,89 +225,200 @@ fun Navigation() {
         }
 
         composable(GamesUID.AdditionScreen.name) {
-            AdditionAddictionGame() { ToolbarPreview(navController = navController) }
+            AdditionAddictionGame() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.AdditionScreen.name
+                )
+            }
         }
         composable(GamesUID.BirdWatchingScreen.name) {
-            BirdWatchingGame() { ToolbarPreview(navController = navController) }
+            BirdWatchingGame() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.BirdWatchingScreen.name
+                )
+            }
         }
         composable(GamesUID.BreakTheBlockScreen.name) {
-            BreakTheBlockGame() { ToolbarPreview(navController = navController) }
+            BreakTheBlockGame() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.BreakTheBlockScreen.name
+                )
+            }
         }
         composable(GamesUID.ColorDeceptionScreen.name) {
-            TouchTheColorsGameScreen() { ToolbarPreview(navController = navController) }
+            TouchTheColorsGameScreen() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.ColorDeceptionScreen.name
+                )
+            }
         }
         composable(GamesUID.ColorSwitchScreen.name) {
-            ColorSwitchGameScreen() { ToolbarPreview(navController = navController) }
+            ColorSwitchGameScreen() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.ColorSwitchScreen.name
+                )
+            }
         }
         composable(GamesUID.ConcentrationScreen.name) {
-            ConcentrationGame() { ToolbarPreview(navController = navController) }
+            ConcentrationGame() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.ConcentrationScreen.name
+                )
+            }
         }
         composable(GamesUID.CardCalculationGameScreen.name) {
-            CardCalculationGameScreen() { ToolbarPreview(navController = navController) }
+            CardCalculationGameScreen() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.CardCalculationGameScreen.name
+                )
+            }
         }
         composable(GamesUID.FlickScreen.name) {
-            SwipeableComponent() { ToolbarPreview(navController = navController) }
+            SwipeableComponent() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.FlickScreen.name
+                )
+            }
         }
         composable(GamesUID.FollowTheLeaderScreen.name) {
-            FollowTheLeaderGame() { ToolbarPreview(navController = navController) }
+            FollowTheLeaderGame() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.FollowTheLeaderScreen.name
+                )
+            }
         }
         composable(GamesUID.HexaChainScreen.name) {
-            HexaChainGameScreen() { ToolbarPreview(navController = navController) }
+            HexaChainGameScreen() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.HexaChainScreen.name
+                )
+            }
         }
         composable(GamesUID.HighLowScreen.name) {
-            HighOrLowGameScreen(content = { ToolbarPreview(navController = navController) }) {}
+            HighOrLowGameScreen(content = {
+                ToolbarPreview(
+                    navController = navController, GamesUID.HighLowScreen.name
+                )
+            }) {}
         }
         composable(GamesUID.LearningThingScreen.name) {
-            Main() { ToolbarPreview(navController = navController) }
+            Main() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.LearningThingScreen.name
+                )
+            }
         }
         composable(GamesUID.MakeTenScreen.name) {
-            Make10GameScreen() { ToolbarPreview(navController = navController) }
+            Make10GameScreen() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.MakeTenScreen.name
+                )
+            }
         }
         composable(GamesUID.MatchingScreen.name) {
-            MatchingStepGame(Modifier.padding(2.dp)) { ToolbarPreview(navController = navController) }
+            MatchingStepGame(Modifier.padding(2.dp)) {
+                ToolbarPreview(
+                    navController = navController, GamesUID.MatchingScreen.name
+                )
+            }
         }
         composable(GamesUID.MissingPieceScreen.name) {
-            MissingPieceGameScreen() { ToolbarPreview(navController = navController) }
+            MissingPieceGameScreen() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.MissingPieceScreen.name
+                )
+            }
         }
         composable(GamesUID.OperationsScreen.name) {
-            GameScreen() { ToolbarPreview(navController = navController) }
+            GameScreen() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.OperationsScreen.name
+                )
+            }
         }
 
         composable(GamesUID.QuickEyeScreen.name) {
-            QuickEyeGame() { ToolbarPreview(navController = navController) }
+            QuickEyeGame() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.QuickEyeScreen.name
+                )
+            }
         }
         composable(GamesUID.RainFallScreen.name) {
-            RainFallGame() { ToolbarPreview(navController = navController) }
+            RainFallGame() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.RainFallScreen.name
+                )
+            }
         }
         composable(GamesUID.ResultScreen.name) {
 //            MainScreen()
         }
         composable(GamesUID.ReverseRpsScreen.name) {
-            ReverseRockPaperScissorsGameScreen() { ToolbarPreview(navController = navController) }
+            ReverseRockPaperScissorsGameScreen() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.ReverseRpsScreen.name
+                )
+            }
+        }
+        composable(GamesUID.RapidSorting.name) {
+            RapidSortingGame() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.RapidSorting.name
+                )
+            }
         }
         composable(GamesUID.SimplicityScreen.name) {
-            ImplicityGameScreen() { ToolbarPreview(navController = navController) }
+            ImplicityGameScreen() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.SimplicityScreen.name
+                )
+            }
         }
         composable(GamesUID.SpinningBlockScreen.name) {
-            SpinningBlockGame() { ToolbarPreview(navController = navController) }
+            SpinningBlockGame() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.SpinningBlockScreen.name
+                )
+            }
         }
         composable(GamesUID.TapTheColorScreen.name) {
-            TapTheColorGame() { ToolbarPreview(navController = navController) }
+            TapTheColorGame() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.TapTheColorScreen.name
+                )
+            }
         }
         composable(GamesUID.TenSecondScreen.name) {
 //            MainScreen()
         }
         composable(GamesUID.TouchTheNumScreen.name) {
-            TouchTheNumbersGameScreen() { ToolbarPreview(navController = navController) }
+            TouchTheNumbersGameScreen() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.TouchTheNumScreen.name
+                )
+            }
         }
         composable(GamesUID.TouchTheNumPlusScreen.name) {
-            TouchTheNumPlusGame() { ToolbarPreview(navController = navController) }
+            TouchTheNumPlusGame() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.TouchTheNumPlusScreen.name
+                )
+            }
         }
         composable(GamesUID.UnfollowTheLeaderScreen.name) {
-            UnfollowTheLeaderGame() { ToolbarPreview(navController = navController) }
+            UnfollowTheLeaderGame() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.UnfollowTheLeaderScreen.name
+                )
+            }
         }
-        composable(GamesUID.WeatherTheLeaderScreen.name) {
-            WeatherCastGame() { ToolbarPreview(navController = navController) }
+        composable(GamesUID.WeatherCast.name) {
+            WeatherCastGame() {
+                ToolbarPreview(
+                    navController = navController, GamesUID.WeatherCast.name
+                )
+            }
         }
 
     }
@@ -394,6 +504,6 @@ fun GeneralScreen(text: String) {
 
 
 enum class GamesUID {
-    DashboardScreen, AdditionScreen, BirdWatchingScreen, BreakTheBlockScreen, ColorDeceptionScreen, ColorSwitchScreen, ConcentrationScreen, CardCalculationGameScreen, FlickScreen, FollowTheLeaderScreen, HexaChainScreen, HighLowScreen, LearningThingScreen, MakeTenScreen, MatchingScreen, MissingPieceScreen, OperationsScreen, QuickEyeScreen, RainFallScreen, ResultScreen, ReverseRpsScreen, SimplicityScreen, SpinningBlockScreen, TapTheColorScreen, TenSecondScreen, TouchTheNumScreen, TouchTheNumPlusScreen, UnfollowTheLeaderScreen, WeatherTheLeaderScreen
+    DashboardScreen, AdditionScreen, BirdWatchingScreen, BreakTheBlockScreen, ColorDeceptionScreen, ColorSwitchScreen, ConcentrationScreen, CardCalculationGameScreen, FlickScreen, FollowTheLeaderScreen, HexaChainScreen, HighLowScreen, LearningThingScreen, MakeTenScreen, MatchingScreen, MissingPieceScreen, OperationsScreen, QuickEyeScreen, RainFallScreen, ResultScreen, RapidSorting, ReverseRpsScreen, SimplicityScreen, SpinningBlockScreen, TapTheColorScreen, TenSecondScreen, TouchTheNumScreen, TouchTheNumPlusScreen, UnfollowTheLeaderScreen, WeatherCast
 }
 

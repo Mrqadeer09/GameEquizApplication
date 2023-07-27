@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.teamx.gameequizapplication.GamesUID
-import kotlin.random.Random
 
 
 data class ListItem(
@@ -30,22 +29,25 @@ data class ListItem(
     val gamesUID: GamesUID,
 )
 
+
+enum class RainGameObject {
+    DROP, BLANK, THUNDER
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun grids(navController: NavController) {
-    val items1 = (0..(GamesUID.values().size - 1)).map {
+    val items1 = (0 until GamesUID.values().size).map {
         ListItem(
-            height = 150/*Random.nextInt(100, 300)*/.dp,
+            height = 110/*Random.nextInt(100, 300)*/.dp,
             name = GamesUID.values()[it].name,
             gamesUID = GamesUID.values()[it],
-            color = Color(
-                Random.nextLong(0xFFFFFFFF)
-            ).copy(alpha = 1f)
+            color = Color(0xFF8BC34A).copy(alpha = 1f)
         )
     }
 
     LazyVerticalStaggeredGrid(
-        columns = StaggeredGridCells.Adaptive(122.dp),
+        columns = StaggeredGridCells.Adaptive(100.dp),
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
