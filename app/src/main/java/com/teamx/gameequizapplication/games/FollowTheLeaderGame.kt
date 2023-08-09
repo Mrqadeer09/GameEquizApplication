@@ -125,7 +125,7 @@ fun AscendingObjects() {
         repeat(180) { count ->
             delay(10L)
 //            colorStateList.add(colorState)
-            rotationState =180f
+            rotationState = 180f
 
         }
     }

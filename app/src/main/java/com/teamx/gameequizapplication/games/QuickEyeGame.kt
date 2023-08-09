@@ -4,4 +4,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun QuickEyeGame(content: @Composable () -> Unit) {
-content()}
+    content()
+}

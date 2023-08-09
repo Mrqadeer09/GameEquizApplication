@@ -4,4 +4,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun TapTheColorGame(content: @Composable () -> Unit) {
-content()}
+    content()
+}

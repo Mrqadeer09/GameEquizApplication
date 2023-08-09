@@ -254,6 +254,7 @@ fun FlippableImage() {
             .graphicsLayer(rotationY = rotationY)
     )
 }
+
 @Composable
 fun RotatableImage(rotationZ: Float) {
     var isFlipped by remember { mutableStateOf(false) }

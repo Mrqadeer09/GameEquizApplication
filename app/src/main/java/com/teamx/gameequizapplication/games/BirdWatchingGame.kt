@@ -4,4 +4,5 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun BirdWatchingGame(content: @Composable () -> Unit) {
-content()}
+    content()
+}

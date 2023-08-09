@@ -27,7 +27,7 @@ var arr = arrayListOf<MemoryItem>()
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MatchingStepGame(modifier: Modifier,content: @Composable () -> Unit) {
+fun MatchingStepGame(modifier: Modifier, content: @Composable () -> Unit) {
     var gameStarted by remember { mutableStateOf(false) }
     var r by remember { mutableIntStateOf(0) }
     var r1 by remember { mutableIntStateOf(0) }
@@ -94,24 +94,24 @@ fun MatchingStepGame(modifier: Modifier,content: @Composable () -> Unit) {
     }
 
 
-/*else {
-        Column(
-            modifier = modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally
-        ) {
+    /*else {
+            Column(
+                modifier = modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally
+            ) {
 
-            Row(modifier = modifier) {
-                CardShape(modifier, "", false)
-                CardShape(modifier, "", false)
-                CardShape(modifier, "", false)
+                Row(modifier = modifier) {
+                    CardShape(modifier, "", false)
+                    CardShape(modifier, "", false)
+                    CardShape(modifier, "", false)
+                }
+                Row(modifier = modifier) {
+                    CardShape(modifier, "", false)
+                    CardShape(modifier, "", false)
+                    CardShape(modifier, "", false)
+                }
             }
-            Row(modifier = modifier) {
-                CardShape(modifier, "", false)
-                CardShape(modifier, "", false)
-                CardShape(modifier, "", false)
-            }
-        }
-//        gameStarted = true
-    }*/
+    //        gameStarted = true
+        }*/
 }
 
 var firstChoice: MemoryItem? = null
@@ -300,31 +300,31 @@ fun ShakingButton() {
         Text(text = "Nodding Button")
     }
 
-/*
-    var shakingOffset by remember { mutableStateOf(0f) }
+    /*
+        var shakingOffset by remember { mutableStateOf(0f) }
 
-    val shakingAnimation = rememberInfiniteTransition()
-    val shakeAnimationSpec = infiniteRepeatable<Float>(
-        animation = tween(100, easing = LinearEasing),
-        repeatMode = RepeatMode.Reverse
-    )
-    val fp = shakingAnimation.animateFloat(
-        initialValue = 0f,
-        targetValue = 10f,
-        animationSpec = shakeAnimationSpec
-    ).value
-    LaunchedEffect(isShaking) {
-        if (isShaking) {
-            shakingOffset = fp
-        } else {
-            shakingOffset = 0f
+        val shakingAnimation = rememberInfiniteTransition()
+        val shakeAnimationSpec = infiniteRepeatable<Float>(
+            animation = tween(100, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+        val fp = shakingAnimation.animateFloat(
+            initialValue = 0f,
+            targetValue = 10f,
+            animationSpec = shakeAnimationSpec
+        ).value
+        LaunchedEffect(isShaking) {
+            if (isShaking) {
+                shakingOffset = fp
+            } else {
+                shakingOffset = 0f
+            }
         }
-    }
 
-    Button(
-        onClick = {
-            isShaking = !isShaking
-            *//* Button click action *//*
+        Button(
+            onClick = {
+                isShaking = !isShaking
+                *//* Button click action *//*
         },
         modifier = Modifier
             .padding(16.dp)

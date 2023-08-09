@@ -1,35 +1,26 @@
 package com.teamx.gameequizapplication.games
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.unit.dp
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.TileMode
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.*
 import kotlinx.coroutines.delay
 
 class TenSecond {
@@ -112,25 +103,25 @@ fun ColorChangeApp() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-          /*  .pointerInput("dragging") {
-                detectDragGestures { change, dragAmount ->
-                    pointerOffset += dragAmount
-                }
-            }
-            .onSizeChanged {
-                pointerOffset = Offset(it.width / 2f, it.height / 2f)
-            }
-            .drawWithContent {
-                drawContent()
-                // draws a fully black area with a small keyhole at pointerOffset that’ll show part of the UI.
-                drawRect(
-                    Brush.radialGradient(
-                        listOf(Color.Transparent, Color.Black),
-                        center = pointerOffset,
-                        radius = 100.dp.toPx(),
-                    )
-                )
-            }*/
+        /*  .pointerInput("dragging") {
+              detectDragGestures { change, dragAmount ->
+                  pointerOffset += dragAmount
+              }
+          }
+          .onSizeChanged {
+              pointerOffset = Offset(it.width / 2f, it.height / 2f)
+          }
+          .drawWithContent {
+              drawContent()
+              // draws a fully black area with a small keyhole at pointerOffset that’ll show part of the UI.
+              drawRect(
+                  Brush.radialGradient(
+                      listOf(Color.Transparent, Color.Black),
+                      center = pointerOffset,
+                      radius = 100.dp.toPx(),
+                  )
+              )
+          }*/
     ) {
         // Your composables here
         var color by remember { mutableStateOf(Color.Red) }

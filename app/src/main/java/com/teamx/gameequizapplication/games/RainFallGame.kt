@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.teamx.gameequizapplication.GamesUID
 import com.teamx.gameequizapplication.utils.RainGameObject
+import kotlinx.coroutines.GlobalScope
 
 fun LazyListState.isScrolledToEnd() =
     layoutInfo.visibleItemsInfo.lastOrNull()?.index == layoutInfo.totalItemsCount - 1
@@ -65,7 +66,8 @@ fun RainFallGame(content: @Composable () -> Unit) {
 
 @Composable
 fun rainFallDrops() {
-
+    val state = rememberLazyListState()
+    state.disableScrolling(GlobalScope)
     var leftItems = (0..(23)).map {
         RainListItem(
             height = 150/*Random.nextInt(100, 300)*/.dp,
@@ -142,8 +144,12 @@ fun rainFallDrops() {
     val endOfListReached by remember {
         derivedStateOf {
             leftScrollState.isScrolledToEnd()
+            leftScrollState.disableScrolling(GlobalScope)
         }
     }
+
+//    leftScrollState.disableScrolling(GlobalScope)
+//    rightScrollState2.disableScrolling(GlobalScope)
     LaunchedEffect(true) {
         rightScrollState2.scrollToItem(rightBoxes.size)
         leftScrollState.scrollToItem(leftBoxes.size)
@@ -317,15 +323,14 @@ fun rainFallDrops() {
 @Composable
 fun drop(item: RainListItem, onClick: () -> Unit) {
     val context = LocalContext.current
-    Box(
-        modifier = Modifier
-            .size(item.height)
-            .padding(vertical = 16.dp)
-            .clip(RoundedCornerShape(95.dp))
-            .background(item.color)
-            .clickable {
+    Box(modifier = Modifier
+        .size(item.height)
+        .padding(vertical = 16.dp)
+        .clip(RoundedCornerShape(95.dp))
+        .background(item.color)
+        .clickable(enabled = false, null) {}/*.clickable {
                 onClick()
-            }, contentAlignment = Alignment.Center
+            }*/, contentAlignment = Alignment.Center
 
 
     ) {
