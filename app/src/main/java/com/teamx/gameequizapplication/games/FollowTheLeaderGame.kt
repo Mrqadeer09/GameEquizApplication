@@ -201,18 +201,27 @@ fun AnimatedObject(number: Int, itemCompared: Int, onClick: (Item: Int) -> Unit)
             .size(85.dp)
             .offset(
                 y = /*(-number * 60).dp*/
+               /* if ((number *//*+ 1*//*) % 3 == 0) {
+                    (number * 90).dp
+                } else {
+                    ((number % 3) * 90).dp
+                }*/
+
                 if (number in 3..5) {
-                    (-(number % 3) * 90).dp
+                    (((number % 3)+2) * 90).dp
                 } else if (number > 5) {
-                    (-(number % 3) * 90).dp
+                    (((number % 3)+2) * 90).dp
                 } else {
-                    (-number * 90).dp
-                }, x = if (number in 3..5) {
-                    (/*-number*/0 * 90).dp
+                    ((number+2) * 90).dp
+                },
+
+                x = if (number in 3..5) {
+                    (/*-number*/2 * 70).dp
                 } else if (number > 5) {
-                    (/*-number*/1 * 90).dp
-                } else {
-                    (/*-number*/-1 * 90).dp
+                    (/*-number*/3 * 80).dp
+                }
+                else {
+                    (/*-number*/1 * 40).dp
                 }/*(-number * 60).dp*/
             )
             .clip(RoundedCornerShape(6.dp))

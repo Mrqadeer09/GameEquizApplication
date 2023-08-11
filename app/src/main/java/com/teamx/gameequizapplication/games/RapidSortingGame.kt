@@ -1,37 +1,32 @@
 package com.teamx.gameequizapplication.games
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -39,19 +34,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.teamx.gameequizapplication.GamesUID
+import com.teamx.gameequizapplication.ui.theme.Purple200
+import com.teamx.gameequizapplication.ui.theme.Purple500
+import com.teamx.gameequizapplication.ui.theme.Teal200
 import com.teamx.gameequizapplication.utils.RainGameObject
-import kotlin.math.absoluteValue
 
 class RapidSortingGame {}
 
@@ -198,122 +191,13 @@ fun rapidSortingGame() {
                         }
                     })
                 }
-
-            }/*   Column(
-                   modifier = Modifier*//*.fillMaxHeight(0.9f)*//*,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom
-            ) {
-//        Row() {
-
-                LazyColumn(
-//            columns = StaggeredGridCells.Adaptive(122.dp),
-                    modifier = Modifier
-                        .width(150.dp)
-                        .heightIn(500.dp, max = 680.dp)
-                        .clickable(enabled = false, null, null, {}),
-                    contentPadding = PaddingValues(16.dp),
-//            horizontalArrangement = Arrangement.spacedBy(86.dp),
-                    state = rightScrollState2
-//        verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    itemsIndexed(items = rightBoxes, itemContent = { _, item ->
-
-                        AnimatedVisibility(
-                            visible = !deletedRightList.contains(item),
-                            enter = expandVertically(),
-                            exit = shrinkVertically(animationSpec = tween(durationMillis = 1000))
-                        ) {
-                            drop(item = item) {}
-                        }
-                    })
-                }
-            }*/
-        }/*Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-
-            Button(
-                modifier = Modifier
-
-                    .height(110.dp),
-                onClick = {
-                    val iu = leftBoxes.lastIndex - leftIndexCounter++
-                    val iu2 = rightBoxes.lastIndex - rightIndexCounter++
-
-                    if (leftBoxes[iu].gameObject == RainGameObject.DROP && (rightBoxes[iu2].gameObject == RainGameObject.THUNDER || rightBoxes[iu2].gameObject == RainGameObject.BLANK)) {
-                        score++
-                        deletedLeftList.add(leftBoxes[iu])
-                        deletedRightList.add(rightBoxes[iu2])
-                    } else if (leftBoxes[iu].gameObject == RainGameObject.BLANK && rightBoxes[iu2].gameObject == RainGameObject.THUNDER) {
-//                        return@Button
-                        deletedLeftList.add(leftBoxes[iu])
-                        deletedRightList.add(rightBoxes[iu2])
-                    } else {
-                        return@Button
-//                    score--
-                    }
-
-                },
-            ) {
-
-                Text(text = "Left")
             }
-
-            Button(modifier = Modifier
-
-                .height(110.dp), onClick = {
-                val iu = leftBoxes.lastIndex - leftIndexCounter++
-                val iu2 = rightBoxes.lastIndex - rightIndexCounter++
-
-                if (rightBoxes[iu2].gameObject == RainGameObject.DROP && leftBoxes[iu].gameObject == RainGameObject.DROP || (rightBoxes[iu2].gameObject == RainGameObject.BLANK && leftBoxes[iu].gameObject == RainGameObject.BLANK)) {
-                    score++
-                    deletedLeftList.add(leftBoxes[iu])
-                    deletedRightList.add(rightBoxes[iu2])
-                } else if (rightBoxes[iu2].gameObject == RainGameObject.BLANK && leftBoxes[iu].gameObject == RainGameObject.THUNDER) {
-//                    return@Button
-                } else {
-                    return@Button
-//                    score--
-                }
-
-
-            }) {
-                Text(text = "Mid")
-            }
-            Button(modifier = Modifier
-
-                .height(100.dp), onClick = {
-                val iu = leftBoxes.lastIndex - leftIndexCounter++
-                val iu2 = rightBoxes.lastIndex - rightIndexCounter++
-
-                if (rightBoxes[iu2].gameObject == RainGameObject.DROP && (leftBoxes[iu].gameObject == RainGameObject.THUNDER || leftBoxes[iu].gameObject == RainGameObject.BLANK)) {
-                    score++
-                    deletedLeftList.add(leftBoxes[iu])
-                    deletedRightList.add(rightBoxes[iu2])
-                } else if (rightBoxes[iu2].gameObject == RainGameObject.BLANK && leftBoxes[iu].gameObject == RainGameObject.THUNDER) {
-//                    return@Button
-                    deletedLeftList.add(leftBoxes[iu])
-                    deletedRightList.add(rightBoxes[iu2])
-                } else {
-                    return@Button
-//                    score--
-                }
-
-            }) {
-                Text(text = "Right")
-            }
-        }*/
+        }
 
         Text(text = "$score")
     }
     LaunchedEffect(endOfListReached) {
-        // do your stuff
+
     }
 
 }
@@ -321,13 +205,19 @@ fun rapidSortingGame() {
 @Composable
 fun dropRapid(item: RapidListItem, onClick: () -> Unit) {
     val context = LocalContext.current
+    var colorState by remember { mutableStateOf(Color(0xFFF44336)) }
+
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .size(item.height)
             .clip(RoundedCornerShape(15.dp))
-            .background(item.color)
+            .background(colorState)
             .clickable {
                 onClick()
+                Toast
+                    .makeText(context, "clicked", Toast.LENGTH_SHORT)
+                    .show()
+                colorState = Color.Transparent
             }, contentAlignment = Alignment.Center
 
 
@@ -356,241 +246,169 @@ data class RapidListItem(
     var gamesUID: GamesUID,
 )
 
-/*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SwipeToRemoveApp() {
-    val items = remember { mutableStateListOf("Item 1", "Item 2", "Item 3", "Item 4") }
-    val itemToRemove = remember { mutableStateOf<String?>(null) }
+    var colorState by remember { mutableStateOf(Color(0xFFF44336)) }
+    val leftItems = (0..(23)).map {
+        RapidListItem(
+            height = 50.dp,
+            name = "$it",
+            gamesUID = GamesUID.values()[it],
+            color = colorState/*.copy(alpha = 0f)*/,
+            gameObject = if (it % 5 == 0) {
+                RainGameObject.THUNDER
+            } else if (it % 2 == 0) {
+                RainGameObject.BLANK
+            } else {
+                RainGameObject.DROP
+            }
+        )
+    }
+    val list by remember { mutableStateOf(leftItems) }
 
-    Scaffold(topBar = { TopAppBar(title = { Text(text = "Swipe To Remove") }) }) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            for (item in items) {
-                if (item == itemToRemove.value) {
-                    // Skip rendering the item that will be removed
-                    continue
-                }
-
-                SwipeToRemoveItem(item = item, onSwiped = { removedItem ->
-                    // Set the item to be removed after the swipe animation
-                    itemToRemove.value = removedItem
-                })
+    Box(modifier = Modifier.fillMaxSize() /*contentAlignment = Alignment.Center*/) {
+        for (i in list) {
+            dropRapid(i) {
+                colorState = Color.Transparent
             }
         }
     }
+}
+
+///new work found removing items
+
+val items = mutableStateListOf<String>(
+    "Item Number 1",
+    "Item Number 2",
+    "Item Number 3",
+    "Item Number 4",
+    "Item Number 5",
+    "Item Number 6",
+    "Item Number 7",
+    "Item Number 8",
+)
+private val DarkColorPalette = darkColorScheme(
+    primary = Purple200,
+    secondary = Teal200
+)
+
+private val LightColorPalette = lightColorScheme(
+    primary = Purple500,
+    secondary = Teal200
+
+    /* Other default colors to override
+    background = Color.White,
+    surface = Color.White,
+    onPrimary = Color.White,
+    onSecondary = Color.Black,
+    onBackground = Color.Black,
+    onSurface = Color.Black,
+    */
+)
+
+/*
+@Composable
+fun SwipeToDeleteTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable() () -> Unit
+) {
+    val colors = if (darkTheme) {
+        DarkColorPalette
+    } else {
+        LightColorPalette
+    }
+
+    MaterialTheme(
+        colorScheme = colors,
+        typography = Typography,
+        shapes = Shapes,
+        content = content
     )
 }
 
-@Composable
-fun SwipeToRemoveItem(item: String, onSwiped: (String) -> Unit) {
-    var offsetX by remember { mutableStateOf(0f) }
-    val screenWidth = LocalDensity.current.run { 720.dp.toPx() }
-
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .padding(vertical = 8.dp)
-        .pointerInput(Unit) {
-            detectHorizontalDragGestures { _, dragAmount ->
-                offsetX += dragAmount
-            }
-        }) {
-        Text(text = item,
-            modifier = Modifier
-                .offset { IntOffset(offsetX.roundToInt(), 0) }
-                .background(
-                    color = if (offsetX > screenWidth) {
-                        onSwiped(item) // The swipe threshold is reached, remove the item
-                        Color.Transparent
-                    } else {
-                        Color.White
-                    }, shape = RoundedCornerShape(4.dp)
-                )
-                .padding(16.dp))
-    }
-}*//*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SwipeToRemoveApp() {
-    val items = remember { mutableStateListOf("Item 1", "Item 2", "Item 3", "Item 4") }
-    val itemToRemove = remember { mutableStateOf<String?>(null) }
+fun theme() {
+    SwipeToDeleteTheme {
+        window.statusBarColor = MaterialTheme.colorScheme.surface.toArgb()
+        Scaffold(topBar = { MainTopBar() }) {
 
-    Scaffold(
-        topBar = { TopAppBar(title = { Text(text = "Swipe To Remove") }) },
-    ) { padding ->
-        LazyColumn(
-            modifier = Modifier.padding(16.dp),
-            content = {
-                items(items.size) { index ->
-                    val item = items[index]
-                    if (item == itemToRemove.value) {
-                        // Skip rendering the item that will be removed
-                        return@items
-                    }
 
-                    SwipeToRemoveItem(
-                        item = item,
-                        onSwiped = { removedItem ->
-                            // Set the item to be removed after the swipe animation
-                            itemToRemove.value = removedItem
+            LazyColumn(
+                Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+            ) {
+
+                itemsIndexed(items = items, key = { index, item ->
+                    item.hashCode()
+                }) { index, item ->
+
+                    val state = rememberDismissState(confirmStateChange = {
+                        if (it == DismissValue.DismissedToStart) {
+                            items.remove(item)
                         }
+                        true
+                    })
+
+
+                    SwipeToDismiss(state = state, background = {
+                        val color = when (state.dismissDirection) {
+                            DismissDirection.StartToEnd -> Color.Transparent
+                            DismissDirection.EndToStart -> Color.Red
+                            null -> Color.Transparent
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(color)
+                                .padding(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = null,
+                                tint = Color.White,
+                                modifier = Modifier.align(Alignment.CenterEnd)
+                            )
+                        }
+
+                    }, dismissContent = {
+                        MyCustomItem(text = item)
+                    }, directions = setOf(DismissDirection.EndToStart)
                     )
+                    Divider()
+
                 }
+
             }
-        )
+
+
+        }
     }
+
 }
 
 @Composable
-fun SwipeToRemoveItem(item: String, onSwiped: (String) -> Unit) {
-    var offsetX by remember { mutableStateOf(0f) }
-    val screenWidth = LocalDensity.current.run { 720.dp.toPx() }
-
-    Box(
+fun MyCustomItem(text: String) {
+    ListItem(
+        text = { Text(text = text) },
+        overlineText = { Text(text = "OverLine") },
+        icon = { Icon(imageVector = Icons.Outlined.Share, contentDescription = null) },
+        trailing = {
+            Icon(
+                imageVector = Icons.Outlined.KeyboardArrowRight, contentDescription = null
+            )
+        },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .pointerInput(Unit) {
-                detectHorizontalDragGestures { _, dragAmount ->
-                    offsetX += dragAmount
-                }
-            }
-    ) {
-        Text(
-            text = item,
-            modifier = Modifier
-                .offset { IntOffset(offsetX.roundToInt(), 0) }
-                .background(
-                    color = if (offsetX > screenWidth) {
-                        onSwiped(item) // The swipe threshold is reached, remove the item
-                        Color.Transparent
-                    } else {
-                        Color.White
-                    },
-                    shape = RoundedCornerShape(4.dp)
-                )
-                .padding(16.dp)
-        )
-    }
-}*//*
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SwipeLikeTinderApp() {
-    val items = remember { mutableStateListOf("Item 1", "Item 2", "Item 3", "Item 4") }
-    var currentItem by remember { mutableStateOf(0) }
-    var offsetX by remember { mutableStateOf(0f) }
-    var scale by remember { mutableStateOf(1f) }
-
-    Scaffold(
-        topBar = { TopAppBar(title = { Text(text = "Swipe Like Tinder") }) },
-    ) { padding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .pointerInput(Unit) {
-                    detectTransformGestures { _, pan, zoom, _ ->
-                        scale = zoom
-                        offsetX += pan.x
-                    }
-                }
-        ) {
-            items.forEachIndexed { index, item ->
-                if (index == currentItem) {
-                    val animatedBackgroundColor by animateColorAsState(
-                        if (offsetX > 0) Color.Green else Color.Red
-                    )
-
-                    val alpha by animateFloatAsState(if (offsetX != 0f) 0.7f else 1f)
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp)
-                            .offset {
-                                val horizontalOffset = offsetX.coerceIn(-180f, 180f)
-                                IntOffset(horizontalOffset.toInt(), 0)
-                            }
-                            .scale(scale)
-                            .background(animatedBackgroundColor, shape = RoundedCornerShape(16.dp))
-                            .alpha(alpha)
-                            .pointerInput(Unit) {
-                                detectTransformGestures { _, pan, _, _ ->
-                                    offsetX += pan.x
-                                }
-                            }
-                    ) {
-                        Text(
-                            text = item,
-                            modifier = Modifier.padding(16.dp)
-                        )
-                    }
-                }
-            }
-        }
-    }
-}*/
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SwipeToRemoveApp() {
-    val items = remember { mutableStateListOf("Item 1", "Item 2", "Item 3", "Item 4") }
-    var currentItem by remember { mutableIntStateOf(0) }
-    var offsetX by remember { mutableFloatStateOf(0f) }
-    var scale by remember { mutableFloatStateOf(1f) }
-    var removeItem by remember { mutableStateOf(false) }
-
-    Scaffold(
-        topBar = { TopAppBar(title = { Text(text = "Swipe To Remove") }) },
-    ) { padding ->
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .pointerInput(Unit) {
-                detectTransformGestures { _, pan, zoom, _ ->
-                    scale = zoom
-                    offsetX += pan.x
-                }
-            }) {
-            items.forEachIndexed { index, item ->
-                if (index == currentItem) {
-                    val animatedBackgroundColor by animateColorAsState(
-                        if (offsetX > 0) Color.Green else Color.Red
-                    )
-
-                    val alpha by animateFloatAsState(if (offsetX != 0f) 0.7f else 1f)
-
-                    Box(modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp)
-                        .offset {
-                            val horizontalOffset = offsetX.coerceIn(-180f, 180f)
-                            IntOffset(horizontalOffset.toInt(), 0)
-                        }
-                        .scale(scale)
-                        .background(animatedBackgroundColor, shape = RoundedCornerShape(16.dp))
-                        .alpha(alpha)
-                        .pointerInput(Unit) {
-                            detectTransformGestures { _, pan, _, _ ->
-                                offsetX += pan.x
-                            }
-
-                            detectTransformGestures { _, pan, _, endPanVelocity ->
-                                if (pan.x.absoluteValue > 200 || endPanVelocity.absoluteValue > 800) {
-                                    removeItem = true
-                                }
-                            }
-                        }) {
-                        Text(
-                            text = item, modifier = Modifier.padding(16.dp)
-                        )
-                    }
-
-                    if (removeItem) {
-                        LaunchedEffect(Unit) {
-                            items.removeAt(currentItem)
-                            removeItem = false
-                        }
-                    }
-                }
-            }
-        }
-    }
+            .background(MaterialTheme.colorScheme.surface)
+    )
 }
+
+
+@Composable
+private fun MainTopBar() {
+    TopAppBar(title = { Text(text = "Swipe To Delete") })
+}*/
