@@ -1,19 +1,31 @@
 package com.teamx.gameequizapplication.games
 
+import android.annotation.SuppressLint
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -23,9 +35,14 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
+import kotlin.math.roundToInt
 import kotlin.random.Random
 
 class FlickGame {
@@ -36,18 +53,16 @@ enum class ArrowDirection { LEFT, RIGHT, TOP, BOTTOM }
 
 @Composable
 fun FlickGameScreen() {
-    var correctAnswers by remember { mutableStateOf(0) }
-    var incorrectAnswers by remember { mutableStateOf(0) }
+    var correctAnswers by remember { mutableIntStateOf(0) }
+    var incorrectAnswers by remember { mutableIntStateOf(0) }
     var arrowDirection by remember { mutableStateOf(ArrowDirection.LEFT) }
     var isShuffle by remember { mutableStateOf(ArrowDirection.TOP) }
 
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
             /*when (isShuffle) {
@@ -292,6 +307,122 @@ fun SwipeableComponent(content: @Composable () -> Unit) {
 }
 
 
+@SuppressLint("UnusedTransitionTargetStateParameter")
+@Composable
+fun MyCard2() {
+    var swipeState by remember { mutableStateOf(false) }
+    var randomInt by remember { mutableStateOf(0) }
+    var previousNumber by remember { mutableIntStateOf(randomInt) }
+    var wapsiState by remember { mutableStateOf(false) }
+
+    val transitionState = remember {
+        MutableTransitionState(swipeState).apply { targetState = !swipeState }
+    }
+    val transition = updateTransition(transitionState, "cardTransition")
+
+    val offsetTransition by transition.animateFloat(
+        label = "cardOffsetTransition",
+        transitionSpec = { tween(durationMillis = 300) },
+        targetValueByState = { if (swipeState) 0f/*1275f*/ else 0f },
+    )
+    if (swipeState) {
+
+        LaunchedEffect(key1 = true) {
+            delay(1000)
+
+            swipeState = false
+            previousNumber = randomInt
+
+            wapsiState = !wapsiState
+            randomInt = Random.nextInt(1, 4)
+        }
+
+    }
+    var i = 0
+
+    wapsiState = previousNumber >= randomInt
 
 
+
+    Card(
+        modifier = Modifier
+            .testTag("DraggableCard")
+            .width(65.dp)
+            .height(65.dp)
+            .padding(horizontal = 4.dp, vertical = 1.dp)
+            .offset {
+                if (wapsiState) {
+
+                    IntOffset(y = offsetTransition.roundToInt(), x = 0)
+                } else {
+                    IntOffset(y = -offsetTransition.roundToInt(), x = 0)
+
+                }/*   if (wapsiState) {
+
+                    IntOffset(x = offsetTransition.roundToInt(), y = 0)
+                } else {
+                    IntOffset(x = -offsetTransition.roundToInt(), y = 0)
+
+                }*/
+
+            }
+            .pointerInput(Unit) {
+                detectVerticalDragGestures { _, dragAmount ->
+                    if (!wapsiState) {
+                        when {
+                            dragAmount >= 6 -> {
+                                swipeState = false
+                            }
+
+                            dragAmount < -6 -> {
+                                swipeState = true
+                            }
+                        }
+                    } else {
+                        when {
+                            dragAmount >= 6 -> {
+                                swipeState = true
+                            }
+
+                            dragAmount < -6 -> {
+                                swipeState = false
+                            }
+                        }
+                    }
+                }
+                detectVerticalDragGestures { _, dragAmount ->
+
+                    when {
+                        dragAmount >= 6 -> {
+                            swipeState = false
+                        }
+
+                        dragAmount < -6 -> {
+                            swipeState = true
+                        }
+                    }
+                }
+            }
+            .background(color = Color.Gray),
+    ) {
+        Text(
+            modifier = Modifier.fillMaxSize(),
+            textAlign = TextAlign.Center,
+            text = "$randomInt"
+        )
+    }
+}
+
+@Preview
+@Composable
+fun checkout2() {
+    MaterialTheme {
+        Box(
+            modifier = Modifier.fillMaxSize(), Alignment.Center
+        ) {
+
+            MyCard2()
+        }
+    }
+}
 

@@ -62,7 +62,7 @@ var arrList = ArrayList<Int>()
 fun LazyListState.disableScrolling(scope: CoroutineScope) {
     scope.launch {
         scroll(scrollPriority = MutatePriority.PreventUserInput) {
-            // Await indefinitely, blocking scrolls
+            // Await indefinitely, blocking scrolls 
             awaitCancellation()
         }
     }

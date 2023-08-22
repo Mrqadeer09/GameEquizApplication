@@ -17,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -37,9 +38,9 @@ enum class Shape {
 
 @Composable
 fun MissingPieceGameScreen(content: @Composable () -> Unit) {
-    var score by remember { mutableStateOf(0) }
+    var score by remember { mutableIntStateOf(0) }
     var currentShapes by remember { mutableStateOf(generateShapes()) }
-    var missingShapeIndex by remember { mutableStateOf(generateMissingShapeIndex()) }
+    var missingShapeIndex by remember { mutableIntStateOf(generateMissingShapeIndex()) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -121,14 +122,5 @@ private fun colorForShape(shape: Shape): Color {
         Shape.CIRCLE -> Color.Green
     }
 }
-
-/*
-@Preview
-@Composable
-fun PreviewMissingPieceGameScreen() {
-    MissingPieceGameScreen()
-}
-*/
-
 
 //Missing Piece

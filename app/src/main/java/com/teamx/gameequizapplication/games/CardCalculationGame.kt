@@ -108,12 +108,12 @@ enum class CardColor {
     GREEN, RED
 }
 
-private fun generateCards(): List<Card> {
-    val numbers = mutableListOf<Card>()
+private fun generateCards(): List<CardModel> {
+    val numbers = mutableListOf<CardModel>()
     for (i in 1..Random.nextInt(2, 4)) {
 
 
-        numbers.add(Card(Random.nextInt(1, 9), CardColor.values()[Random.nextInt(0, 2)]))
+        numbers.add(CardModel(Random.nextInt(1, 9), CardColor.values()[Random.nextInt(0, 2)]))
 
     }
     numbers.shuffle()
@@ -270,7 +270,7 @@ fun CardCalculationGameScreen(content: @Composable () -> Unit) {
     }
 }
 
-data class Card(val value: Int, val color: CardColor)
+data class CardModel(val value: Int, val color: CardColor)
 data class OptionCards(val value: Int, val rightAnswer: Int)
 
 //@Composable

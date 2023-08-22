@@ -3,18 +3,32 @@ package com.teamx.gameequizapplication.games
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.Animatable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import kotlin.random.Random
@@ -25,17 +39,18 @@ class OperationsGame {}
 val operators = listOf("+", "-", "*", "/")
 
 @RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun GameScreen(content: @Composable () -> Unit) {
     var equation by remember { mutableStateOf(generateEquation()) }
     var selectedOperator by remember { mutableStateOf("") }
-    var allCounter by remember { mutableStateOf(0) }
-    var accurateCounter by remember { mutableStateOf(0) }
+    var allCounter by remember { mutableIntStateOf(0) }
+    var accurateCounter by remember { mutableIntStateOf(0) }
 
     var isShaking by remember { mutableStateOf(false) }
     val offset = remember { Animatable(0f) }
 
-    var selectedButtonIndex by remember { mutableStateOf(-1) }
+    var selectedButtonIndex by remember { mutableIntStateOf(-1) }
     val context = LocalContext.current
     val vibrator = context.getSystemService(Vibrator::class.java)
 
@@ -71,35 +86,77 @@ fun GameScreen(content: @Composable () -> Unit) {
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
+        Box(
+            modifier = Modifier.size(240.dp), contentAlignment = Alignment.Center
+        ) {
+            var counter1 = 0
+            var counter2 = 0
+            var indexer = 0
+            operators.shuffled().forEachIndexed { index, operator ->
+                if (indexer >= 4) {
+                    indexer = 0
+                }
+                Button(modifier = Modifier
+                    .padding(2.dp)
 
-        operators.shuffled().forEachIndexed { index, operator ->
-            Button(modifier = Modifier
-                .padding(4.dp)
-                .offset { IntOffset(offset.value.dp.roundToPx(), 0) }
-                .size(83.dp),
-                onClick = {
-                    selectedButtonIndex = index
-                    allCounter++
+                    .offset {
+                        IntOffset(
+//                            offset.value.dp.roundToPx() +
 
-                    selectedOperator = operator
-                    if (selectedOperator == equation.split(" ")[1]) {
+                            if ((indexer) % 2 == 0) {
+                                if (indexer >= 4) {
+                                    indexer = 0
+                                }
+                                indexer++
+                                Log.d("TAG", "GameScreen:$indexer ")
+                                counter1 += 260
+                                counter1 - 390
+                            } else {
+                                if (indexer >= 4) {
+                                    indexer = 0
+                                }
+                                indexer++
+                                Log.d("TAG", "GameScreen:$indexer ")
+                                counter1 - 390
+                            }/*(index % 2) * 260*/, if ((indexer) % 2 != 0) {
+                                counter2 = 0
+                                counter2 += counter2
+                                counter2
+                            } else {
+                                0 + 260
 
-                        equation = generateEquation()
-                        accurateCounter++
-                    } else {
-                        if (index == selectedButtonIndex) {
-                            isShaking = true
-                        }
+                            }/* (index % 2) * 260*/
+                        )
                     }
+                    .size(83.dp),
+                    onClick = {
 
+                        selectedButtonIndex = index
+                        allCounter++
 
-                },
-                shape = RoundedCornerShape(5.dp),
-                elevation = ButtonDefaults.buttonElevation(12.dp)
-            ) {
-                Text(text = operator)
+                        selectedOperator = operator
+                        if (selectedOperator == equation.split(" ")[1]) {
+
+                            equation = generateEquation()
+                            accurateCounter++
+                        } else {
+                            if (index == selectedButtonIndex) {
+                                isShaking = true
+                            }
+                        }
+                        indexer = 0
+
+                    },
+                    shape = RoundedCornerShape(5.dp),
+                    elevation = ButtonDefaults.buttonElevation(12.dp)
+                ) {
+                    Text(text = operator)
+                }
+
             }
         }
+
+
 
 
         Text(
@@ -135,34 +192,63 @@ fun evaluateEquation(equation: String): Int {
 }
 
 
-/*@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
-fun PreviewGameScreen() {
-    GameScreen()
-}*/
+fun ShowBar2() {
+    MaterialTheme {
+        GameScreen {}
+    }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+}
+
+@Preview
 @Composable
-fun VibrateComposable() {
-    val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
-    val vibrator = context.getSystemService(Vibrator::class.java)
-
+fun ShowBar() {
+    var counter = 0
+    var counter2 = 260
+    var indexer = 0
     Box(modifier = Modifier.fillMaxSize()) {
-        // Trigger the vibration effect when the Composable is recomposed
-        LaunchedEffect(true) {
-            vibrator?.let { v ->
-                v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
-                // Delay for the vibration duration
-                kotlinx.coroutines.delay(500)
-                // Stop the vibration
 
-                v.cancel()
+        operators.shuffled().forEachIndexed { index, operator ->
+
+            Button(modifier = Modifier
+                .padding(2.dp)
+
+                .offset {
+                    IntOffset(/*offset.value.dp.roundToPx() +*/
+                        if ((indexer) % 2 == 0) {
+                            indexer++
+                            counter += 260
+                            counter - 100
+                        } else {
+                            indexer++
+                            counter - 100
+                        }, if ((indexer) % 2 != 0) {
+                            counter2 = 0
+                            counter2 += counter2
+                            counter2
+                        } else {
+                            0 + 260
+                        }
+                    )
+                }
+                .size(83.dp),
+                onClick = {
+
+                    allCounter++
+
+
+                },
+                shape = RoundedCornerShape(5.dp),
+                elevation = ButtonDefaults.buttonElevation(12.dp)
+            ) {
+                Text(text = (index).toString())
             }
 
         }
     }
 }
+
 //operations
