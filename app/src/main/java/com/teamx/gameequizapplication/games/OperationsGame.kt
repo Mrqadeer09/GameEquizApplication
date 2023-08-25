@@ -93,9 +93,9 @@ fun GameScreen(content: @Composable () -> Unit) {
             var counter2 = 0
             var indexer = 0
             operators.shuffled().forEachIndexed { index, operator ->
-                if (indexer >= 4) {
+               /* if (indexer >= 4) {
                     indexer = 0
-                }
+                }*/
                 Button(modifier = Modifier
                     .padding(2.dp)
 
