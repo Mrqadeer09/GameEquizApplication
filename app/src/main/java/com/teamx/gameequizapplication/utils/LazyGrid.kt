@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -42,7 +43,7 @@ fun grids(navController: NavController) {
             height = 110/*Random.nextInt(100, 300)*/.dp,
             name = GamesUID.values()[it].name,
             gamesUID = GamesUID.values()[it],
-            color = Color(0xFF8BC34A).copy(alpha = 1f)
+            color = Color(0xFFC6C6C6).copy(alpha = 1f)
         )
     }
 
@@ -67,11 +68,12 @@ fun RandomColorBox(item: ListItem, onClick: (gamesUID: GamesUID) -> Unit) {
     val context = LocalContext.current
     Box(
         modifier = Modifier
-            .padding(12.dp)
+            .padding(6.dp)
             .fillMaxWidth()
-            .height(item.height)
-            .clip(RoundedCornerShape(25.dp))
+            .height(item.height+10.dp)
+            .clip(RoundedCornerShape(8.dp))
             .background(item.color)
+            .padding(12.dp)
             .clickable {
                 onClick(item.gamesUID)
             },
@@ -80,7 +82,10 @@ fun RandomColorBox(item: ListItem, onClick: (gamesUID: GamesUID) -> Unit) {
 
     ) {
         Text(
-            text = item.name, style = MaterialTheme.typography.bodySmall
+            text = item.name, style = MaterialTheme.typography.bodySmall.copy(
+                fontWeight = FontWeight.W300, color = Color.Black
+            )
+
         )
     }
 }

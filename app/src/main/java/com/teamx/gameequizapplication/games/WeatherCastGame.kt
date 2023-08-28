@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -114,10 +115,15 @@ fun weatherCastGamePlot() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Image(
+        /*Image(
             modifier = Modifier.size(10.dp),
-            imageVector = imageRandom!!,
+            painterResource(id = checkStringReturnDrawable(imageCheckObj.name.toString())),
             contentDescription = "image"
+        )*/
+        Image(
+            modifier = Modifier.size(110.dp),
+            painter = painterResource(id = checkStringReturnDrawable(imageCheckObj.name.toString())),
+            contentDescription = ""
         )
         Text(
             modifier = Modifier.size(190.dp),
@@ -164,10 +170,12 @@ fun previewWeatherCastGame() {
 @Composable
 fun weatherDrop(item: WeatherListItem, onClick: () -> Unit) {
     val context = LocalContext.current
+
+
     Box(
         modifier = Modifier
             .padding(10.dp)
-            .width(40.dp)
+            .width(90.dp)
             .height(item.height)
             .clip(RoundedCornerShape(10.dp))
             .background(item.color)
@@ -177,9 +185,65 @@ fun weatherDrop(item: WeatherListItem, onClick: () -> Unit) {
 
 
     ) {
-        Text(
-            text = item.gameObject.name.toString(), style = MaterialTheme.typography.bodySmall
-        )
+        Column() {
+            Image(
+                painter = painterResource(id = checkStringReturnDrawable(item.gameObject.name.toString())),
+                contentDescription = ""
+            )
+            Text(
+                text = item.gameObject.name.toString(), style = MaterialTheme.typography.bodySmall
+            )
+        }
+    }
+}
+
+fun checkStringReturnDrawable(str: String): Int {
+    return when (str) {
+        "SUN" -> {
+
+            R.drawable.sun_red
+        }
+
+        "SUN_CLOUD" -> {
+
+            R.drawable.sun_bule
+        }
+
+        "SUN_DROP" -> {
+
+            R.drawable.sun_gray
+        }
+
+        "CLOUD" -> {
+
+            R.drawable.cloud_blue
+        }
+
+        "CLOUD_SUN" -> {
+
+            R.drawable.cloud_red
+        }
+
+        "CLOUD_DROP" -> {
+
+            R.drawable.cloud_gray
+        }
+
+        "DROP" -> {
+            R.drawable.drop_gray
+        }
+
+        "DROP_CLOUD" -> {
+            R.drawable.drop_blue
+        }
+
+        "DROP_SUN" -> {
+            R.drawable.drop_red
+        }
+
+        else -> {
+            R.drawable.drop_red
+        }
     }
 }
 

@@ -220,9 +220,9 @@ fun Navigation() {
         composable("mainScreen") {
             MainScreen(navController = navController)
         }
-        composable(GamesUID.DashboardScreen.name) {
+      /*  composable(GamesUID.DashboardScreen.name) {
 //            MainScreen()
-        }
+        }*/
 
         composable(GamesUID.AdditionScreen.name) {
             AdditionAddictionGame() {
@@ -274,7 +274,7 @@ fun Navigation() {
             }
         }
         composable(GamesUID.FlickScreen.name) {
-            SwipeableComponent() {
+            FlickGameScreen() {
                 ToolbarPreview(
                     navController = navController, GamesUID.FlickScreen.name
                 )
@@ -476,7 +476,7 @@ fun MainScreen(navController: NavController) {
         ) {
 
         Text(
-            style = MaterialTheme.typography.bodySmall, text = "MainScreen"
+            style = MaterialTheme.typography.bodySmall, text = ""
         )
         grids(navController)
     }
@@ -504,6 +504,6 @@ fun GeneralScreen(text: String) {
 
 
 enum class GamesUID {
-    DashboardScreen, AdditionScreen, BirdWatchingScreen, BreakTheBlockScreen, ColorDeceptionScreen, ColorSwitchScreen, ConcentrationScreen, CardCalculationGameScreen, FlickScreen, FollowTheLeaderScreen, HexaChainScreen, HighLowScreen, LearningThingScreen, MakeTenScreen, MatchingScreen, MissingPieceScreen, OperationsScreen, QuickEyeScreen, RainFallScreen, ResultScreen, RapidSorting, ReverseRpsScreen, SimplicityScreen, SpinningBlockScreen, TapTheColorScreen, TenSecondScreen, TouchTheNumScreen, TouchTheNumPlusScreen, UnfollowTheLeaderScreen, WeatherCast
+    /*DashboardScreen,*/ AdditionScreen, BirdWatchingScreen, BreakTheBlockScreen, ColorDeceptionScreen, ColorSwitchScreen, ConcentrationScreen, CardCalculationGameScreen, FlickScreen, FollowTheLeaderScreen, HexaChainScreen, HighLowScreen, LearningThingScreen, MakeTenScreen, MatchingScreen, MissingPieceScreen, OperationsScreen, QuickEyeScreen, RainFallScreen, ResultScreen, RapidSorting, ReverseRpsScreen, SimplicityScreen, SpinningBlockScreen, TapTheColorScreen, TenSecondScreen, TouchTheNumScreen, TouchTheNumPlusScreen, UnfollowTheLeaderScreen, WeatherCast
 }
 

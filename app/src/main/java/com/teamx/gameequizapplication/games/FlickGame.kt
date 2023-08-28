@@ -54,8 +54,8 @@ class FlickGame {
 enum class ArrowDirection { LEFT, RIGHT, TOP, BOTTOM }
 
 @Composable
-fun FlickGameScreen() {
-    var correctAnswers by remember { mutableIntStateOf(0) }
+fun FlickGameScreen(content: @Composable () -> Unit) {
+    /*var correctAnswers by remember { mutableIntStateOf(0) }
     var incorrectAnswers by remember { mutableIntStateOf(0) }
     val arrowDirection by remember { mutableStateOf(ArrowDirection.LEFT) }
     var isShuffle by remember { mutableStateOf(ArrowDirection.TOP) }
@@ -67,7 +67,7 @@ fun FlickGameScreen() {
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            /*when (isShuffle) {
+            *//*when (isShuffle) {
                 ArrowDirection.LEFT -> {
 
                 }
@@ -84,13 +84,13 @@ fun FlickGameScreen() {
 
                     Log.d("TAG", "FlickGameScreen: ")
                 }
-            }*/
+            }*//*
 
             ArrowIndicator(
-                direction = isShuffle/*ArrowDirection.LEFT*/,
+                direction = isShuffle*//*ArrowDirection.LEFT*//*,
                 selectedDirection = arrowDirection,
                 onClick = {
-                    if (arrowDirection == isShuffle /*ArrowDirection.LEFT*/) {
+                    if (arrowDirection == isShuffle *//*ArrowDirection.LEFT*//*) {
                         correctAnswers++
 
                         isShuffle = updateArrowDirection()
@@ -124,7 +124,9 @@ fun FlickGameScreen() {
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 16.dp)
         )
-    }
+    }*/
+
+    MyCard2()
 }
 
 @Composable
