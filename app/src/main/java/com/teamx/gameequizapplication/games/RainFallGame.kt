@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,13 +24,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -38,13 +36,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.teamx.gameequizapplication.GamesUID
+import com.teamx.gameequizapplication.R
 import com.teamx.gameequizapplication.utils.RainGameObject
 import kotlinx.coroutines.GlobalScope
 
@@ -68,11 +66,11 @@ fun RainFallGame(content: @Composable () -> Unit) {
 fun rainFallDrops() {
     val state = rememberLazyListState()
     state.disableScrolling(GlobalScope)
-    var leftItems = (0..(23)).map {
+    var leftItems = (0..(43)).map {
         RainListItem(
-            height = 150/*Random.nextInt(100, 300)*/.dp,
+            height = 110/*Random.nextInt(100, 300)*/.dp,
             name = "$it",
-            gamesUID = GamesUID.values()[it],
+
             color = if (it % 5 == 0) {
                 Color(0xFFF44336).copy(alpha = 1f)
             } else if (it % 2 == 0) {
@@ -89,11 +87,11 @@ fun rainFallDrops() {
             }
         )
     }
-    var rightItems = (0..(23)).map {
+    var rightItems = (0..(43)).map {
         RainListItem(
-            height = 150/*Random.nextInt(100, 300)*/.dp,
+            height = 110/*Random.nextInt(100, 300)*/.dp,
             name = "$it",
-            gamesUID = GamesUID.values()[it],
+
             color = if (it % 5 == 0) {
                 Color(0xFFF44336).copy(alpha = 1f)
             } else if (it % 2 == 0) {
@@ -133,6 +131,7 @@ fun rainFallDrops() {
         }
     }
     var score by remember { mutableIntStateOf(0) }
+    var boolOption by remember { mutableStateOf(false) }
     val leftBoxes by remember { mutableStateOf(leftItems) }
     val rightBoxes by remember { mutableStateOf(rightItems) }
     var leftIndexCounter by remember { mutableIntStateOf(0) }
@@ -140,13 +139,12 @@ fun rainFallDrops() {
     val deletedLeftList = remember { mutableStateListOf<RainListItem>() }
     val deletedRightList = remember { mutableStateListOf<RainListItem>() }
     val leftScrollState = rememberLazyListState()
-    val rightScrollState2 = rememberLazyListState()
-    val endOfListReached by remember {
-        derivedStateOf {
-            leftScrollState.isScrolledToEnd()
-            leftScrollState.disableScrolling(GlobalScope)
-        }
-    }
+    val rightScrollState2 = rememberLazyListState()/* val endOfListReached by remember {
+         derivedStateOf {
+             leftScrollState.isScrolledToEnd()
+             leftScrollState.disableScrolling(GlobalScope)
+         }
+     }*/
 
 //    leftScrollState.disableScrolling(GlobalScope)
 //    rightScrollState2.disableScrolling(GlobalScope)
@@ -157,7 +155,9 @@ fun rainFallDrops() {
         rightScrollState2.scroll(MutatePriority.PreventUserInput, {})
     }
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Gray),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom
 
@@ -239,83 +239,110 @@ fun rainFallDrops() {
         ) {
 
 
-            Button(
+            Box(
                 modifier = Modifier
+                    .background(Color.Transparent)
+                    .height(110.dp)
+                    .clickable {
+                        boolOption = true
+                        val iu = leftBoxes.lastIndex - leftIndexCounter++
+                        val iu2 = rightBoxes.lastIndex - rightIndexCounter++
 
-                    .height(110.dp),
-                onClick = {
-                    val iu = leftBoxes.lastIndex - leftIndexCounter++
-                    val iu2 = rightBoxes.lastIndex - rightIndexCounter++
-
-                    if (leftBoxes[iu].gameObject == RainGameObject.DROP && (rightBoxes[iu2].gameObject == RainGameObject.THUNDER || rightBoxes[iu2].gameObject == RainGameObject.BLANK)) {
-                        score++
-                        deletedLeftList.add(leftBoxes[iu])
-                        deletedRightList.add(rightBoxes[iu2])
-                    } else if (leftBoxes[iu].gameObject == RainGameObject.BLANK && rightBoxes[iu2].gameObject == RainGameObject.THUNDER) {
+                        if (leftBoxes[iu].gameObject == RainGameObject.DROP && (rightBoxes[iu2].gameObject == RainGameObject.THUNDER || rightBoxes[iu2].gameObject == RainGameObject.BLANK)) {
+                            score++
+                            deletedLeftList.add(leftBoxes[iu])
+                            deletedRightList.add(rightBoxes[iu2])
+                        } else if (leftBoxes[iu].gameObject == RainGameObject.BLANK && rightBoxes[iu2].gameObject == RainGameObject.THUNDER) {
 //                        return@Button
-                        deletedLeftList.add(leftBoxes[iu])
-                        deletedRightList.add(rightBoxes[iu2])
-                    } else {
-                        return@Button
+                            deletedLeftList.add(leftBoxes[iu])
+                            deletedRightList.add(rightBoxes[iu2])
+                        } else {
+                            leftIndexCounter--
+                            rightIndexCounter--
+//                        return@Button
 //                    score--
-                    }
+                        }
 
-                },
+                    }, contentAlignment = Alignment.Center
             ) {
 
-                Text(text = "Left")
+
+                Image(
+                    painter = painterResource(id = checkDrawableRain(boolOption)),
+                    contentDescription = null,
+                    modifier = Modifier.size(110.dp)
+
+                )
             }
 
-            Button(modifier = Modifier
+            /*       Box(
+                       modifier = Modifier
+                           .background(Color.Transparent)
+                           .height(110.dp)
+                           .clickable {
+                               val iu = leftBoxes.lastIndex - leftIndexCounter++
+                               val iu2 = rightBoxes.lastIndex - rightIndexCounter++
 
-                .height(110.dp), onClick = {
-                val iu = leftBoxes.lastIndex - leftIndexCounter++
-                val iu2 = rightBoxes.lastIndex - rightIndexCounter++
+                               if (rightBoxes[iu2].gameObject == RainGameObject.DROP && leftBoxes[iu].gameObject == RainGameObject.DROP || (rightBoxes[iu2].gameObject == RainGameObject.BLANK && leftBoxes[iu].gameObject == RainGameObject.BLANK)) {
+                                   score++
+                                   deletedLeftList.add(leftBoxes[iu])
+                                   deletedRightList.add(rightBoxes[iu2])
+                               } else if (rightBoxes[iu2].gameObject == RainGameObject.BLANK && leftBoxes[iu].gameObject == RainGameObject.THUNDER) {
+       //                    return@Button
+                               } else {
+       //                    score--
+                               }
 
-                if (rightBoxes[iu2].gameObject == RainGameObject.DROP && leftBoxes[iu].gameObject == RainGameObject.DROP || (rightBoxes[iu2].gameObject == RainGameObject.BLANK && leftBoxes[iu].gameObject == RainGameObject.BLANK)) {
-                    score++
-                    deletedLeftList.add(leftBoxes[iu])
-                    deletedRightList.add(rightBoxes[iu2])
-                } else if (rightBoxes[iu2].gameObject == RainGameObject.BLANK && leftBoxes[iu].gameObject == RainGameObject.THUNDER) {
+
+                           }, contentAlignment = Alignment.Center
+                   ) {
+
+                       Image(
+                           painter = painterResource(id = R.drawable.umbrella_yellowrain),
+                           contentDescription = null,
+                           modifier = Modifier.size(110.dp)
+
+                       )
+                   }*/
+            Box(
+                modifier = Modifier
+                    .background(Color.Transparent)
+
+                    .height(100.dp)
+                    .clickable {
+                        boolOption = false
+                        val iu = leftBoxes.lastIndex - leftIndexCounter++
+                        val iu2 = rightBoxes.lastIndex - rightIndexCounter++
+
+                        if (rightBoxes[iu2].gameObject == RainGameObject.DROP && (leftBoxes[iu].gameObject == RainGameObject.THUNDER || leftBoxes[iu].gameObject == RainGameObject.BLANK)) {
+                            score++
+                            deletedLeftList.add(leftBoxes[iu])
+                            deletedRightList.add(rightBoxes[iu2])
+                        } else if (rightBoxes[iu2].gameObject == RainGameObject.BLANK && leftBoxes[iu].gameObject == RainGameObject.THUNDER) {
 //                    return@Button
-                } else {
-                    return@Button
+                            deletedLeftList.add(leftBoxes[iu])
+                            deletedRightList.add(rightBoxes[iu2])
+                        } else {
 //                    score--
-                }
+                            leftIndexCounter--
+                            rightIndexCounter--
+                        }
 
+                    }, contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = checkDrawableRain(!boolOption)),
+                    contentDescription = null,
+                    modifier = Modifier.size(110.dp)
 
-            }) {
-                Text(text = "Mid")
-            }
-            Button(modifier = Modifier
-
-                .height(100.dp), onClick = {
-                val iu = leftBoxes.lastIndex - leftIndexCounter++
-                val iu2 = rightBoxes.lastIndex - rightIndexCounter++
-
-                if (rightBoxes[iu2].gameObject == RainGameObject.DROP && (leftBoxes[iu].gameObject == RainGameObject.THUNDER || leftBoxes[iu].gameObject == RainGameObject.BLANK)) {
-                    score++
-                    deletedLeftList.add(leftBoxes[iu])
-                    deletedRightList.add(rightBoxes[iu2])
-                } else if (rightBoxes[iu2].gameObject == RainGameObject.BLANK && leftBoxes[iu].gameObject == RainGameObject.THUNDER) {
-//                    return@Button
-                    deletedLeftList.add(leftBoxes[iu])
-                    deletedRightList.add(rightBoxes[iu2])
-                } else {
-                    return@Button
-//                    score--
-                }
-
-            }) {
-                Text(text = "Right")
+                )
             }
         }
 
         Text(text = "$score")
-    }
-    LaunchedEffect(endOfListReached) {
-        // do your stuff
-    }
+    }/* LaunchedEffect(endOfListReached) {
+         // do your stuff
+     }*/
 
 }
 
@@ -323,12 +350,13 @@ fun rainFallDrops() {
 @Composable
 fun drop(item: RainListItem, onClick: () -> Unit) {
     val context = LocalContext.current
-    Box(modifier = Modifier
-        .size(item.height)
-        .padding(vertical = 16.dp)
-        .clip(RoundedCornerShape(95.dp))
-        .background(item.color)
-        .clickable(enabled = false, null) {}/*.clickable {
+    Box(
+        modifier = Modifier
+            .size(item.height)
+            .padding(vertical = 16.dp)
+//            .clip(RoundedCornerShape(95.dp))
+//            .background(item.color)
+            .clickable(enabled = false, null) {}/*.clickable {
                 onClick()
             }*/, contentAlignment = Alignment.Center
 
@@ -337,6 +365,45 @@ fun drop(item: RainListItem, onClick: () -> Unit) {
         Text(
             text = item.name, style = MaterialTheme.typography.bodySmall
         )
+        Image(
+            painter = painterResource(id = checkStringReturnDrawable(item.gameObject)),
+            contentDescription = null,
+            modifier = Modifier.size(150.dp)
+        )
+    }
+}
+
+
+fun checkStringReturnDrawable(str: RainGameObject): Int {
+    return when (str) {
+        RainGameObject.DROP -> {
+
+            R.drawable.droprain
+        }
+
+        RainGameObject.THUNDER -> {
+
+            R.drawable.stromrain
+        }
+
+        RainGameObject.BLANK -> {
+
+            R.drawable.padlock_2rain
+        }
+
+
+        else -> {
+            R.drawable.ic_launcher_background
+        }
+    }
+}
+
+fun checkDrawableRain(bool: Boolean): Int {
+
+    return if (bool) {
+        R.drawable.umbrella_yellowrain
+    } else {
+        R.drawable.umbrella_whiterain
     }
 }
 
@@ -353,5 +420,4 @@ data class RainListItem(
     var height: Dp,
     var gameObject: RainGameObject,
     var color: Color,
-    var gamesUID: GamesUID,
 )

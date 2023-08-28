@@ -445,7 +445,7 @@ fun SplashScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Red)
+            .background(Color.LightGray)
             .clip(RoundedCornerShape(13.dp)),
         contentAlignment = Alignment.Center
     ) {
@@ -456,6 +456,7 @@ fun SplashScreen(navController: NavController) {
                 .size(145.dp)
                 .scale(scale.value),
             imageVector = Icons.Default.Spa,
+            tint = Color.White,
             contentDescription = "SplashScreen"
         )
 

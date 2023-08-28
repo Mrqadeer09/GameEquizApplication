@@ -1,7 +1,6 @@
 package com.teamx.gameequizapplication.games
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -121,7 +120,7 @@ fun weatherCastGamePlot() {
             contentDescription = "image"
         )*/
         Image(
-            modifier = Modifier.size(110.dp),
+            modifier = Modifier.size(130.dp),
             painter = painterResource(id = checkStringReturnDrawable(imageCheckObj.name.toString())),
             contentDescription = ""
         )
@@ -174,7 +173,7 @@ fun weatherDrop(item: WeatherListItem, onClick: () -> Unit) {
 
     Box(
         modifier = Modifier
-            .padding(10.dp)
+            .padding(vertical = 120.dp, horizontal = 9.dp)
             .width(90.dp)
             .height(item.height)
             .clip(RoundedCornerShape(10.dp))
@@ -185,7 +184,9 @@ fun weatherDrop(item: WeatherListItem, onClick: () -> Unit) {
 
 
     ) {
-        Column() {
+        Column(
+
+        ) {
             Image(
                 painter = painterResource(id = checkStringReturnDrawable(item.gameObject.name.toString())),
                 contentDescription = ""

@@ -1,13 +1,17 @@
 package com.teamx.gameequizapplication.games
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,8 +21,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.teamx.gameequizapplication.GamesUID
+import com.teamx.gameequizapplication.R
+import kotlin.random.Random
 
 class ReverseRPS {
 }
@@ -91,7 +105,7 @@ private fun generateSymbol(): Symbol {
 @Composable
 fun PreviewReverseRockPaperScissorsGameScreen() {
     ReverseRockPaperScissorsGameScreen()
-}*/
+}*//*
 enum class Symbols {
 
 
@@ -116,7 +130,7 @@ enum class Symbol(
 
 @Composable
 fun ReverseRockPaperScissorsGameScreen(content: @Composable () -> Unit) {
-    var score2 by remember { mutableStateOf(0) }
+    var score2 by remember { mutableIntStateOf(0) }
     var currentSymbol by remember { mutableStateOf(generateSymbol()) }
 
     Column(
@@ -248,6 +262,7 @@ private fun checkAnswer(
 //    currentSymbol = nextSymbol
 
 }
+*/
 
 var currentSymbol: Any? = null
 
@@ -258,5 +273,200 @@ fun PreviewReverseRockPaperScissorsGameScreen() {
     ReverseRockPaperScissorsGameScreen()
 }
 */
+
+
+@Composable
+fun rpsCastGamePlot() {
+    val leftItems = (0..(2)).map {
+        rpsListItem(
+            height = 70.dp, id = it, gamesUID = GamesUID.values()[it], color = if (it % 5 == 0) {
+                Color(0xFFF44336).copy(alpha = 1f)
+            } else if (it % 2 == 0) {
+                Color(0xFF4CAF50).copy(alpha = 1f)
+            } else {
+                Color(0xFF00BCD4).copy(alpha = 1f)
+            }, gameObject = EnumRPS.values().get(it)
+        )
+    }
+    val leftBoxes by remember { mutableStateOf(leftItems) }
+    var imageCheckObj by remember { mutableStateOf<EnumRPS>(EnumRPS.PAPER) }
+    var imageRandom by remember { mutableStateOf<ImageVector?>(null) }
+    var gameRand by remember { mutableStateOf<Int>(0) }
+    var counter by remember { mutableStateOf<Int>(0) }
+
+
+    Column(
+        Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+
+        Image(
+            modifier = Modifier.size(130.dp),
+            painter = painterResource(id = rpsCheckStringReturnDrawable(imageCheckObj)),
+            contentDescription = ""
+        )
+        Text(
+            modifier = Modifier.size(1.dp), text = imageCheckObj.name, textAlign = TextAlign.Center
+        )
+        Row() {
+            leftBoxes.forEach {
+                rpsDrop(item = it) {
+                    if (imageCheckObj.name.toString().contains("INV")) {
+                        if (imageCheckObj == EnumRPS.INVPAPER && it.gameObject == EnumRPS.ROCK) {
+                            gameRand = Random.nextInt(0, 6)
+                            imageCheckObj = EnumRPS.values()[gameRand]
+                            counter++
+                        } else if (imageCheckObj == EnumRPS.INVSCISSOR && it.gameObject == EnumRPS.PAPER) {
+                            gameRand = Random.nextInt(0, 6)
+                            imageCheckObj = EnumRPS.values()[gameRand]
+                            counter++
+                        } else if (imageCheckObj == EnumRPS.INVROCK && it.gameObject == EnumRPS.SCISSOR) {
+
+                            gameRand = Random.nextInt(0, 6)
+                            imageCheckObj = EnumRPS.values()[gameRand]
+                            counter++
+                        }
+                    } else {
+                        if (imageCheckObj.equals(it.gameObject)) {
+
+                        } else if (imageCheckObj == EnumRPS.PAPER && it.gameObject == EnumRPS.SCISSOR) {
+                            gameRand = Random.nextInt(0, 6)
+                            imageCheckObj = EnumRPS.values()[gameRand]
+                            counter++
+                        } else if (imageCheckObj == EnumRPS.SCISSOR && it.gameObject == EnumRPS.ROCK) {
+                            gameRand = Random.nextInt(0, 6)
+                            imageCheckObj = EnumRPS.values()[gameRand]
+                            counter++
+                        } else if (imageCheckObj == EnumRPS.ROCK && it.gameObject == EnumRPS.PAPER) {
+
+                            gameRand = Random.nextInt(0, 6)
+                            imageCheckObj = EnumRPS.values()[gameRand]
+                            counter++
+                        }
+                    }
+
+
+                    /*  if (imageCheckObj.name == it.gameObject.name) {
+                          gameRand = Random.nextInt(0, 6)
+                          imageCheckObj = EnumRPS.values()[gameRand]
+                          counter++
+                      } else if (!imageCheckObj.name.contains(it.gameObject.name) && imageCheckObj.name.contains(
+                              "INV"
+                          )
+                      ) {
+                          gameRand = Random.nextInt(0, 6)
+                          imageCheckObj = EnumRPS.values()[gameRand]
+                          counter++
+                      } else if (imageCheckObj.name == it.gameObject.name) {
+  //
+                          gameRand = Random.nextInt(0, 6)
+                          imageCheckObj = EnumRPS.values()[gameRand]
+                          counter++
+                      }*/
+                }
+
+            }
+        }
+
+    }
+}
+
+
+@Composable
+fun rpsDrop(item: rpsListItem, onClick: () -> Unit) {
+    val context = LocalContext.current
+
+
+    Box(
+        modifier = Modifier
+            .padding(vertical = 120.dp, horizontal = 9.dp)
+            .width(90.dp)
+            .height(item.height)
+            .clip(RoundedCornerShape(10.dp))
+//            .background(item.color)
+            .clickable {
+                onClick()
+            }, contentAlignment = Alignment.Center
+
+
+    ) {
+        Column(
+
+        ) {
+            Image(
+                painter = painterResource(id = rpsCheckStringReturnDrawable(item.gameObject)),
+                contentDescription = ""
+            )
+            Text(
+                text = item.gameObject.name.toString(), style = MaterialTheme.typography.bodySmall
+            )
+        }
+    }
+}
+
+fun rpsCheckStringReturnDrawable(str: EnumRPS): Int {
+    return when (str) {
+        EnumRPS.SCISSOR -> {
+
+            R.drawable.scissorsbluerps
+        }
+
+        EnumRPS.PAPER -> {
+
+            R.drawable.paperbluerps
+        }
+
+        EnumRPS.ROCK -> {
+
+            R.drawable.rockbluerps
+        }
+
+        EnumRPS.INVSCISSOR -> {
+
+            R.drawable.scissorsredrps
+        }
+
+        EnumRPS.INVROCK -> {
+
+            R.drawable.rockredrps
+        }
+
+        EnumRPS.INVPAPER -> {
+
+            R.drawable.paperredrps
+        }
+
+
+        else -> {
+            R.drawable.paperredrps
+        }
+    }
+}
+
+data class rpsListItem(
+    var id: Int,
+    var height: Dp,
+    var gameObject: EnumRPS,
+    var color: Color,
+    var gamesUID: GamesUID,
+)
+
+enum class EnumRPS {
+    SCISSOR, PAPER, ROCK, INVSCISSOR, INVROCK, INVPAPER
+}
+
+@Preview
+@Composable
+fun previewRPSCastGame() {
+    MaterialTheme {
+        rpsCastGamePlot()
+    }
+}
+
+@Composable
+fun ReverseRockPaperScissorsGameScreen(content: @Composable () -> Unit) {
+    rpsCastGamePlot()
+}
 
 //Rock paper scissor

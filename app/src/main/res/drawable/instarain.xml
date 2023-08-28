@@ -11,7 +11,7 @@
           android:pathData="M75.595,2.408H0.409V77.593H75.595V2.408Z"/>
       <path
           android:pathData="M0.17,2.205h75.662v75.413h-75.662z"
-          android:fillColor="url(#pattern0)"/>
+          android:fillColor="#FFFFFF"/>
     </group>
   </group>
   <path

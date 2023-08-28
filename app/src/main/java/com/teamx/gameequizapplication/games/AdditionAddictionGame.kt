@@ -43,7 +43,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.teamx.gameequizapplication.GamesUID
 import com.teamx.gameequizapplication.utils.RainGameObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
@@ -77,7 +76,6 @@ fun AddingObjects() {
         RainListItem(
             height = 50.dp,
             name = "$it",
-            gamesUID = GamesUID.values()[it],
             color = Color(0xFFF44336)/*.copy(alpha = 0f)*/,
             gameObject = if (it % 5 == 0) {
                 RainGameObject.THUNDER
