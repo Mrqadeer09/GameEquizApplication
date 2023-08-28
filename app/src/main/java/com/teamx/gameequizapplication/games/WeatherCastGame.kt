@@ -126,7 +126,7 @@ fun weatherCastGamePlot() {
             contentDescription = ""
         )
         Text(
-            modifier = Modifier.size(190.dp),
+            modifier = Modifier.size(1.dp),
             text = imageCheckObj.name,
             textAlign = TextAlign.Center
         )
@@ -178,7 +178,7 @@ fun weatherDrop(item: WeatherListItem, onClick: () -> Unit) {
             .width(90.dp)
             .height(item.height)
             .clip(RoundedCornerShape(10.dp))
-            .background(item.color)
+//            .background(item.color)
             .clickable {
                 onClick()
             }, contentAlignment = Alignment.Center
