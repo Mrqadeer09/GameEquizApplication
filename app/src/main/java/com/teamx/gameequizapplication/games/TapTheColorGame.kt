@@ -296,8 +296,15 @@ data class NumberBoxTap(val number: Int, val color: Color, var boolCheck: Boolea
 fun TouchTheNumbersGameScreenTap() {
     var score by remember { mutableStateOf(0) }
     var boxes by remember { mutableStateOf(generateBoxesTap()) }
-    var boxesTemp by remember { mutableStateOf(boxes) }
-    var restart by remember { mutableStateOf(true) }
+    var arrTap by remember { mutableStateOf(arrayListOf<Int>()) }
+    var boxesTemp by remember { mutableStateOf(boxes.sortedWith(Comparator.comparingInt { it.number })) }
+    var restart by remember { mutableStateOf(false) }
+    var timerCheck by remember { mutableStateOf(true) }
+
+    LaunchedEffect(key1 = timerCheck) {
+        delay(2500)
+        timerCheck = false
+    }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -317,34 +324,51 @@ fun TouchTheNumbersGameScreenTap() {
                     .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                itemsIndexed(boxes) { index, box ->
-                    Box(modifier = Modifier
-                        .padding(2.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .size(19.dp)
-                        .background(color = box.color)
-                        .clickable {
-                            updateScoreTap(boxes, box, index) { i ->
-                                score++
-                                restart = true
-                                val arr = ArrayList<NumberBoxTap>()
-                                boxes.forEach {
-                                    if (i != it.number) {
-                                        arr.add(it)
-                                    }
+                itemsIndexed(boxesTemp) { index, box ->
+                    Box(
+                        modifier = Modifier
+                            .padding(2.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .size(19.dp)
+                            .background(color = checkNumberReturnColor(box.number))
+                            .clickable {
+                                /*  updateScoreTap(boxes, box, index) { i ->
+                                      score++
+                                      restart = true
+                                      val arr = ArrayList<NumberBoxTap>()
+                                      boxes.forEach {
+                                          if (i != it.number) {
+                                              arr.add(it)
+                                          }
+                                      }
+                                      boxes = arr
+                                      if (boxes.isEmpty()) {
+                                          restart = false
+                                      }
+                                  }*//* val Checker = boxes.minWith(Comparator.comparingInt { it.number })
+
+                             if (Checker.number == box.number && !arrTap.contains(box.number)) {
+                                 arrTap.add(box.number)
+
+                                 // Correct order
+                                 scoreTap++
+                             } else if (!arrTap.contains(box.number)) {
+                                 val last = arrTap.maxWith(Comparator.comparingInt { it })
+                                 if (last < box.number) {
+                                     arrTap.add(box.number)
+                                 }
+
+                                 scoreTap++
+                             }*/
+
+
+                                if (!restart) {
+                                    boxes = generateBoxesTap()
+                                    restart = true
                                 }
-                                boxes = arr
-                                if (boxes.isEmpty()) {
-                                    restart = false
-                                }
-                            }
-                            if (!restart) {
-                                boxes = generateBoxesTap()
-                                restart = true
-                            }
-                        }) {
+                            }) {
                         Text(
-                            text = box.number.toString(),
+                            text = ""/*box.number.toString()*/,
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier.align(Alignment.Center)
                         )
@@ -353,108 +377,131 @@ fun TouchTheNumbersGameScreenTap() {
             }
 
             Box() {
+                if (timerCheck) {
 
 
-                LazyRow(
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp), horizontalArrangement = Arrangement.Center
-                ) {
-                    itemsIndexed(boxes) { index, box ->
-                        Box(modifier = Modifier
-                            .padding(2.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                            .size(64.dp)
-                            .background(
-                                color = checkNumberReturnColor(box.number)
+                    LazyRow(
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp), horizontalArrangement = Arrangement.Center
+                    ) {
+                        itemsIndexed(boxes) { index, box ->
+                            Box(modifier = Modifier
+                                .padding(2.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .size(64.dp)
+                                .background(
+                                    color = checkNumberReturnColor(box.number)
 
-                            )
-                            .clickable {
-                                /* updateScoreTap(boxesTemp, box, index) { i ->
+                                )
+                                .clickable {
 
-                                     score++
-                                     restart = true
-                                     val arr = ArrayList<NumberBoxTap>()
-                                     boxesTemp.forEach {
-                                         if (i != it.number) {
-                                             arr.add(it)
-                                         } else {
-                                             it.boolCheck = true
-                                             boxes.get(index).boolCheck = true
-                                             box.boolCheck = true
- //                                        arr.add(it)
-                                         }
-                                     }
-                                     boxesTemp = arr
-                                     if (boxesTemp.isEmpty()) {
-                                         restart = false
+                                }) {
+                                Text(
+                                    text = ""/*box.number.toString()*/,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier.align(Alignment.Center)
+                                )
+                            }
+                        }
+                    }
+                } else {
+
+
+                    LazyRow(
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp), horizontalArrangement = Arrangement.Center
+                    ) {
+                        itemsIndexed(boxes) { index, box ->
+                            Box(modifier = Modifier
+                                .padding(2.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .size(64.dp)
+                                .background(
+                                    color = if (arrTap.contains(box.number) || box.boolCheck || restart) {
+                                        restart = false
+                                        Log.d("123123", "TouchTheNumbersGameScreenTap1: ")
+                                        checkNumberReturnColor(box.number)
+                                    } else {
+                                        restart = false
+                                        Log.d("123123", "TouchTheNumbersGameScreenTap2: ")
+                                        Color.DarkGray
+                                    }
+
+                                )
+                                .clickable {
+                                    /* updateScoreTap(boxesTemp, box, index) { i ->
+
+                                 score++
+                                 restart = true
+                                 val arr = ArrayList<NumberBoxTap>()
+                                 boxesTemp.forEach {
+                                     if (i != it.number) {
+                                         arr.add(it)
+                                     } else {
+                                         it.boolCheck = true
+                                         boxesTemp.get(index).boolCheck = true
+                                         box.boolCheck = true
+                                         arr.add(it)
                                      }
                                  }
-                                 if (!restart) {
-                                     boxes = generateBoxesTap()
-                                     restart = true
-                                 }*/
-                            }) {
-                            Text(
-                                text = box.number.toString(),
-                                style = MaterialTheme.typography.bodyLarge,
-                                modifier = Modifier.align(Alignment.Center)
-                            )
-                        }
-                    }
-                }
-                LazyRow(
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp), horizontalArrangement = Arrangement.Center
-                ) {
-                    itemsIndexed(boxesTemp) { index, box ->
-                        Box(modifier = Modifier
-                            .padding(2.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                            .size(64.dp)
-                            .background(
-                                color = Color.DarkGray
+                                 boxesTemp = arr
+                                 if (boxesTemp.isEmpty()) {
+                                     restart = false
+                                 }
+                             }*/
+                                    val Checker =
+                                        boxes.minWith(Comparator.comparingInt { it.number })
 
-                            )
-                            .clickable {
-                                updateScoreTap(boxesTemp, box, index) { i ->
-
-                                    score++
-                                    restart = true
-                                    val arr = ArrayList<NumberBoxTap>()
-                                    boxesTemp.forEach {
-                                        if (i != it.number) {
-                                            arr.add(it)
-                                        } else {
-                                            it.boolCheck = true
-                                            boxesTemp.get(index).boolCheck = true
-                                            box.boolCheck = true
-                                            arr.add(it)
+                                    if (Checker.number == box.number && !arrTap.contains(box.number)) {
+                                        arrTap.add(box.number)
+                                        arrTap = arrTap
+                                        box.boolCheck = true
+                                        // Correct order
+                                        score++
+                                    } else if (!arrTap.contains(box.number)) {
+                                        if (arrTap.isNotEmpty()) {
+                                            val last =
+                                                arrTap.maxWith(Comparator.comparingInt { it })
+                                            if (last < box.number && box.number < (last + 2)) {
+                                                arrTap.add(box.number)
+                                                arrTap = arrTap
+                                                box.boolCheck = true
+                                                score++
+                                            }
                                         }
+
+                                    } else {
+
                                     }
-                                    boxesTemp = arr
-                                    if (boxesTemp.isEmpty()) {
-                                        restart = false
-                                    }
-                                }
-                                if (!restart) {
-                                    boxesTemp = generateBoxesTap()
-                                    boxes = boxesTemp
                                     restart = true
-                                }
-                            }) {
-                            Text(
-                                text = box.number.toString(),
-                                style = MaterialTheme.typography.bodyLarge,
-                                modifier = Modifier.align(Alignment.Center)
-                            )
+
+                                    if (arrTap.size == boxes.size) {
+                                        boxes = generateBoxesTap()
+                                        boxesTemp =
+                                            boxes.sortedWith(Comparator.comparingInt { it.number })
+                                        arrTap.clear()
+                                        restart = true
+                                        timerCheck = true
+                                    }
+
+
+
+
+                                    Log.d("123123", "TouchTheNumbersGameScreenTap: ")
+                                }) {
+                                Text(
+                                    text = ""/*box.number.toString()*/,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    modifier = Modifier.align(Alignment.Center)
+                                )
+                            }
                         }
                     }
                 }
-
             }
         }
         Text(
@@ -479,6 +526,7 @@ private fun generateBoxesTap(): List<NumberBoxTap> {
     }
 
     return numbers.mapIndexed { index, number ->
+
         NumberBoxTap(number = number, color = colors[index])
     }
 }
@@ -512,6 +560,7 @@ private fun updateScoreTap(
     } else if (!arrTap.contains(Checker.number)) {
         val last = arrTap.maxWith(Comparator.comparingInt { it })
         if (last > Checker.number) {
+            arrTap.add(last)
         }
 
         onClickAdd(Checker.number)
