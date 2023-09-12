@@ -232,7 +232,7 @@ fun ItemComposable(item: RainListItem, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .size(item.height)
-            .padding(vertical = 16.dp)
+            .padding(vertical = 6.dp)
             .clip(RoundedCornerShape(95.dp))
             .background(item.color)
             .clickable {

@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import java.util.LinkedList
 import kotlin.random.Random
-
 @Composable
 fun FollowTheLeaderGame(content: @Composable () -> Unit) {
     content()

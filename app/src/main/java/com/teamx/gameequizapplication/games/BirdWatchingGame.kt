@@ -51,7 +51,7 @@ fun BirdWatchingGame(content: @Composable () -> Unit) {
 @Composable
 fun birdAscendingObjects() {
     val maxCount = 8
-    var birdLinkListAdded by remember { mutableStateOf(LinkedList<BirdListItem>()) }
+    val birdLinkListAdded by remember { mutableStateOf(LinkedList<BirdListItem>()) }
     var restart by remember { mutableStateOf(true) }
     val link = LinkedList<BirdListItem>()
     if (restart) {
