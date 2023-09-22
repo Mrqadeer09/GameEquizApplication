@@ -38,14 +38,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.teamx.gameequizapplication.games.*
+import com.teamx.gameequizapplication.games.tetris.logic.SoundUtil
+import com.teamx.gameequizapplication.games.tetris.logic.StatusBarUtil
 import com.teamx.gameequizapplication.ui.theme.GameEquizApplicationTheme
 import com.teamx.gameequizapplication.utils.grids
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        StatusBarUtil.transparentStatusBar(this)
+        SoundUtil.init(this)
         setContent {
             GameEquizApplicationTheme {
                 // A surface container using the 'background' color from the theme
@@ -65,6 +70,7 @@ class MainActivity : ComponentActivity() {
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun startUp(modifier: Modifier) {
 
@@ -207,6 +213,7 @@ fun PreviewLazyGridExample() {
 }*/
 //
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation() {
     val navController = rememberNavController()
@@ -330,11 +337,11 @@ fun Navigation() {
             }
         }
         composable(GamesUID.OperationsScreen.name) {
-            GameScreen() {
-                ToolbarPreview(
-                    navController = navController, GamesUID.OperationsScreen.name
-                )
-            }
+//            GameScreen2() {
+//                ToolbarPreview(
+//                    navController = navController, GamesUID.OperationsScreen.name
+//                )
+//            }
         }
 
         composable(GamesUID.QuickEyeScreen.name) {

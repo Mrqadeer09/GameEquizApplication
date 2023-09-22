@@ -1,6 +1,5 @@
 package com.teamx.gameequizapplication.games
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloat
@@ -10,11 +9,8 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -44,6 +40,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.teamx.gameequizapplication.R
+import com.teamx.gameequizapplication.ui.theme.BirdColor1
+import com.teamx.gameequizapplication.ui.theme.BirdColor3
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
@@ -311,32 +309,33 @@ fun SwipeableComponent(content: @Composable () -> Unit) {
 }
 
 
-@SuppressLint("UnusedTransitionTargetStateParameter")
 @Composable
 fun MyCard2() {
-    var swipeState by remember { mutableStateOf(false) }
+//    var swipeStateY by remember { mutableStateOf(false) }
+    var swipeStateX by remember { mutableStateOf(false) }
+    var restart by remember { mutableStateOf(true) }
+    var checkOppo by remember { mutableStateOf(false) }
     var randomInt by remember { mutableIntStateOf(0) }
 //    var randomInt =0
     var previousNumber by remember { mutableIntStateOf(randomInt) }
     var wapsiState by remember { mutableStateOf(false) }
     var intOffset by remember { mutableStateOf<IntOffset>(IntOffset(y = 0, x = 0)) }
-    var valuesTranslation by remember { mutableStateOf<Float>(100f) }
+    var valuesTranslation by remember { mutableStateOf<Float>(150f) }
 
 
     var bimap by remember { mutableIntStateOf(R.drawable.left) }
 
     val transitionState = remember {
-        MutableTransitionState(swipeState).apply { targetState = !swipeState }
+        MutableTransitionState(swipeStateX).apply { targetState = !swipeStateX }
     }
     val transition = updateTransition(transitionState, "cardTransition")
 
-    val offsetTransition by transition.animateFloat(
-        label = "cardOffsetTransition",
+    val offsetTransitionY by transition.animateFloat(label = "cardOffsetTransition",
         transitionSpec = { tween(durationMillis = 300) },
-        targetValueByState = { if (swipeState) /*0f*/ valuesTranslation else 0f },
-
-
-        )
+        targetValueByState = { if (swipeStateX) valuesTranslation else 0f })
+    val offsetTransitionX by transition.animateFloat(label = "cardOffsetTransition",
+        transitionSpec = { tween(durationMillis = 300) },
+        targetValueByState = { if (swipeStateX) valuesTranslation else 0f })
 
     wapsiState = transition.isRunning
 
@@ -349,9 +348,12 @@ fun MyCard2() {
         randomInt = Random.nextInt(0, 4)
     }
     if (!wapsiState) {
-        swipeState = false
+        valuesTranslation = 0f
+        swipeStateX = false
+        swipeStateX = false
 
-    } else {
+
+        valuesTranslation = 100f
 
     }
 
@@ -360,45 +362,47 @@ fun MyCard2() {
 
         0 -> {
 
-            intOffset = IntOffset(x = offsetTransition.roundToInt(), y = 0)
+            intOffset = IntOffset(x = -offsetTransitionX.roundToInt(), y = 0)
             bimap = R.drawable.right
         }
 
         1 -> {
 
-            intOffset = IntOffset(x = -offsetTransition.roundToInt(), y = 0)
+            intOffset = IntOffset(x = offsetTransitionX.roundToInt(), y = 0)
             bimap = R.drawable.left
         }
 
         2 -> {
 
-            intOffset = IntOffset(y = -offsetTransition.roundToInt(), x = 0)
+            intOffset = IntOffset(y = -offsetTransitionY.roundToInt(), x = 0)
             bimap = R.drawable.up
         }
 
         3 -> {
-            intOffset = IntOffset(y = offsetTransition.roundToInt(), x = 0)
+            intOffset = IntOffset(y = offsetTransitionY.roundToInt(), x = 0)
             bimap = R.drawable.down
         }
 
         else -> {
 
-            intOffset = IntOffset(y = -offsetTransition.roundToInt(), x = 0)
+            intOffset = IntOffset(y = -offsetTransitionY.roundToInt(), x = 0)
             bimap = R.drawable.left
         }
 
 
     }
 
-    Card(
-        modifier = Modifier
-            .testTag("DraggableCard")
-            .width(165.dp)
-            .alpha(100f * 0.1f - valuesTranslation * 0.1f + 0.1f)
-            .height(165.dp)
-            .padding(horizontal = 4.dp, vertical = 1.dp)
-            .offset {
-                intOffset/* if (wapsiState) {
+
+    if (restart) {
+        Card(
+            modifier = Modifier
+                .testTag("DraggableCard")
+                .width(165.dp)
+                .alpha(valuesTranslation)
+                .height(165.dp)
+                .padding(horizontal = 4.dp, vertical = 1.dp)
+                .offset {
+                    intOffset/* if (wapsiState) {
 
                         IntOffset(y = offsetTransition.roundToInt(), x = 0)
                     } else {
@@ -412,36 +416,40 @@ fun MyCard2() {
 
                 }*/
 
-            }
-            .pointerInput(Unit) {
-                detectDragGestures { change, dragAmount ->
+                }
+                .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
 
-                    when {
-                        dragAmount.x >= 16 && randomInt == 0 -> {
+                        when {
+                            dragAmount.x >= 26 && randomInt == 0 -> {
 //                            randomInt = 0
-                            Log.d("123123", "MyCardRight: ")
-                            swipeState = true
-                        }
+                                Log.d("123123", "MyCardRight: ")
+                                swipeStateX = true
+                                restart = true
+                            }
 
-                        dragAmount.x < -16 && randomInt == 1 -> {
+                            dragAmount.x < -26 && randomInt == 1 -> {
 //                            randomInt = 1
-                            Log.d("123123", "MyCardLeft: ")
-                            swipeState = true
-                        }
+                                Log.d("123123", "MyCardLeft: ")
+                                swipeStateX = true
+                                restart = true
+                            }
 
-                        dragAmount.y >= 16 && randomInt == 3 -> {
+                            dragAmount.y >= 26 && randomInt == 3 -> {
 //                            randomInt = 3
-                            Log.d("123123", "MyCardDOWN: ")
-                            swipeState = true
-                        }
+                                Log.d("123123", "MyCardDOWN: ")
+                                swipeStateX = true
+                                restart = true
+                            }
 
-                        dragAmount.y < -16 && randomInt == 2 -> {
+                            dragAmount.y < -26 && randomInt == 2 -> {
 //                            randomInt = 2
-                            Log.d("123123", "MyCardUP: ")
-                            swipeState = true
+                                Log.d("123123", "MyCardUP: ")
+                                swipeStateX = true
+                                restart = true
+                            }
                         }
                     }
-                }
 
 //                if (randomInt <= 1) {
 //
@@ -505,21 +513,30 @@ fun MyCard2() {
 //                    }
 //                }
 
-            }
-            .background(color = Color.Gray),
-    ) {
-        Image(
-            painter = painterResource(id = bimap),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize()
+                },
+        ) {
+            Image(
+                painter = painterResource(id = bimap),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        color = if (checkOppo) {
+                            BirdColor1
+                        } else {
+                            BirdColor3
+                        }
+                    )
 //                .clickable { isFlipped = !isFlipped }
 //                .graphicsLayer(rotationZ = rotationZ)
-        )
+            )
 
 //        Text(
 //            modifier = Modifier.fillMaxSize(), textAlign = TextAlign.Center, text = "$randomInt"
 //        )
+        }
     }
+
 }
 
 

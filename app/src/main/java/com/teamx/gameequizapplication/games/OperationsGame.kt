@@ -41,7 +41,7 @@ val operators = listOf("+", "-", "*", "/")
 @RequiresApi(Build.VERSION_CODES.O)
 
 @Composable
-fun GameScreen(content: @Composable () -> Unit) {
+fun GameScreen2(content: () -> Unit) {
     var equation by remember { mutableStateOf(generateEquation()) }
     var selectedOperator by remember { mutableStateOf("") }
     var allCounter by remember { mutableIntStateOf(0) }
@@ -197,7 +197,7 @@ fun evaluateEquation(equation: String): Int {
 @Composable
 fun ShowBar2() {
     MaterialTheme {
-        GameScreen {}
+        GameScreen2 {}
     }
 
 

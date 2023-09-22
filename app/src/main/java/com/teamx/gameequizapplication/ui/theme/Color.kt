@@ -18,3 +18,24 @@ val Purple200 = Color(0xFF89CBF8)
 val Purple500 = Color(0xFF3498db)
 val Purple700 = Color(0xFF2980b9)
 val Teal200 = Color(0xFF2980b9)
+
+
+val BrickSpirit = Color(0xDD000000)
+val BrickMatrix = Color(0x1F000000)
+val BrickHighlight = Color(0xFF560000)
+val ScreenBackground = Color(0xff9ead86)
+
+
+val BodyColor = Color(0xffefcc19)
+val BirdColor1 = Color(0xffFF5C98)
+val BirdColor2 = Color(0xffFEB53A)
+val BirdColor4 = Color(0xff926BFA)
+val BirdColor3 = Color(0xff71C7FE)
+
+
+
+val DeceptionBlue = Color(0xff61BAFE)
+val DeceptionPink = Color(0xffFF5C98)
+val DeceptionYellow = Color(0xffFEB53A)
+val DeceptionPurple = Color(0xff926BFA)
+val DeceptionBlack = Color(0xff373737)

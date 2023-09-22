@@ -5,16 +5,16 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.repeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -24,44 +24,52 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.teamx.gameequizapplication.R
+import com.teamx.gameequizapplication.ui.theme.BirdColor3
+import com.teamx.gameequizapplication.ui.theme.BirdColor4
+import com.teamx.gameequizapplication.ui.theme.DeceptionBlack
 import kotlinx.coroutines.delay
 
+@Preview
 @Composable
-fun ConcentrationGame(content: @Composable () -> Unit) {
+fun ConcentrationGame(content: @Composable () -> Unit = {}) {
     content()
     ConcentrationObjects()
 }
 
 var linkListAdded2 = ArrayList<ConcentrationModel>()
+var checkListAns = ArrayList<EnumConcentration>()
 
 @Preview
 @Composable
 fun ConcentrationObjects() {
     val maxCount = 5
-    val concentrationModels by remember { mutableStateOf<ArrayList<ConcentrationModel>>(arrayListOf()) }
+    val concentrationModels by remember { mutableStateOf<ArrayList<ConcentrationModel>>(arrayListOf()) }/*
+        LaunchedEffect(Unit) {
+            repeat(maxCount) { count ->*/
+    for (count in 0..maxCount) {
 
 
-    LaunchedEffect(Unit) {
-        repeat(maxCount) { count ->
-
-            concentrationModels.add(
-                ConcentrationModel(
-                    count.toString(), count.toString(), count.toString()
-                )
+        concentrationModels.add(
+            ConcentrationModel(
+                count.toString(),
+                count.toString(),
+                count.toString(),
+                EnumConcentration.values()[count % 3]
             )
-
-        }
+        )
     }
+
+    /*}
+}*/
 
 //    val link = ArrayList<ConcentrationModel>()
 
@@ -97,7 +105,9 @@ fun ConcentrationObjects() {
              }*/
 
 //            var temp = linkListAdded2
-            ConcentrationObject(i /*temp.get(0)*//*, colorStateList[i]*/) {
+            ConcentrationObject(
+                i, concentrationModels[i]/*temp.get(0)*//*, colorStateList[i]*/
+            ) {
 
                 Log.d("123123", "ConcentrationObjects:linkListAdded2 $linkListAdded2")/*  if (listAdded[it] == i) {
 
@@ -106,6 +116,8 @@ fun ConcentrationObjects() {
                       }*/
 //                colorStateList[it] = Color.Transparent
             }
+
+
         }
 //        }
     }
@@ -113,20 +125,24 @@ fun ConcentrationObjects() {
 
 @Composable
 fun ConcentrationObject(
-    number: Int, /*itemCompared: ConcentrationModel,*/ onClick: (Item: ConcentrationModel) -> Unit
+    number: Int, concentrationModels: ConcentrationModel,/*itemCompared: ConcentrationModel,*/
+    onClick: (Item: ConcentrationModel) -> Unit
 ) {
-    var colorState by remember { mutableStateOf<Color>(Color.Black) }
+    var colorState by remember { mutableStateOf<Color>(DeceptionBlack) }
 
     Surface(color = if (linkListAdded2.contains(
             ConcentrationModel(
-                number.toString(), number.toString(), number.toString()
+                number.toString(), number.toString(), number.toString(),
+
+                EnumConcentration.values()[number % 3]
             )
         )/* % 2 == 0*/) {
         colorState
     } else {
         colorState
     }, shape = RectangleShape, modifier = Modifier
-        .size(85.dp)
+        .height(85.dp)
+        .width(70.dp)
         .offset(
             y = /*(-number * 60).dp*//* if (number in 2..3) {
                  (-(number % 3) * 90).dp
@@ -147,7 +163,10 @@ fun ConcentrationObject(
         .clickable(
             enabled = linkListAdded2.contains(
                 ConcentrationModel(
-                    number.toString(), number.toString(), number.toString()
+                    number.toString(),
+                    number.toString(),
+                    number.toString(),
+                    EnumConcentration.values()[number % 3]
                 )
             )
         ) {
@@ -155,7 +174,10 @@ fun ConcentrationObject(
                 Log.d("123123", "ConcentrationObjectWrong2:$number ::$/itemCompared ")
                 return@clickable
             } else if (ConcentrationModel(
-                    number.toString(), number.toString(), number.toString()
+                    number.toString(),
+                    number.toString(),
+                    number.toString(),
+                    EnumConcentration.values()[number % 3]
                 ) == linkListAdded2.get(0)
             ) {
                 colorState
@@ -168,20 +190,22 @@ fun ConcentrationObject(
 //            .graphicsLayer(alpha = 1f - number * 0.2f)
 
     ) {
-        Text(
-            text = number.toString(),
+        /*  Text(
+              text = ""*//*number.toString()*//*,
             style = MaterialTheme.typography.bodySmall,
             color = Color.White,
             fontSize = 20.sp,
             textAlign = TextAlign.Center,
             fontFamily = FontFamily.Cursive
-        )
-
+        )*/
+        SpinningBox(concentrationModels.asdEnum)
 
     }
 }
 
-data class ConcentrationModel(var name: String, var key: String, var value: String)
+data class ConcentrationModel(
+    var name: String, var key: String, var value: String, var asdEnum: EnumConcentration
+)
 
 
 /*@Composable
@@ -237,7 +261,7 @@ fun FlippableImage2() {
     }
 }*/
 @Composable
-fun FlippableImage() {
+fun FlippableImage(asdEnum: EnumConcentration) {
     var isFlipped by remember { mutableStateOf(false) }
 
 //    val imageRes = if (isFlipped) R.drawable.your_flipped_image else R.drawable.your_unflipped_image
@@ -245,14 +269,15 @@ fun FlippableImage() {
 
     val rotationY: Float by animateFloatAsState(targetValue = if (isFlipped) 180f else 0f)
 
-    Image(
-        painter = painterResource(id = R.drawable.ic_launcher_foreground),
+    Image(painter = painterResource(id = concentrationCheckStringReturnDrawable(asdEnum)),
         contentDescription = null,
+        contentScale = ContentScale.FillBounds,
         modifier = Modifier
-            .size(150.dp)
+            .fillMaxSize()
+            .background(BirdColor3)
+
             .clickable { isFlipped = !isFlipped }
-            .graphicsLayer(rotationY = rotationY)
-    )
+            .graphicsLayer(rotationY = rotationY))
 }
 
 @Composable
@@ -268,47 +293,125 @@ fun RotatableImage(rotationZ: Float) {
         painter = painterResource(id = R.drawable.ic_launcher_foreground),
         contentDescription = null,
         modifier = Modifier
-            .size(150.dp)
+            .fillMaxSize()
             .clickable { isFlipped = !isFlipped }
             .graphicsLayer(rotationZ = rotationZ)
     )
 }
 
-@Composable
-fun SpinningBox() {
-    var rotationState by remember { mutableStateOf(0f) }
-    LaunchedEffect(Unit) {
-        repeat(180) { count ->
-            delay(10L)
-//            colorStateList.add(colorState)
-            rotationState = rotationState + 1
+var isFlippy = false
 
-        }
-    }
+@Composable
+fun SpinningBox(asdEnum: EnumConcentration = EnumConcentration.DIAMOND) {
+    var rotationState by remember { mutableStateOf(0f) }
+
     // Animate the rotationState from 0f to 360f repeatedly
     val rotation by animateFloatAsState(
         targetValue = rotationState, animationSpec = repeatable(
-            iterations = 1,
-            animation = tween(10)
+            iterations = 1, animation = tween(10)
         )
     )
+    var isFlipped by remember { mutableStateOf(true) }
 
+    LaunchedEffect(Unit) {
+        repeat(180) { count ->
+            delay(5000L)
+//            colorStateList.add(colorState)
+            rotationState = rotationState + 1
+
+            isFlipped = false
+        }
+    }
+
+
+//    val imageRes = if (isFlipped) R.drawable.your_flipped_image else R.drawable.your_unflipped_image
+//    val imageBitmap = painterResource(id = imageRes).value.asImageBitmap()
+
+    val rotationY: Float by animateFloatAsState(targetValue = if (isFlipped) 180f else 0f)
     Surface(
-        color = Color.Blue,
+        color = BirdColor4,
         modifier = Modifier
-            .size(100.dp)
-//            .graphicsLayer(rotationZ = rotation)
+            .padding(2.dp)
+            .fillMaxSize()
+            .graphicsLayer(rotationY = rotationY)
     ) {
         // Content of the spinning box (optional)
-        RotatableImage(rotation)
-        FlippableImage()
+//        RotatableImage(rotation)
+//        FlippableImage(asdEnum)
+        Image(painter = painterResource(
+            id = if (isFlipped) concentrationCheckStringReturnDrawable(
+                asdEnum
+            ) else concentrationCheckStringReturnDrawable(EnumConcentration.BACK)
+        ),
+            contentDescription = null,
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .fillMaxSize()
+                .paint(
+                    painterResource(id = concentrationCheckStringReturnDrawable(EnumConcentration.FRONT)),
+                    contentScale = ContentScale.FillBounds
+                )
+                .clickable(enabled = !isFlipped) {
+                    isFlipped = !isFlipped
+                    if (checkListAns.isEmpty()) {
+                        checkListAns.add(asdEnum)
+                    } else if (checkListAns.get(checkListAns.size - 1) == asdEnum && checkListAns.size % 2 != 0) {
+                        checkListAns.add(asdEnum)
+
+                    } else {
+                        checkListAns.clear()
+                        isFlipped = false
+                    }
+
+
+                })
+//                .graphicsLayer(rotationY = rotationY))
     }
+
+}
+
+fun concentrationCheckStringReturnDrawable(str: EnumConcentration): Int {
+    return when (str) {
+        EnumConcentration.STAR -> {
+
+            R.drawable.starfilledminor_svgrepo_com
+        }
+
+        EnumConcentration.DIAMOND -> {
+
+            R.drawable.diamond_fill_svgrepo_com
+        }
+
+        EnumConcentration.PENTAGON -> {
+
+            R.drawable.hexagon_svgrepo_com
+        }
+
+        EnumConcentration.BACK -> {
+
+            R.drawable.cards_back_flip
+        }
+
+        EnumConcentration.FRONT -> {
+
+            R.drawable.cards_front_flip
+        }
+
+
+        else -> {
+            R.drawable.hexagon_svgrepo_com
+        }
+    }
+}
+
+enum class EnumConcentration {
+    STAR, DIAMOND, PENTAGON, BACK, FRONT
 }
 
 @Preview
 @Composable
 fun PreviewFlippedImage() {
 //    FlippableImage()
-    SpinningBox()
+//    SpinningBox()
 }
 

@@ -7,4 +7,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="BodyColor">#ffefcc19</color>
+    <color name="BirdColor1">#ffFF5C98</color>
+    <color name="BirdColor2">#ffFEB53A</color>
+    <color name="BirdColor4">#ff926BFA</color>
+    <color name="BirdColor3">#ff71C7FE</color>
+    <color name="DeceptionBlue">#ff61BAFE</color>
+    <color name="DeceptionPink">#ffFF5C98</color>
+    <color name="DeceptionYellow">#ffFEB53A</color>
+    <color name="DeceptionPurple">#ff926BFA</color>
 </resources>

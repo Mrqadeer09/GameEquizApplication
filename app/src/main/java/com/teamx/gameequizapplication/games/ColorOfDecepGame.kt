@@ -28,15 +28,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.teamx.gameequizapplication.ui.theme.BirdColor3
+import com.teamx.gameequizapplication.ui.theme.DeceptionBlack
+import com.teamx.gameequizapplication.ui.theme.DeceptionPink
+import com.teamx.gameequizapplication.ui.theme.DeceptionPurple
+import com.teamx.gameequizapplication.ui.theme.DeceptionYellow
 import kotlin.random.Random
 
-class ColorOfDeceptionGame {}
 
 
 data class ColorBox(val colorName: ColorBundle, val color: Color)
 
 enum class ColorBundle {
-    ORANGE, WHITE, BLACK, GREEN, RED
+    YELLOW, WHITE, BLACK, PURPLE/*, PINK*/
 }
 
 
@@ -49,7 +53,10 @@ fun TouchTheColorsGameScreen(content: @Composable () -> Unit) {
     var restart by remember { mutableStateOf(true) }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().background(
+            BirdColor3
+        ),
+
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -59,141 +66,75 @@ fun TouchTheColorsGameScreen(content: @Composable () -> Unit) {
             modifier = Modifier.padding(bottom = 16.dp)
         )
         LazyVerticalGrid(
-            modifier = Modifier.width(200.dp),
+            modifier = Modifier.width(250.dp),
             verticalArrangement = Arrangement.Center,
-            columns = asGridCells
+            columns = asGridCells,
         ) {
-            /*item(
-                span = { GridItemSpan(2) }
-            ) {
-                Text("Title")
-            }*/
 
-            /*  boxes.forEach {
-                  item(
-                      span = { GridItemSpan(3) }
-                  ) {
-                      Text("Title")
-                  }
-              }*/
 
-            itemsIndexed(boxes/*, span = { _, _ -> GridItemSpan(spanCount) }*/) { index, box ->
+            itemsIndexed(boxes) { index, box ->
 
-                /*   if (boxes.size % 2 == 0) {
-                   } else if (boxes.size - 1 == index) {
 
-   //                    asGridCells = GridCells.Fixed(3)
-                   }*/
-                Box(modifier = Modifier
-                    .padding(1.dp)
-                    .height(70.dp)
-                    .width(70.dp)
-                    .background(color = box.color)
-                    .border(BorderStroke(1.dp, Color.LightGray))
-                    .clip(
-                        RoundedCornerShape(22.dp)
-                    )
-                    .clickable {
-                        updateScore(boxes, box, index) { i, bool ->
-                            score++
-                            restart = true
-                            val arr = ArrayList<ColorBox>()
-                            boxes.forEach {
-                                if (i != it.colorName) {
-                                    arr.add(it)
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 10.dp, vertical = 5.dp)
+                        .clip(
+                            RoundedCornerShape(19.dp)
+                        )
+                        .height(80.dp)
+                        .width(67.dp)
+                        .background(color = box.color)
+                        .border(BorderStroke(1.dp, Color.Transparent))
+
+
+                        .clickable {
+                            updateScore(boxes, box, index) { i, bool ->
+                                score++
+                                restart = true
+                                val arr = ArrayList<ColorBox>()
+                                boxes.forEach {
+                                    if (i != it.colorName) {
+                                        arr.add(it)
+                                    }
                                 }
-                            }
-                            boxes = arr
-                            if (bool) {
-                                restart = false
-                            }
+                                boxes = arr
+                                if (bool) {
+                                    restart = false
+                                }
 
-                        }
-                        if (!restart) {
-                            boxes = generateBoxes()
-                            restart = true
-                        }
-                    }) {
-                    if (box.colorName.toString()
-                            .equals("BLACK", true) && box.color != Color.White
+                            }
+                            if (!restart) {
+                                boxes = generateBoxes()
+                                restart = true
+                            }
+                        },
+
+
                     ) {
-                        Text(
-                            text = box.colorName.toString(),
-                            color = Color.White,
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    } else {
-                        Text(
 
-                            modifier = Modifier.align(Alignment.Center), color = Color.LightGray,
-                            text = box.colorName.toString(),
-                            style = MaterialTheme.typography.bodyLarge,
-                        )
-                    }
+                    Text(
+
+                        modifier = Modifier.align(Alignment.Center),
+                        color = if (box.colorName.toString()
+                                .equals(ColorBundle.WHITE.toString()) && box.color == Color.White
+                        ) {
+                            DeceptionBlack
+                        } else if (box.color == Color.White) {
+                            DeceptionBlack
+                        } else {
+
+                            Color.White
+                        },
+                        text = box.colorName.toString(),
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+                    /*}*/
                 }
             }
 
         }
 
-        //purani logic
-        /*LazyRow(
-            modifier = Modifier.padding(horizontal = 16.dp)
-        ) {
-            itemsIndexed(boxes) { index, box ->
-                Box(modifier = Modifier
-                    .padding(1.dp)
-                    .size(70.dp)
-                    .background(color = box.color)
-                    .border(BorderStroke(1.dp, Color.LightGray))
 
-                    .clickable {
-                        updateScore(boxes, box, index) { i, bool ->
-                            score++
-                            restart = true
-                            val arr = ArrayList<ColorBox>()
-                            boxes.forEach {
-                                if (i != it.colorName) {
-                                    arr.add(it)
-                                }
-                            }
-                            boxes = arr
-                            if (bool) {
-                                restart = false
-                            }
-
-                        }
-                        if (!restart) {
-                            boxes = generateBoxes()
-                            restart = true
-                        }
-                    }
-
-                    .clip(
-                        RoundedCornerShape(12.dp)
-                    )
-
-                ) {
-                    if (box.colorName.toString()
-                            .equals("BLACK", true) && box.color != Color.White
-                    ) {
-                        Text(
-                            text = box.colorName.toString(),
-                            color = Color.White,
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    } else {
-                        Text(
-
-                            modifier = Modifier.align(Alignment.Center), color = Color.LightGray,
-                            text = box.colorName.toString(),
-                            style = MaterialTheme.typography.bodyLarge,
-                        )
-                    }
-                }
-            }
-        }*/
 
         Text(
             text = "Score: $score",
@@ -211,7 +152,7 @@ private fun generateBoxes(): List<ColorBox> {
     }
     numbers.shuffle()
 
-    val deceptionNumber = Random.nextInt(1, 4)
+    val deceptionNumber = Random.nextInt(1, 3)
 
     var colorBox = Color.White
     val colors = mutableListOf<Color>()
@@ -220,12 +161,12 @@ private fun generateBoxes(): List<ColorBox> {
             deceptionNum = numbers[deceptionNumber]
             colorBox = when (numbers[deceptionNumber]) {
 
-                ColorBundle.ORANGE -> {
-                    Color.Black
+                ColorBundle.YELLOW -> {
+                    DeceptionBlack
                 }
 
                 ColorBundle.WHITE -> {
-                    Color(0xFFFF5722)
+                    DeceptionYellow
                 }
 
                 ColorBundle.BLACK -> {
@@ -233,23 +174,23 @@ private fun generateBoxes(): List<ColorBox> {
 
                 }
 
-                ColorBundle.GREEN -> {
-                    Color.Red
+                ColorBundle.PURPLE -> {
+                    DeceptionPink
                 }
 
-                ColorBundle.RED -> {
-                    Color.Green
-                }
+//                ColorBundle.PINK -> {
+//                    DeceptionPurple
+//                }
 
                 else -> {
-                    Color.Green
+                    DeceptionPurple
                 }
             }
         } else {
             colorBox = when (numbers[i]) {
 
-                ColorBundle.ORANGE -> {
-                    Color(0xFFFF5722)
+                ColorBundle.YELLOW -> {
+                    DeceptionYellow
                 }
 
                 ColorBundle.WHITE -> {
@@ -257,45 +198,21 @@ private fun generateBoxes(): List<ColorBox> {
                 }
 
                 ColorBundle.BLACK -> {
-                    Color.Black
+                    DeceptionBlack
 
                 }
 
-                ColorBundle.GREEN -> {
-                    Color.Green
-                }
-
-                ColorBundle.RED -> {
-                    Color.Red
+                ColorBundle.PURPLE -> {
+                    DeceptionPurple
                 }
 
                 else -> {
-                    Color.Green
+                    DeceptionPurple
                 }
             }
         }
 
-        /* val colorBox = when (i) {
-            ColorBundle.ORANGE -> {
-                Color(0xFFFF5722)
-            }
-            ColorBundle.WHITE -> {
-                Color.White
-            }
-            ColorBundle.BLACK -> {
-                Color.Black
 
-            }
-            ColorBundle.GREEN -> {
-                Color.Green
-            }
-            ColorBundle.RED -> {
-                Color.Red
-            }
-            else -> {
-                Color.Green
-            }
-        }*/
 
 
         colors.add(colorBox)
@@ -314,13 +231,6 @@ private fun updateScore(
     onClickAdd: (number: ColorBundle, bool: Boolean) -> Unit
 ) {
 
-    /*    val Checker = if (box.color == Color.Green) {
-            boxes.minWith(Comparator.comparing { it.colorName })
-
-        } else {
-            boxes.maxWith(Comparator.comparing { it.colorName })
-
-        }*/
 
 
     val selectedColors = mutableListOf<ColorBundle>()
