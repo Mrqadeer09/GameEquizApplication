@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.teamx.gameequizapplication.ui.theme.BirdColor3
 import kotlinx.coroutines.delay
 import java.util.LinkedList
 import kotlin.random.Random
@@ -59,8 +60,6 @@ fun AscendingObjects() {
     val listAdded by remember { mutableStateOf<ArrayList<Int>>(arrayListOf()) }
 //    val linkListAdded by remember { mutableStateOf<LinkedList<Int>>(LinkedList()) }
 
-//    val colorState by remember { mutableStateOf<Color>(Color.Black) }
-//    val colorStateList by remember { mutableStateOf<ArrayList<Color>>(arrayListOf(Color.Black)) }
 //    linkListAdded.clear()
 
     LaunchedEffect(Unit) {
@@ -188,7 +187,7 @@ fun AscendingObjects() {
 
 @Composable
 fun AnimatedObject(number: Int, itemCompared: Int, onClick: (Item: Int) -> Unit) {
-    var colorState by remember { mutableStateOf<Color>(Color.Black) }
+    var colorState by remember { mutableStateOf<Color>(BirdColor3) }
 
     Surface(
         color =
