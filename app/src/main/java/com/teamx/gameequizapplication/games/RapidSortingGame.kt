@@ -19,13 +19,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -44,9 +41,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.teamx.gameequizapplication.R
 import com.teamx.gameequizapplication.ui.theme.Pink80
-import com.teamx.gameequizapplication.ui.theme.Purple200
-import com.teamx.gameequizapplication.ui.theme.Purple500
-import com.teamx.gameequizapplication.ui.theme.Teal200
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -69,224 +63,174 @@ fun RapidSortingGame(content: @Composable () -> Unit) {
 
 
 
-
-///new work found removing items
-
-val items = mutableStateListOf<String>(
-    "Item Number 1",
-    "Item Number 2",
-    "Item Number 3",
-    "Item Number 4",
-    "Item Number 5",
-    "Item Number 6",
-    "Item Number 7",
-    "Item Number 8",
-)
-private val DarkColorPalette = darkColorScheme(
-    primary = Purple200,
-    secondary = Teal200
-)
-
-private val LightColorPalette = lightColorScheme(
-    primary = Purple500,
-    secondary = Teal200
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
-)
-
-
 var i232 = 1
 var dragged2 = true
 
 
-@Composable
-fun MyCard222() {
-    val swipeStateX by remember { mutableStateOf(false) }
+    @Composable
+    fun RapidComponent() {
+        val swipeStateX by remember { mutableStateOf(false) }
 
-    var previousNumber by remember { mutableIntStateOf(Random.nextInt(0, 100)) }
-    var showNumber by remember { mutableIntStateOf(Random.nextInt(0, 100)) }
-    val valuesTranslation by remember {
-        mutableFloatStateOf(
-            590f
-        )
-    }
-    var randomInt by remember { mutableIntStateOf(1) }
-    randomInt = if (previousNumber > showNumber) {
-        1
-    } else {
-        2
-    }
-    var fadeValue by remember { mutableStateOf(0f) }
-    var bimap by remember { mutableIntStateOf(R.drawable.round_square_24) }
+        var previousNumber by remember { mutableIntStateOf(Random.nextInt(0, 100)) }
+        var showNumber by remember { mutableIntStateOf(Random.nextInt(0, 100)) }
+        val valuesTranslation by remember {
+            mutableFloatStateOf(
+                590f
+            )
+        }
+        var randomInt by remember { mutableIntStateOf(1) }
+        randomInt = if (previousNumber > showNumber) {
+            1
+        } else {
+            2
+        }
+        var fadeValue by remember { mutableStateOf(0f) }
+        var bimap by remember { mutableIntStateOf(R.drawable.round_square_24) }
 
-    val transitionState = remember { MutableTransitionState(false) }
-    val transition = updateTransition(transitionState, "cardTransition")
-
-
-    val offsetTransitionY by transition.animateFloat(label = "cardOffsetTransition",
-        transitionSpec = { tween(durationMillis = 700) },
-
-        targetValueByState = {
-            if (it) {
-                valuesTranslation
-            } else {
-                0f
-            }
-        })
+        val transitionState = remember { MutableTransitionState(false) }
+        val transition = updateTransition(transitionState, "cardTransition")
 
 
+        val offsetTransitionY by transition.animateFloat(label = "cardOffsetTransition",
+            transitionSpec = { tween(durationMillis = 700) },
 
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-
-
-        Card(
-
-            modifier = Modifier
-                .testTag("DraggableCard")
-//            .width(165.dp)
-                .wrapContentSize()
-//            .height(165.dp)
-
-                .padding(horizontal = 4.dp, vertical = 1.dp)
-                .offset(
-                    x = if (transitionState.targetState) {
-                        if (randomInt == 1) {
-                            offsetTransitionY.dp
-                        } else {
-                            -offsetTransitionY.dp
-                        }
-                    } else {
-                        0.dp
-                    }, y = if (transitionState.targetState) {
-                        if (randomInt == 1) {
-                            (offsetTransitionY*0.2).dp
-                        } else {
-                            (offsetTransitionY*0.2).dp
-                        }
-                    } else {
-                        0.dp
-                    }
-
-
-                )
-                .pointerInput(Unit) {
-                    detectDragGestures { change, dragAmount ->
-
-                        when {
-
-                            previousNumber <= showNumber && (dragAmount.x <= -2.0 && dragAmount.x < 0) && randomInt == 2 -> {
-
-                                if (dragged2) {
-                                    dragged2 = false
-                                    Log.d("123123", "MyCardUP: ${dragAmount.y} $swipeStateX")
-                                    transitionState.targetState = true
-                                    i232 = 1
-
-                                    GlobalScope.launch {
-                                        delay(500)
-                                        dragged2 = true
-                                    }
-                                }
-                            }
-
-                            previousNumber > showNumber && (dragAmount.x >= 2.0 && dragAmount.x > 0) && randomInt == 1 -> {
-
-                                if (dragged2) {
-                                    dragged2 = false
-                                    Log.d("123123", "MyCardDOWN:${dragAmount.y} $swipeStateX")
-                                    transitionState.targetState = true
-                                    i232 = 1
-                                    GlobalScope.launch {
-                                        delay(500)
-                                        dragged2 = true
-                                    }
-                                }
-                            }
-
-
-                        }
-                    }
-
-
+            targetValueByState = {
+                if (it) {
+                    valuesTranslation
+                } else {
+                    0f
                 }
-                .graphicsLayer {
-
-//                if (transition.currentState) {
-                    if (i232 < 2) {
-                        if (transition.isRunning) {
-                            Log.d("123123", "MyCard2222: ${i232++}")
-                            GlobalScope.launch {
-
-                                for (i in 0..10) {
-                                    delay(25)
-                                    fadeValue = 1 - i * 0.1f
-                                }
+            })
 
 
-//                                delay(700)
-                                transitionState.targetState = false
+
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
 
-                                previousNumber = showNumber
-                                showNumber = Random.nextInt(0, 100)
-                                randomInt = if (previousNumber > showNumber) {
-                                    1
-                                } else {
-                                    2
-                                }
+            Card(
 
-                                when (randomInt) {
-                                    2 -> {
-                                        bimap = R.drawable.round_square_24
+                modifier = Modifier
+                    .testTag("DraggableCard")
+    //            .width(165.dp)
+                    .wrapContentSize()
+    //            .height(165.dp)
+
+                    .padding(horizontal = 4.dp, vertical = 1.dp)
+                    .offset(
+                        x = if (transitionState.targetState) {
+                            if (randomInt == 1) {
+                                offsetTransitionY.dp
+                            } else {
+                                -offsetTransitionY.dp
+                            }
+                        } else {
+                            0.dp
+                        }, y = if (transitionState.targetState) {
+                            if (randomInt == 1) {
+                                (offsetTransitionY*0.2).dp
+                            } else {
+                                (offsetTransitionY*0.2).dp
+                            }
+                        } else {
+                            0.dp
+                        }
+
+
+                    )
+                    .pointerInput(Unit) {
+                        detectDragGestures { change, dragAmount ->
+
+                            when {
+
+                                previousNumber <= showNumber && (dragAmount.x <= -2.0 && dragAmount.x < 0) && randomInt == 2 -> {
+
+                                    if (dragged2) {
+                                        dragged2 = false
+                                        Log.d("123123", "MyCardUP: ${dragAmount.y} $swipeStateX")
+                                        transitionState.targetState = true
+                                        i232 = 1
+
+                                        GlobalScope.launch {
+                                            delay(500)
+                                            dragged2 = true
+                                        }
                                     }
+                                }
 
-                                    1 -> {
-                                        bimap = R.drawable.baseline_lens_24
+                                previousNumber > showNumber && (dragAmount.x >= 2.0 && dragAmount.x > 0) && randomInt == 1 -> {
+
+                                    if (dragged2) {
+                                        dragged2 = false
+                                        Log.d("123123", "MyCardDOWN:${dragAmount.y} $swipeStateX")
+                                        transitionState.targetState = true
+                                        i232 = 1
+                                        GlobalScope.launch {
+                                            delay(500)
+                                            dragged2 = true
+                                        }
                                     }
-
                                 }
 
 
-                                /*for (i in 0..10) {
-                                    delay(25)
-                                    fadeValue = 1 - i * 0.1f
-                                }*/
                             }
                         }
 
+
                     }
-                },
+                    .graphicsLayer {
 
-            ) {
-            Box(
-                modifier = Modifier
-                    .size(165.dp)
-                    .background(
-                        color = Pink80.copy(
-                            alpha = if (transitionState.targetState) {
-                                fadeValue
-                            } else {
-                                1 - fadeValue
+    //                if (transition.currentState) {
+                        if (i232 < 2) {
+                            if (transition.isRunning) {
+                                Log.d("123123", "MyCard2222: ${i232++}")
+                                GlobalScope.launch {
+
+                                    for (i in 0..10) {
+                                        delay(25)
+                                        fadeValue = 1 - i * 0.1f
+                                    }
+
+
+    //                                delay(700)
+                                    transitionState.targetState = false
+
+
+                                    previousNumber = showNumber
+                                    showNumber = Random.nextInt(0, 100)
+                                    randomInt = if (previousNumber > showNumber) {
+                                        1
+                                    } else {
+                                        2
+                                    }
+
+                                    when (randomInt) {
+                                        2 -> {
+                                            bimap = R.drawable.round_square_24
+                                        }
+
+                                        1 -> {
+                                            bimap = R.drawable.baseline_lens_24
+                                        }
+
+                                    }
+
+
+                                    /*for (i in 0..10) {
+                                        delay(25)
+                                        fadeValue = 1 - i * 0.1f
+                                    }*/
+                                }
                             }
-                        )
-                    )
-                    .clip(RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center
-            ) {
 
-                Image(
-                    painter = painterResource(id = bimap),
-                    contentDescription = null,
+                        }
+                    },
+
+                ) {
+                Box(
                     modifier = Modifier
                         .size(165.dp)
                         .background(
-                            color = Color.White.copy(
+                            color = Pink80.copy(
                                 alpha = if (transitionState.targetState) {
                                     fadeValue
                                 } else {
@@ -294,47 +238,64 @@ fun MyCard222() {
                                 }
                             )
                         )
+                        .clip(RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center
+                ) {
 
-                )
+                    Image(
+                        painter = painterResource(id = bimap),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(165.dp)
+                            .background(
+                                color = Color.White.copy(
+                                    alpha = if (transitionState.targetState) {
+                                        fadeValue
+                                    } else {
+                                        1 - fadeValue
+                                    }
+                                )
+                            )
 
-                Text(
-                    modifier = Modifier.wrapContentSize()
+                    )
 
-//                        .background(
-//                            color = Pink80.copy(
-//                                alpha = if (transitionState.targetState) {
-//                                    fadeValue
-//                                } else {
-//                                    1 - fadeValue
-//                                }
-//                            )
-//                        )
-//                        .clip(RoundedCornerShape(12.dp))
-                    ,
-                    textAlign = TextAlign.Center,
-                    fontFamily = FontFamily.Monospace,
-                    fontSize = 40.sp,
-//                    gravity = Alignment.Center,
-                    text = ""/*"$showNumber"*/
-                )
+                    Text(
+                        modifier = Modifier.wrapContentSize()
+
+    //                        .background(
+    //                            color = Pink80.copy(
+    //                                alpha = if (transitionState.targetState) {
+    //                                    fadeValue
+    //                                } else {
+    //                                    1 - fadeValue
+    //                                }
+    //                            )
+    //                        )
+    //                        .clip(RoundedCornerShape(12.dp))
+                        ,
+                        textAlign = TextAlign.Center,
+                        fontFamily = FontFamily.Monospace,
+                        fontSize = 40.sp,
+    //                    gravity = Alignment.Center,
+                        text = ""/*"$showNumber"*/
+                    )
+                }
+            }
+
+        }
+    }
+
+
+    @Preview
+    @Composable
+    fun RapidGame() {
+        MaterialTheme {
+            Box(
+                modifier = Modifier.fillMaxSize(), Alignment.Center
+            ) {
+                RapidComponent()
             }
         }
-
     }
-}
-
-
-@Preview
-@Composable
-fun RapidGame() {
-    MaterialTheme {
-        Box(
-            modifier = Modifier.fillMaxSize(), Alignment.Center
-        ) {
-            MyCard222()
-        }
-    }
-}
 
 
 

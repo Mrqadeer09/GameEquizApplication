@@ -1,20 +1,28 @@
 package com.teamx.gameequizapplication.games
 
+import android.util.Log
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.repeatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -22,8 +30,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.teamx.gameequizapplication.ui.theme.BirdColor3
+import kotlinx.coroutines.delay
+import java.util.LinkedList
 import kotlin.random.Random
 
 class TouchTheNumGame {}
@@ -32,8 +49,9 @@ class TouchTheNumGame {}
 
 data class NumberBox(val number: Int, val color: Color)
 
+@Preview
 @Composable
-fun TouchTheNumbersGameScreen(content: @Composable () -> Unit) {
+fun TouchTheNumbersGameScreen(content: @Composable () -> Unit = {}) {
     var score by remember { mutableStateOf(0) }
     var boxes by remember { mutableStateOf(generateBoxes()) }
     var restart by remember { mutableStateOf(true) }
@@ -50,13 +68,18 @@ fun TouchTheNumbersGameScreen(content: @Composable () -> Unit) {
         )
 
         LazyRow(
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier
+                .size(300.dp)
+                .padding(horizontal = 16.dp)
         ) {
             itemsIndexed(boxes) { index, box ->
                 Box(modifier = Modifier
                     .padding(2.dp)
                     .clip(RoundedCornerShape(10.dp))
                     .size(64.dp)
+
+
+
                     .background(color = box.color)
                     .clickable {
                         updateScore(boxes, box, index) { i ->
@@ -97,14 +120,14 @@ fun TouchTheNumbersGameScreen(content: @Composable () -> Unit) {
 
 private fun generateBoxes(): List<NumberBox> {
     val numbers = mutableListOf<Int>()
-    for (i in 1..5) {
+    for (i in 1..9) {
         numbers.add(i)
     }
     numbers.shuffle()
 
     val colors = mutableListOf<Color>()
     val colorBox = if (Random.nextBoolean()) Color.Green else Color.Red
-    for (i in 1..5) {
+    for (i in 1..9) {
         colors.add(colorBox)
     }
 
@@ -114,9 +137,7 @@ private fun generateBoxes(): List<NumberBox> {
 }
 
 var score = 0
-private fun updateScore(
-    boxes: List<NumberBox>, box: NumberBox, index: Int, onClickAdd: (number: Int) -> Unit
-) {
+private fun updateScore(boxes: List<NumberBox>, box: NumberBox, index: Int, onClickAdd: (number: Int) -> Unit) {
 
 
     // get an employee with a maximum age
@@ -162,3 +183,226 @@ fun PreviewTouchTheNumbersGameScreen() {
 
 
 //Touch The Number
+
+
+@Preview
+@Composable
+fun FollowTheLeaderGame2(content: @Composable () -> Unit={}) {
+    content()
+    AscendingObjects2()
+}
+
+@Composable
+fun followTheLeaderPlot2() {
+
+}
+
+var linkListAdded32 = LinkedList<Int>()
+
+@Preview
+@Composable
+fun AscendingObjects2() {
+    val maxCount = 8
+    var currentCount by remember { mutableIntStateOf(0) }
+
+    LaunchedEffect(Unit) {
+        repeat(maxCount) { count ->
+            delay(190L)
+            currentCount = count + 1
+        }
+    }
+
+
+    val link = LinkedList<Int>()
+
+    linkListAdded32.forEach {
+        link.push(it)
+    }
+    Log.d("123123", "AscendingObjects:linkListAddedabb $linkListAdded")
+    linkListAdded32.clear()
+    Log.d("123123", "AscendingObjects:linkListAddedabb $link")
+    if (link.size >= 1) {
+        Log.d("123123", "AscendingObjects:1212 $linkListAdded32")
+        for (i in link) {
+            linkListAdded32.push(i)
+        }
+    } else {
+        Log.d("123123", "AscendingObjects:12 $linkListAdded32")
+        for (i in 0..maxCount) {
+            if (Random.nextBoolean()) {
+                linkListAdded32.push(i)
+            }
+        }
+    }
+
+    Log.d("123123", "AscendingObjects:linkListAddedabbbbbb $linkListAdded32")
+
+    Log.d("123123", "AscendingObjects:linkListAdded ${linkListAdded32.size}")
+    ///
+    var rotationState by remember { mutableStateOf(0f) }
+    LaunchedEffect(Unit) {
+        repeat(180) { count ->
+            delay(10L)
+            rotationState = 180f
+
+        }
+    }
+    // Animate the rotationState from 0f to 360f repeatedly
+    val rotation by animateFloatAsState(
+        targetValue = rotationState, animationSpec = repeatable(
+            iterations = 1,
+            animation = tween(5000)
+        )
+    )
+    ///
+
+    Box(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize()
+    ) {
+
+        for (i in 0..currentCount) {
+            val temp = linkListAdded32
+            Log.d("123123", "AscendingObjects:temp ${temp.first}")
+            AnimatedObject2(i, temp.first ) {
+                temp.pop()
+                linkListAdded32 = temp
+                Log.d("123123", "AscendingObjects:linkListAdded $linkListAdded32")
+
+
+            }
+        }
+    }
+}
+
+@Composable
+fun AnimatedObject2(number: Int, itemCompared: Int, onClick: (Item: Int) -> Unit) {
+    var colorState by remember { mutableStateOf<Color>(BirdColor3) }
+
+    Surface(
+        color =
+        if (linkListAdded32.contains(number)/* % 2 == 0*/) {
+            colorState
+        } else {
+            Color.Transparent
+        }, shape = RectangleShape, modifier = Modifier
+            .size(85.dp)
+            .offset(
+                y = /*(-number * 60).dp*/
+                /* if ((number *//*+ 1*//*) % 3 == 0) {
+                    (number * 90).dp
+                } else {
+                    ((number % 3) * 90).dp
+                }*/
+
+                if (number in 3..5) {
+                    (((number % 3)+2) * 90).dp
+                } else if (number > 5) {
+                    (((number % 3)+2) * 90).dp
+                } else {
+                    ((number+2) * 90).dp
+                },
+
+                x = if (number in 3..5) {
+                    (/*-number*/2 * 70).dp
+                } else if (number > 5) {
+                    (/*-number*/3 * 80).dp
+                }
+                else {
+                    (/*-number*/1 * 40).dp
+                }/*(-number * 60).dp*/
+            )
+            .clip(RoundedCornerShape(6.dp))
+
+            .clickable(
+                enabled = if (linkListAdded32.contains(number)/* % 2 == 0*/) {
+                    true
+                } else {
+                    false
+                }
+            ) {
+                if (colorState == Color.Transparent) {
+                    Log.d("123123", "AnimatedObjectWrong2:$number ::$itemCompared ")
+                    return@clickable
+                } else if (number == linkListAdded32.first) {
+                    colorState = Color.Transparent
+                    onClick(itemCompared)
+                    Log.d("123123", "AnimatedObjectWrong1:$number ::$itemCompared ")
+                } else {
+                    Log.d("123123", "AnimatedObjectWrong2:$number ::$itemCompared ")
+                }
+            }
+//            .graphicsLayer(rotationZ = rotation)
+
+    ) {
+
+        Text(
+            text = number.toString(),
+            style = MaterialTheme.typography.bodySmall,
+            color = Color.White,
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center,
+            fontFamily = FontFamily.Cursive
+        )
+
+
+    }
+}
+
+@Composable
+fun LeaderGrids2(item: LeaderListItem2, counter: Int, onClick: (Item: Int) -> Unit) {
+
+
+    /*    LazyVerticalStaggeredGrid(
+            columns = StaggeredGridCells.Adaptive(90.dp),
+            modifier = Modifier.size(300.dp),
+            contentPadding = PaddingValues(2.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            items(items1) { item ->*/
+
+    LeaderColorBox2(item = item) {
+        onClick(counter)
+    }
+//        }
+//    }
+}
+
+data class LeaderListItem2(
+    var name: Int,
+    var height: Dp,
+    var color: Color,
+    var gamesUID: LeaderEnum2,
+)
+
+@Composable
+fun LeaderColorBox2(item: LeaderListItem2, onClick: (gamesUID: LeaderEnum2) -> Unit) {
+    val context = LocalContext.current
+    Column(
+        modifier = Modifier
+            .padding(4.dp)
+            .size(item.height)
+            .clip(RoundedCornerShape(10.dp))
+            .background(item.color)
+
+            .clickable {
+                onClick(item.gamesUID)
+            }
+
+
+    ) {
+        Text(
+
+            text = item.name.toString(),
+            style = MaterialTheme.typography.bodySmall,
+            color = Color.White,
+            fontSize = 20.sp,
+            fontFamily = FontFamily.Cursive
+        )
+    }
+}
+
+enum class LeaderEnum2 {
+    FollowTheLeaderScreen, Transparent
+}

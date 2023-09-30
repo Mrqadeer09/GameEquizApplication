@@ -380,67 +380,6 @@ fun MyCard2() {
                         }
                     }
 
-//                if (randomInt <= 1) {
-//
-//
-//                    detectHorizontalDragGestures { _, dragAmount ->
-//                        if (!wapsiState) {
-//                            when {
-//                                dragAmount >= 6 -> {
-//                                    Log.d("123123", "MyCardRight: ")
-//                                    swipeState = false
-//                                }
-//
-//                                dragAmount < -6 -> {
-//                                    Log.d("123123", "MyCardLeft: ")
-//                                    swipeState = true
-//                                }
-//                            }
-//                        } else {
-//                            when {
-//
-//                                dragAmount >= -6 -> {
-//                                    Log.d("123123", "MyCardRight: ")
-//                                    swipeState = true
-//                                }
-//
-//                                dragAmount < 6 -> {
-//                                    Log.d("123123", "MyCardLeft: ")
-//                                    swipeState = false
-//                                }
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    detectVerticalDragGestures { _, dragAmount ->
-//                        if (!wapsiState) {
-//                            when {
-//                                dragAmount >= 6 -> {
-//                                    Log.d("123123", "MyCardUP: ")
-//                                    swipeState = false
-//                                }
-//
-//                                dragAmount < -6 -> {
-//                                    Log.d("123123", "MyCardDOWN: ")
-//                                    swipeState = true
-//                                }
-//                            }
-//                        } else {
-//                            when {
-//
-//                                dragAmount >= -6 -> {
-//                                    Log.d("123123", "MyCardUP: ")
-//                                    swipeState = true
-//                                }
-//
-//                                dragAmount < 6 -> {
-//                                    Log.d("123123", "MyCardDOWN: ")
-//                                    swipeState = false
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
 
                 },
         ) {
@@ -460,9 +399,7 @@ fun MyCard2() {
 //                .graphicsLayer(rotationZ = rotationZ)
             )
 
-//        Text(
-//            modifier = Modifier.fillMaxSize(), textAlign = TextAlign.Center, text = "$randomInt"
-//        )
+
         }
     }
 
