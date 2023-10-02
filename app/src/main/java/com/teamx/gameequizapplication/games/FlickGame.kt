@@ -5,7 +5,6 @@ import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -16,12 +15,15 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,12 +31,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -42,215 +45,33 @@ import androidx.compose.ui.unit.sp
 import com.teamx.gameequizapplication.R
 import com.teamx.gameequizapplication.ui.theme.BirdColor1
 import com.teamx.gameequizapplication.ui.theme.BirdColor3
+import com.teamx.gameequizapplication.ui.theme.Pink80
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
-class FlickGame {
-}
-
-//flick
-enum class ArrowDirection { LEFT, RIGHT, TOP, BOTTOM }
-
+@Preview
 @Composable
-fun FlickGameScreen(content: @Composable () -> Unit) {
-    MyCard2()
-}
-
-@Composable
-fun ArrowIndicator(
-    direction: ArrowDirection,
-    selectedDirection: ArrowDirection,
-    onClick: () -> Unit
-) {
-    val arrowColor = if (direction == selectedDirection) Color.Green else Color.Red
-
-    Canvas(
-        modifier = Modifier
-            .size(120.dp)
-            .pointerInput(Unit) {
-                detectDragGestures { change, dragAmount ->
-                    if (change.pressed) {
-                        onClick()
-                    }
-                }
-            }
-    ) {
-        val arrowSize = size.minDimension * 0.6f
-        val arrowThickness = 10.dp.toPx()
-
-        drawArrow(
-            color = arrowColor,
-            size = arrowSize,
-            thickness = arrowThickness,
-            direction = direction,
-            center = center
-        )
-    }
-}
-
-private fun DrawScope.drawArrow(
-    color: Color,
-    size: Float,
-    thickness: Float,
-    direction: ArrowDirection,
-    center: Offset
-) {
-    val x = center.x
-    val y = center.y
-
-    val arrowOffset = size * 0.4f
-    val arrowWidth = size * 0.3f
-    val arrowHeight = size * 0.1f
-
-
-
-    when (direction) {
-        ArrowDirection.LEFT -> {
-            drawLine(
-                color = color,
-                start = Offset(x - arrowOffset, y),
-                end = Offset(x + arrowOffset, y),
-                strokeWidth = thickness
-            )
-            drawLine(
-                color = color,
-                start = Offset(x + arrowOffset, y),
-                end = Offset(x + arrowOffset - arrowHeight, y - arrowWidth),
-                strokeWidth = thickness
-            )
-            drawLine(
-                color = color,
-                start = Offset(x + arrowOffset, y),
-                end = Offset(x + arrowOffset - arrowHeight, y + arrowWidth),
-                strokeWidth = thickness
-            )
-        }
-
-        ArrowDirection.RIGHT -> {
-            drawLine(
-                color = color,
-                start = Offset(x - arrowOffset, y),
-                end = Offset(x + arrowOffset, y),
-                strokeWidth = thickness
-            )
-            drawLine(
-                color = color,
-                start = Offset(x - arrowOffset, y),
-                end = Offset(x - arrowOffset + arrowHeight, y - arrowWidth),
-                strokeWidth = thickness
-            )
-            drawLine(
-                color = color,
-                start = Offset(x - arrowOffset, y),
-                end = Offset(x - arrowOffset + arrowHeight, y + arrowWidth),
-                strokeWidth = thickness
-            )
-        }
-
-        ArrowDirection.BOTTOM -> {
-            drawLine(
-                color = color,
-                start = Offset(y = x - arrowOffset, x = y),
-                end = Offset(y = x + arrowOffset, x = y),
-                strokeWidth = thickness
-            )
-
-            drawLine(
-                color = color,
-                start = Offset(y = y + arrowOffset, x = x),
-                end = Offset(y = y + arrowOffset - arrowHeight, x = x - arrowWidth),
-                strokeWidth = thickness
-            )
-            drawLine(
-                color = color,
-                start = Offset(y = y + arrowOffset, x = y),
-                end = Offset(y = y + arrowOffset - arrowHeight, x = x + arrowWidth),
-                strokeWidth = thickness
-            )
-        }
-
-        ArrowDirection.TOP -> {
-            drawLine(
-                color = color,
-                start = Offset(y = x - arrowOffset, x = y),
-                end = Offset(y = x + arrowOffset, x = y),
-                strokeWidth = thickness
-            )
-
-            drawLine(
-                color = color,
-                start = Offset(y = y - arrowOffset, x = x),
-                end = Offset(y = y - arrowOffset + arrowHeight, x = x - arrowWidth),
-                strokeWidth = thickness
-            )
-            drawLine(
-                color = color,
-                start = Offset(y = y - arrowOffset, x = x),
-                end = Offset(y = y - arrowOffset + arrowHeight, x = x + arrowWidth),
-                strokeWidth = thickness
-            )
-        }
-    }
-}
-
-private fun updateArrowDirection(): ArrowDirection {
-    return when (Random.nextInt(0, 4)) {
-        1 -> ArrowDirection.LEFT
-        2 -> ArrowDirection.RIGHT
-        3 -> ArrowDirection.TOP
-        4 -> ArrowDirection.BOTTOM
-        else -> ArrowDirection.RIGHT
-    }
-}
-
-/*@Preview
-@Composable
-fun PreviewFlickGameScreen() {
-    SwipeableComponent()
-}*/
-
-//flick
-@Composable
-fun SwipeableComponent(content: @Composable () -> Unit) {
-    var offsetX by remember { mutableStateOf(0f) }
-    var offsetY by remember { mutableStateOf(0f) }
-
+fun FlickGameScreen(content: @Composable () -> Unit={}) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .pointerInput(Unit) {
-                detectDragGestures { change, dragAmount ->
-                    change.consume()
-                    offsetX += dragAmount.x
-                    offsetY += dragAmount.y
-                }
-            }
+        modifier = Modifier.fillMaxSize(), Alignment.Center
     ) {
-        val swipeableModifier = Modifier.offset { IntOffset(offsetX.toInt(), offsetY.toInt()) }
-
-        Text(
-            text = "Swipe Me",
-            modifier = swipeableModifier.align(Alignment.Center),
-            color = Color.White,
-            fontSize = 24.sp
-        )
+        FlickComponent()
     }
 }
 
-
+//flick
 @Composable
-fun MyCard2() {
-//    var swipeStateY by remember { mutableStateOf(false) }
+fun FlickComponent() {
     var swipeStateX by remember { mutableStateOf(false) }
     var restart by remember { mutableStateOf(true) }
-    var checkOppo by remember { mutableStateOf(false) }
+    val checkOppo by remember { mutableStateOf(false) }
     var randomInt by remember { mutableIntStateOf(0) }
-//    var randomInt =0
-    var previousNumber by remember { mutableIntStateOf(randomInt) }
     var wapsiState by remember { mutableStateOf(false) }
-    var intOffset by remember { mutableStateOf<IntOffset>(IntOffset(y = 0, x = 0)) }
-    var valuesTranslation by remember { mutableStateOf<Float>(150f) }
-
+    var intOffset by remember { mutableStateOf(IntOffset(y = 0, x = 0)) }
+    var valuesTranslation by remember { mutableFloatStateOf(150f) }
 
     var bimap by remember { mutableIntStateOf(R.drawable.left) }
 
@@ -268,41 +89,28 @@ fun MyCard2() {
 
     wapsiState = transition.isRunning
 
-
-
-
     LaunchedEffect(key1 = !wapsiState) {
-
-
         randomInt = Random.nextInt(0, 4)
     }
     if (!wapsiState) {
         valuesTranslation = 0f
         swipeStateX = false
         swipeStateX = false
-
-
         valuesTranslation = 100f
-
     }
-
-
     when (randomInt) {
 
         0 -> {
-
             intOffset = IntOffset(x = -offsetTransitionX.roundToInt(), y = 0)
             bimap = R.drawable.right
         }
 
         1 -> {
-
             intOffset = IntOffset(x = offsetTransitionX.roundToInt(), y = 0)
             bimap = R.drawable.left
         }
 
         2 -> {
-
             intOffset = IntOffset(y = -offsetTransitionY.roundToInt(), x = 0)
             bimap = R.drawable.up
         }
@@ -313,7 +121,6 @@ fun MyCard2() {
         }
 
         else -> {
-
             intOffset = IntOffset(y = -offsetTransitionY.roundToInt(), x = 0)
             bimap = R.drawable.left
         }
@@ -331,19 +138,7 @@ fun MyCard2() {
                 .height(165.dp)
                 .padding(horizontal = 4.dp, vertical = 1.dp)
                 .offset {
-                    intOffset/* if (wapsiState) {
-
-                        IntOffset(y = offsetTransition.roundToInt(), x = 0)
-                    } else {
-                        IntOffset(y = -offsetTransition.roundToInt(), x = 0)
-
-                    }*//*   if (wapsiState) {
-
-                    IntOffset(x = offsetTransition.roundToInt(), y = 0)
-                } else {
-                    IntOffset(x = -offsetTransition.roundToInt(), y = 0)
-
-                }*/
+                    intOffset
 
                 }
                 .pointerInput(Unit) {
@@ -351,14 +146,14 @@ fun MyCard2() {
 
                         when {
                             dragAmount.x >= 26 && randomInt == 0 -> {
-//                            randomInt = 0
+
                                 Log.d("123123", "MyCardRight: ")
                                 swipeStateX = true
                                 restart = true
                             }
 
                             dragAmount.x < -26 && randomInt == 1 -> {
-//                            randomInt = 1
+
                                 Log.d("123123", "MyCardLeft: ")
                                 swipeStateX = true
                                 restart = true
@@ -372,7 +167,7 @@ fun MyCard2() {
                             }
 
                             dragAmount.y < -26 && randomInt == 2 -> {
-//                            randomInt = 2
+
                                 Log.d("123123", "MyCardUP: ")
                                 swipeStateX = true
                                 restart = true
@@ -406,15 +201,241 @@ fun MyCard2() {
 }
 
 
+//new implementation
+var i2322 = 1
+var dragged22 = true
+
+
+@Composable
+fun HighLowComponent2() {
+    var swipeStateX by remember { mutableStateOf(false) }
+
+    var previousNumber by remember { mutableIntStateOf(Random.nextInt(0, 100)) }
+    var showNumber by remember { mutableIntStateOf(Random.nextInt(0, 100)) }
+    var valuesTranslation by remember {
+        mutableFloatStateOf(
+            590f
+        )
+    }
+    var randomInt by remember { mutableIntStateOf(1) }
+    randomInt = if (previousNumber > showNumber) {
+        1
+    } else {
+        2
+    }
+    var fadeValue by remember { mutableStateOf(0f) }
+    var bimap by remember { mutableIntStateOf(R.drawable.down) }
+
+    val transitionState = remember { MutableTransitionState(false) }
+    val transition = updateTransition(transitionState, "cardTransition")
+
+
+    val offsetTransitionY by transition.animateFloat(label = "cardOffsetTransition",
+        transitionSpec = { tween(durationMillis = 500) },
+
+        targetValueByState = {
+            if (it) {
+                valuesTranslation
+            } else {
+                0f
+            }
+        })
+
+
+
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+
+
+        Card(
+
+            modifier = Modifier
+                .testTag("DraggableCard")
+//            .width(165.dp)
+                .wrapContentSize()
+//            .height(165.dp)
+
+                .padding(horizontal = 4.dp, vertical = 1.dp)
+                .offset(
+                    x = if (!transitionState.targetState) {
+                        if (randomInt == 1) {
+                            offsetTransitionY.dp
+                        } else {
+                            -offsetTransitionY.dp
+                        }
+                    } else {
+                        0.dp
+                    }, y = if (transitionState.targetState) {
+                        if (randomInt == 1) {
+                            offsetTransitionY.dp
+                        } else {
+                            -offsetTransitionY.dp
+                        }
+                    } else {
+                        0.dp
+                    }
+
+
+                )
+                .pointerInput(Unit) {
+                    detectDragGestures { change, dragAmount ->
+
+                        when {
+
+                            previousNumber <= showNumber && (dragAmount.y <= -2.0 && dragAmount.y < 0) && randomInt == 2 -> {
+
+                                if (dragged22) {
+                                    dragged22 = false
+                                    Log.d("123123", "MyCardUP: ${dragAmount.y} $swipeStateX")
+                                    transitionState.targetState = true
+                                    i2322 = 1
+
+                                    GlobalScope.launch {
+                                        delay(800)
+                                        dragged22 = true
+                                    }
+                                }
+                            }
+
+                            previousNumber > showNumber && (dragAmount.y >= 2.0 && dragAmount.y > 0) && randomInt == 1 -> {
+
+                                if (dragged22) {
+                                    dragged22 = false
+                                    Log.d("123123", "MyCardDOWN:${dragAmount.y} $swipeStateX")
+                                    transitionState.targetState = true
+                                    i2322 = 1
+                                    GlobalScope.launch {
+                                        delay(800)
+                                        dragged22 = true
+                                    }
+                                }
+                            }
+
+
+                        }
+                    }
+
+
+                }
+                .graphicsLayer {
+
+//                if (transition.currentState) {
+                    if (i2322 < 2) {
+                        if (transition.isRunning) {
+                            Log.d("123123", "MyCard2222: ${i2322++}")
+                            GlobalScope.launch {
+
+                                for (i in 0..10) {
+                                    delay(25)
+                                    fadeValue = 1 - i * 0.1f
+                                }
+
+
+                                delay(700)
+                                transitionState.targetState = false
+
+
+                                previousNumber = showNumber
+                                showNumber = Random.nextInt(0, 100)
+                                randomInt = if (previousNumber > showNumber) {
+                                    1
+                                } else {
+                                    2
+                                }
+
+                                when (randomInt) {
+                                    2 -> {
+                                        bimap = R.drawable.up
+                                    }
+
+                                    1 -> {
+                                        bimap = R.drawable.down
+                                    }
+
+                                }
+
+
+                                for (i in 0..10) {
+                                    delay(25)
+                                    fadeValue = 1 - i * 0.1f
+                                }
+                            }
+                        }
+
+                    }
+                },
+
+            ) {
+            Box(
+                modifier = Modifier
+                    .size(165.dp)
+                    .background(
+                        color = Pink80.copy(
+                            alpha = if (transitionState.targetState) {
+                                fadeValue
+                            } else {
+                                1 - fadeValue
+                            }
+                        )
+                    )
+                    .clip(RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center
+            ) {
+
+//                Image(
+//                    painter = painterResource(id = bimap),
+//                    contentDescription = null,
+//                    modifier = Modifier
+//                        .size(165.dp)
+//                        .background(
+//                            color = BirdColor1.copy(
+//                                alpha = if (transitionState.targetState) {
+//                                    fadeValue
+//                                } else {
+//                                    1 - fadeValue
+//                                }
+//                            )
+//                        )
+//                )
+
+                Text(
+                    modifier = Modifier.wrapContentSize()
+
+//                        .background(
+//                            color = Pink80.copy(
+//                                alpha = if (transitionState.targetState) {
+//                                    fadeValue
+//                                } else {
+//                                    1 - fadeValue
+//                                }
+//                            )
+//                        )
+//                        .clip(RoundedCornerShape(12.dp))
+                    ,
+                    textAlign = TextAlign.Center,
+                    fontFamily = FontFamily.Monospace,
+                    fontSize = 40.sp,
+//                    gravity = Alignment.Center,
+                    text = "$showNumber"
+                )
+            }
+        }
+
+    }
+}
+
+
 @Preview
 @Composable
-fun checkout2() {
+fun FlickGameS() {
     MaterialTheme {
         Box(
             modifier = Modifier.fillMaxSize(), Alignment.Center
         ) {
-            MyCard2()
+            HighLowComponent2()
         }
     }
 }
 
+
+
+
+//

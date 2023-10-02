@@ -145,18 +145,6 @@ fun MyCard() {
         ) { Text(text = "$randomInt") }
 }
 
-@Preview
-@Composable
-fun checkout() {
-    MaterialTheme {
-        Box(
-            modifier = Modifier.fillMaxSize(), Alignment.Center
-        ) {
-
-//            MyCard()
-        }
-    }
-}
 
 @Preview
 @Composable
@@ -167,16 +155,13 @@ fun HighOrLowGameScreen(content: @Composable () -> Unit = {}, onContinueClicked:
     HighLowGame()
 }
 
-private fun generateNumber(): Int {
-    return Random.nextInt(100)
-}
 
 var i23 = 1
 var dragged = true
 
 
 @Composable
-fun MyCard22() {
+fun HighLowComponent() {
     var swipeStateX by remember { mutableStateOf(false) }
 
     var previousNumber by remember { mutableIntStateOf(Random.nextInt(0, 100)) }
@@ -399,7 +384,7 @@ fun HighLowGame() {
         Box(
             modifier = Modifier.fillMaxSize(), Alignment.Center
         ) {
-            MyCard22()
+            HighLowComponent()
         }
     }
 }

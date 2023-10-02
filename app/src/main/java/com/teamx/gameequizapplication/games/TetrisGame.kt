@@ -29,7 +29,6 @@ import kotlinx.coroutines.isActive
 @Preview(showBackground = true)
 @Composable
 fun TetrisGamePreview() {
-
     TetrisGame()
 }
 
