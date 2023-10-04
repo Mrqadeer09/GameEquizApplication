@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -31,14 +29,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.teamx.gameequizapplication.ui.theme.BirdColor1
 import com.teamx.gameequizapplication.ui.theme.BirdColor3
+import com.teamx.gameequizapplication.ui.theme.BirdColor4
 import kotlinx.coroutines.delay
 import java.util.LinkedList
 import kotlin.random.Random
@@ -57,17 +55,25 @@ fun TouchTheNumbersGameScreen(content: @Composable () -> Unit = {}) {
     var restart by remember { mutableStateOf(true) }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(BirdColor4),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
+            text = "Score: $score", color= Color.White,
+            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(top = 16.dp)
+        )
+        Text(
             text = "Touch the Numbers",
+            color= Color.White,
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        LazyRow(
+        /*LazyRow(
             modifier = Modifier
                 .size(300.dp)
                 .padding(horizontal = 16.dp)
@@ -77,7 +83,6 @@ fun TouchTheNumbersGameScreen(content: @Composable () -> Unit = {}) {
                     .padding(2.dp)
                     .clip(RoundedCornerShape(10.dp))
                     .size(64.dp)
-
 
 
                     .background(color = box.color)
@@ -108,13 +113,45 @@ fun TouchTheNumbersGameScreen(content: @Composable () -> Unit = {}) {
                     )
                 }
             }
+        }*/
+
+        Box(
+            modifier = Modifier
+                .padding(16.dp)
+
+                .size(300.dp)
+        ) {
+
+            for (i in boxes.indices) {
+
+                TouchAnimatedObject(i, boxes[i]/*boxes[0]*/) {iit->
+                    Log.d("123123", "TouchTheNumbersGameScreen12: ")
+                    updateScore(boxes, iit/*boxes[i]*//*box*/, i) { i2 ->
+                        Log.d("123123", "TouchTheNumbersGameScreen122: ")
+
+                        score++
+                        restart = true
+                        val arr = ArrayList<NumberBox>()
+                        boxes.forEach {
+                            if (i2 != it.number) {
+                                arr.add(it)
+                            }
+                        }
+                        boxes = arr
+                        if (boxes.isEmpty()) {
+                            restart = false
+                        }
+                    }
+                    if (!restart) {
+                        boxes = generateBoxes()
+                        restart = true
+                    }
+                }
+
+            }
         }
 
-        Text(
-            text = "Score: $score",
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(top = 16.dp)
-        )
+
     }
 }
 
@@ -126,7 +163,7 @@ private fun generateBoxes(): List<NumberBox> {
     numbers.shuffle()
 
     val colors = mutableListOf<Color>()
-    val colorBox = if (Random.nextBoolean()) Color.Green else Color.Red
+    val colorBox = if (Random.nextBoolean()) BirdColor3 else BirdColor1
     for (i in 1..9) {
         colors.add(colorBox)
     }
@@ -141,22 +178,21 @@ private fun updateScore(boxes: List<NumberBox>, box: NumberBox, index: Int, onCl
 
 
     // get an employee with a maximum age
+    Log.d("123123", "updateScore:${box.color == BirdColor3} ")
 
-
-    val Checker = if (box.color == Color.Green) {
+    val Checker = if (box.color == BirdColor3) {
         boxes.minWith(Comparator.comparingInt { it.number })
-
     } else {
         boxes.maxWith(Comparator.comparingInt { it.number })
 
     }
 
     val selectedNumbers = mutableListOf<Int>()
-
     for (i in index until index + 5) {
-        if (i < box.number && box.color == Color.Green) {
+    Log.d("123123", "updateScore:@${i} @@$index @@@${box.number}")
+        if (i < box.number && box.color == BirdColor3) {
             selectedNumbers.add(i)
-        } else if (i > box.number && box.color == Color.Red) {
+        } else if (i > box.number && box.color == BirdColor1) {
             selectedNumbers.add(i)
         }
     }
@@ -289,27 +325,25 @@ fun AnimatedObject2(number: Int, itemCompared: Int, onClick: (Item: Int) -> Unit
         }, shape = RectangleShape, modifier = Modifier
             .size(85.dp)
             .offset(
-                y = /*(-number * 60).dp*/
-                /* if ((number *//*+ 1*//*) % 3 == 0) {
+                y = /*(-number * 60).dp*//* if ((number *//*+ 1*//*) % 3 == 0) {
                     (number * 90).dp
                 } else {
                     ((number % 3) * 90).dp
                 }*/
 
                 if (number in 3..5) {
-                    (((number % 3)+2) * 90).dp
+                    (((number % 3) + 2) * 90).dp
                 } else if (number > 5) {
-                    (((number % 3)+2) * 90).dp
+                    (((number % 3) + 2) * 90).dp
                 } else {
-                    ((number+2) * 90).dp
+                    ((number + 2) * 90).dp
                 },
 
                 x = if (number in 3..5) {
                     (/*-number*/2 * 70).dp
                 } else if (number > 5) {
                     (/*-number*/3 * 80).dp
-                }
-                else {
+                } else {
                     (/*-number*/1 * 40).dp
                 }/*(-number * 60).dp*/
             )
@@ -350,59 +384,65 @@ fun AnimatedObject2(number: Int, itemCompared: Int, onClick: (Item: Int) -> Unit
     }
 }
 
-@Composable
-fun LeaderGrids2(item: LeaderListItem2, counter: Int, onClick: (Item: Int) -> Unit) {
-
-
-    /*    LazyVerticalStaggeredGrid(
-            columns = StaggeredGridCells.Adaptive(90.dp),
-            modifier = Modifier.size(300.dp),
-            contentPadding = PaddingValues(2.dp),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            items(items1) { item ->*/
-
-    LeaderColorBox2(item = item) {
-        onClick(counter)
-    }
-//        }
-//    }
-}
-
-data class LeaderListItem2(
-    var name: Int,
-    var height: Dp,
-    var color: Color,
-    var gamesUID: LeaderEnum2,
-)
 
 @Composable
-fun LeaderColorBox2(item: LeaderListItem2, onClick: (gamesUID: LeaderEnum2) -> Unit) {
-    val context = LocalContext.current
-    Column(
-        modifier = Modifier
-            .padding(4.dp)
-            .size(item.height)
-            .clip(RoundedCornerShape(10.dp))
-            .background(item.color)
+fun TouchAnimatedObject(number: Int, itemCompared: NumberBox, onClick: (Item: NumberBox) -> Unit) {
+    var colorState by remember { mutableStateOf<Color>(BirdColor3) }
 
-            .clickable {
-                onClick(item.gamesUID)
+    Surface(color = itemCompared.color
+        /*if (true*//*linkListAdded.contains(number)*//**//* % 2 == 0*//*) {
+        colorState
+    } else {
+        BirdColor1
+    }*/, shape = RectangleShape, modifier = Modifier
+            .size(85.dp)
+            .offset(
+                y = if (number in 3..5) {
+                    (((number % 3) + 2) * 90).dp
+                } else if (number > 5) {
+                    (((number % 3) + 2) * 90).dp
+                } else {
+                    ((number + 2) * 90).dp
+                },
+
+                x = if (number in 3..5) {
+                    (2 * 70).dp
+                } else if (number > 5) {
+                    (3 * 80).dp
+                } else {
+                    (1 * 40).dp
+                }
+            )
+            .clip(RoundedCornerShape(6.dp))
+
+            .clickable(
+//            enabled = linkListAdded.contains(number)
+            ) {
+                onClick(itemCompared)
+                /*   if (colorState == BirdColor1) {
+                Log.d("123123", "AnimatedObjectWrong2:$number ::$itemCompared ")
+                return@clickable
+            } else if (number == linkListAdded.first) {
+                colorState = Color.Transparent
+                onClick(itemCompared)
+                Log.d("123123", "AnimatedObjectWrong1:$number ::$itemCompared ")
+            } else {
+                Log.d("123123", "AnimatedObjectWrong2:$number ::$itemCompared ")
+            }*/
             }
-
+//            .graphicsLayer(rotationZ = rotation)
 
     ) {
-        Text(
 
-            text = item.name.toString(),
+        Text(
+            text = itemCompared.number.toString(),
             style = MaterialTheme.typography.bodySmall,
             color = Color.White,
             fontSize = 20.sp,
+            textAlign = TextAlign.Center,
             fontFamily = FontFamily.Cursive
         )
-    }
-}
 
-enum class LeaderEnum2 {
-    FollowTheLeaderScreen, Transparent
+
+    }
 }
