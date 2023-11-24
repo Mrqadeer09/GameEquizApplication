@@ -184,9 +184,10 @@ fun AnimatedAddingObject(number: Int, itemCompared: Int, onClick: (Item: Int) ->
         .clip(RoundedCornerShape(6.dp))
 
         .clickable(
-            enabled = arrList.contains(number)
+//            enabled = arrList.contains(number)
         ) {
-            if (colorState == Color.Transparent) {
+            onClick(itemCompared)
+            /*if (colorState == Color.Transparent) {
                 Log.d("123123", "AnimatedObjectWrong2:$number ::$itemCompared ")
                 return@clickable
             } else if (number == arrList.get(0)) {
@@ -195,7 +196,7 @@ fun AnimatedAddingObject(number: Int, itemCompared: Int, onClick: (Item: Int) ->
                 Log.d("123123", "AnimatedObjectWrong1:$number ::$itemCompared ")
             } else {
                 Log.d("123123", "AnimatedObjectWrong2:$number ::$itemCompared ")
-            }
+            }*/
         }
 
     ) {
